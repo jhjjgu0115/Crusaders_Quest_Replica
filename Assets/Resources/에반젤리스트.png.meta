@@ -41,7 +41,7 @@ TextureImporter:
   textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -1
     wrapMode: 1
@@ -95,12 +95,12 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_0"
       rect:
         serializedVersion: 2
-        x: 2
-        y: 84
-        width: 40
-        height: 42
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 79
+        width: 47
+        height: 49
+      alignment: 9
+      pivot: {x: 0.46808508, y: 0.53061223}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -108,11 +108,11 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_1"
       rect:
         serializedVersion: 2
-        x: 46
-        y: 90
-        width: 40
-        height: 28
-      alignment: 0
+        x: 41
+        y: 85
+        width: 50
+        height: 38
+      alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -121,12 +121,12 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_2"
       rect:
         serializedVersion: 2
-        x: 3
-        y: 76
-        width: 6
-        height: 4
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 71
+        width: 14
+        height: 14
+      alignment: 9
+      pivot: {x: 0.42857146, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -134,11 +134,11 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_3"
       rect:
         serializedVersion: 2
-        x: 17
-        y: 62
-        width: 12
-        height: 18
-      alignment: 0
+        x: 12
+        y: 57
+        width: 22
+        height: 28
+      alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -147,11 +147,11 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_4"
       rect:
         serializedVersion: 2
-        x: 57
-        y: 68
-        width: 24
-        height: 10
-      alignment: 0
+        x: 52
+        y: 63
+        width: 34
+        height: 20
+      alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -160,11 +160,11 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_5"
       rect:
         serializedVersion: 2
-        x: 9
-        y: 66
-        width: 6
-        height: 8
-      alignment: 0
+        x: 4
+        y: 61
+        width: 16
+        height: 18
+      alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -173,11 +173,11 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_6"
       rect:
         serializedVersion: 2
-        x: 36
-        y: 68
-        width: 4
-        height: 8
-      alignment: 0
+        x: 31
+        y: 63
+        width: 14
+        height: 18
+      alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -186,11 +186,11 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_7"
       rect:
         serializedVersion: 2
-        x: 5
-        y: 53
-        width: 4
-        height: 6
-      alignment: 0
+        x: 0
+        y: 48
+        width: 14
+        height: 16
+      alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -199,11 +199,11 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_8"
       rect:
         serializedVersion: 2
-        x: 36
-        y: 57
-        width: 4
-        height: 6
-      alignment: 0
+        x: 31
+        y: 52
+        width: 14
+        height: 16
+      alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -212,11 +212,11 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_9"
       rect:
         serializedVersion: 2
-        x: 17
-        y: 47
-        width: 4
-        height: 10
-      alignment: 0
+        x: 12
+        y: 42
+        width: 14
+        height: 20
+      alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -225,11 +225,11 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_10"
       rect:
         serializedVersion: 2
-        x: 25
-        y: 47
-        width: 4
-        height: 10
-      alignment: 0
+        x: 20
+        y: 42
+        width: 14
+        height: 20
+      alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -238,12 +238,12 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_11"
       rect:
         serializedVersion: 2
-        x: 54
-        y: 54
-        width: 11
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 49
+        y: 49
+        width: 21
+        height: 18
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -251,12 +251,12 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_12"
       rect:
         serializedVersion: 2
-        x: 94
-        y: 55
-        width: 22
-        height: 43
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 89
+        y: 50
+        width: 32
+        height: 53
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -264,17 +264,17 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_13"
       rect:
         serializedVersion: 2
-        x: 51
-        y: 23
-        width: 28
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 46
+        y: 18
+        width: 38
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     outline: []
   spritePackingTag: 
-  userData: 
+  userData: 97852681656117
   assetBundleName: 
   assetBundleVariant: 
