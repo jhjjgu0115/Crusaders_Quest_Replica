@@ -96,11 +96,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 79
+        y: 76.40001
         width: 47
-        height: 49
+        height: 51.59999
       alignment: 9
-      pivot: {x: 0.46808508, y: 0.53061223}
+      pivot: {x: 0.46808508, y: 0.5542635}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -275,6 +275,6 @@ TextureImporter:
       tessellationDetail: 0
     outline: []
   spritePackingTag: 
-  userData: 97852681656117
+  userData: 97853202733129
   assetBundleName: 
   assetBundleVariant: 
