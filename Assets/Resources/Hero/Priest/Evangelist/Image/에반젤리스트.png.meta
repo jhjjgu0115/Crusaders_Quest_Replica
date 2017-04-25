@@ -160,12 +160,12 @@ TextureImporter:
       name: "\uC5D0\uBC18\uC824\uB9AC\uC2A4\uD2B8_5"
       rect:
         serializedVersion: 2
-        x: 4
-        y: 61
-        width: 16
-        height: 18
+        x: 2.9999957
+        y: 57.33749
+        width: 18
+        height: 22.800007
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.50000024, y: 0.5553731}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -275,6 +275,6 @@ TextureImporter:
       tessellationDetail: 0
     outline: []
   spritePackingTag: 
-  userData: 97853202733129
+  userData: 97853565621251
   assetBundleName: 
   assetBundleVariant: 
