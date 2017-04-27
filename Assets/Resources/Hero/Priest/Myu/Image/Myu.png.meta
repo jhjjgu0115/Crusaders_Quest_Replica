@@ -1,0 +1,324 @@
+fileFormatVersion: 2
+guid: 5fd49967c0ed42d4ea02820c99187a3b
+timeCreated: 1493303034
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: texture_cos_event_pr_1_halloween_1_0
+    21300002: texture_cos_event_pr_1_halloween_1_1
+    21300004: texture_cos_event_pr_1_halloween_1_2
+    21300006: texture_cos_event_pr_1_halloween_1_3
+    21300008: texture_cos_event_pr_1_halloween_1_4
+    21300010: texture_cos_event_pr_1_halloween_1_5
+    21300012: texture_cos_event_pr_1_halloween_1_6
+    21300014: texture_cos_event_pr_1_halloween_1_7
+    21300016: texture_cos_event_pr_1_halloween_1_8
+    21300018: texture_cos_event_pr_1_halloween_1_9
+    21300020: texture_cos_event_pr_1_halloween_1_10
+    21300022: texture_cos_event_pr_1_halloween_1_11
+    21300024: texture_cos_event_pr_1_halloween_1_12
+    21300026: texture_cos_event_pr_1_halloween_1_13
+    21300028: texture_cos_event_pr_1_halloween_1_14
+    21300030: texture_cos_event_pr_1_halloween_1_15
+    21300032: Myu_0
+    21300034: Myu_1
+    21300036: Myu_2
+    21300038: Myu_3
+    21300040: Myu_4
+    21300042: Myu_5
+    21300044: Myu_6
+    21300046: Myu_7
+    21300048: Myu_8
+    21300050: Myu_9
+    21300052: Myu_10
+    21300054: Myu_11
+    21300056: Myu_12
+    21300058: Myu_13
+    21300060: Myu_14
+    21300062: Myu_15
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Myu_0
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 189
+        width: 38
+        height: 28
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_1
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 189
+        width: 38
+        height: 28
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_2
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 153
+        width: 48
+        height: 44
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_3
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 152
+        width: 42
+        height: 44
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_4
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 168
+        width: 38
+        height: 28
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_5
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 168
+        width: 38
+        height: 28
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_6
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 147
+        width: 38
+        height: 28
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_7
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 147
+        width: 38
+        height: 28
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_8
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 81
+        width: 86
+        height: 66
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_9
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 80
+        width: 32
+        height: 66
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_10
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 48
+        width: 16
+        height: 17
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_11
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 48
+        width: 16
+        height: 19
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_12
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 52
+        width: 31
+        height: 24
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_13
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 48
+        width: 14
+        height: 19
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_14
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 51
+        width: 14
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Myu_15
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 48
+        width: 14
+        height: 21
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 97865141386718
+  assetBundleName: 
+  assetBundleVariant: 
