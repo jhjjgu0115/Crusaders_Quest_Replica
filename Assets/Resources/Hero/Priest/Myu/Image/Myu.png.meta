@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 5fd49967c0ed42d4ea02820c99187a3b
-timeCreated: 1493303034
+timeCreated: 1493346888
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -248,7 +248,7 @@ TextureImporter:
         width: 16
         height: 17
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.5, y: 0.62352955}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -319,6 +319,6 @@ TextureImporter:
       tessellationDetail: 0
     outline: []
   spritePackingTag: 
-  userData: 97865141386718
+  userData: 97868093135543
   assetBundleName: 
   assetBundleVariant: 
