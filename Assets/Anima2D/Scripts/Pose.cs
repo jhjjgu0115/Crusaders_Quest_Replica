@@ -17,6 +17,8 @@ namespace Anima2D
 		}
 
 		[SerializeField]
-		List<PoseEntry> m_PoseEntries;
-	}
+        List<PoseEntry> m_BoneEntries;
+        [SerializeField]
+        List<PoseEntry> m_IkEntries;
+    }
 }

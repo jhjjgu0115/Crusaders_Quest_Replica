@@ -14,7 +14,7 @@ namespace Anima2D
 			root.GetComponentsInChildren<Bone2D>(true,bones);
 
 			SerializedObject poseSO = new SerializedObject(pose);
-			SerializedProperty entriesProp = poseSO.FindProperty("m_PoseEntries");
+			SerializedProperty entriesProp = poseSO.FindProperty("m_BoneEntries");
 
 			poseSO.Update();
 			entriesProp.arraySize = bones.Count;
@@ -34,12 +34,39 @@ namespace Anima2D
 			}
 
 			poseSO.ApplyModifiedProperties();
-		}
 
-		public static void LoadPose(Pose pose, Transform root)
+
+            List<Ik2D> iks = new List<Ik2D>(50);
+
+            root.GetComponentsInChildren<Ik2D>(true, iks);
+
+            SerializedObject poseS1 = new SerializedObject(pose);
+            SerializedProperty entriesProp1 = poseS1.FindProperty("m_IkEntries");
+
+            poseS1.Update();
+            entriesProp1.arraySize = iks.Count;
+
+            for (int i = 0; i < iks.Count; i++)
+            {
+                Ik2D ik = iks[i];
+
+                if (ik)
+                {
+                    SerializedProperty element = entriesProp1.GetArrayElementAtIndex(i);
+                    element.FindPropertyRelative("path").stringValue = IkUtils.GetIkPath(root, ik);
+                    element.FindPropertyRelative("localPosition").vector3Value = ik.transform.localPosition;
+                    element.FindPropertyRelative("localRotation").quaternionValue = ik.transform.localRotation;
+                    element.FindPropertyRelative("localScale").vector3Value = ik.transform.localScale;
+                }
+            }
+
+            poseS1.ApplyModifiedProperties();
+        }
+
+        public static void LoadPose(Pose pose, Transform root)
 		{
 			SerializedObject poseSO = new SerializedObject(pose);
-			SerializedProperty entriesProp = poseSO.FindProperty("m_PoseEntries");
+			SerializedProperty entriesProp = poseSO.FindProperty("m_BoneEntries");
 
 			List<Ik2D> iks = new List<Ik2D>();
 
@@ -66,7 +93,8 @@ namespace Anima2D
 				}
 			}
 
-			for (int i = 0; i < iks.Count; i++)
+			/*
+            for (int i = 0; i < iks.Count; i++)
 			{
 				Ik2D ik = iks[i];
 
@@ -82,8 +110,30 @@ namespace Anima2D
 					}
 				}
 			}
+            */
 
-			EditorUpdater.SetDirty("Load Pose");
+
+
+            SerializedProperty entriesProp1 = poseSO.FindProperty("m_IkEntries");
+
+            for (int i = 0; i < entriesProp1.arraySize; i++)
+            {
+                SerializedProperty element = entriesProp1.GetArrayElementAtIndex(i);
+
+                Transform ikTransform = root.Find(element.FindPropertyRelative("path").stringValue);
+
+                if (ikTransform)
+                {
+                    Ik2D ikComponent = ikTransform.GetComponent<Ik2D>();
+
+                    Undo.RecordObject(ikTransform, "Load Pose");
+
+                    ikTransform.localPosition = element.FindPropertyRelative("localPosition").vector3Value;
+                    ikTransform.localRotation = element.FindPropertyRelative("localRotation").quaternionValue;
+                    ikTransform.localScale = element.FindPropertyRelative("localScale").vector3Value;
+                }
+            }
+            EditorUpdater.SetDirty("Load Pose");
 		}
 	}
 }

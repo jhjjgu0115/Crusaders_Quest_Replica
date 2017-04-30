@@ -213,5 +213,47 @@ namespace Anima2D
 				}
 			}
 		}
-	}
+
+        /*사용하지 않는 코드. 차후 필요하면 태그 해제후 사용할것.
+        public static string GetIkPath(Ik2D ik)
+        {
+            return GetBonePath(ik.root.transform, ik);
+        }
+        */
+
+        public static string GetIkPath(Transform root, Ik2D ik)
+        {
+            return GetPath(root, ik.transform);
+        }
+
+        public static string GetPath(Transform root, Transform transform)
+        {
+            string path = "";
+
+            Transform current = transform;
+
+            if (root)
+            {
+                while (current && current != root)
+                {
+                    path = current.name + path;
+
+                    current = current.parent;
+
+                    if (current != root)
+                    {
+                        path = "/" + path;
+                    }
+                }
+
+                if (!current)
+                {
+                    path = "";
+                }
+            }
+
+            return path;
+        }
+
+    }
 }
