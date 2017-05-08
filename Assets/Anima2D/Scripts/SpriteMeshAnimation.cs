@@ -45,7 +45,7 @@ namespace Anima2D
 			}
 		}
 
-		void LateUpdate()
+		void Update()
 		{
 			if(m_OldFrame != frame &&
 			   m_Frames != null &&
