@@ -34,6 +34,7 @@ namespace Anima2D
 			}
 
 			poseSO.ApplyModifiedProperties();
+            
 
 
             List<Ik2D> iks = new List<Ik2D>(50);
@@ -93,7 +94,7 @@ namespace Anima2D
 				}
 			}
 
-			/*
+			/* 현재 불필요한 코드
             for (int i = 0; i < iks.Count; i++)
 			{
 				Ik2D ik = iks[i];
@@ -129,6 +130,7 @@ namespace Anima2D
                     Undo.RecordObject(ikTransform, "Load Pose");
 
                     ikTransform.localPosition = element.FindPropertyRelative("localPosition").vector3Value;
+                    /*아래 스케일과 로테이션은 테스트후 제거*/
                     ikTransform.localRotation = element.FindPropertyRelative("localRotation").quaternionValue;
                     ikTransform.localScale = element.FindPropertyRelative("localScale").vector3Value;
                 }
