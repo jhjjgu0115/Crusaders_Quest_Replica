@@ -216,7 +216,7 @@ TextureImporter:
         width: 37
         height: 37
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.5405406, y: 0.5810811}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -261,6 +261,6 @@ TextureImporter:
       tessellationDetail: 0
     outline: []
   spritePackingTag: 
-  userData: 97880584303026
+  userData: 97933585746951
   assetBundleName: 
   assetBundleVariant: 
