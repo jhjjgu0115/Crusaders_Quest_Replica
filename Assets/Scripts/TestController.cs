@@ -15,7 +15,7 @@ public class TestController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         transform.position = Vector3.MoveTowards(transform.position, startPosion, Time.deltaTime * x);
-        if(transform.position.x<1.5005f && !isEnd)
+        if(transform.position.x<=1.0f && !isEnd)
         {
             isEnd = true;
             animator.Play("Victory",0,0.01f);
