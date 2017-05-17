@@ -6,7 +6,4 @@
     Shout = 3,
     Angry =4,
     Groggy=5,
-
-
-    
 }
