@@ -13,7 +13,7 @@ public class AnimationController : MonoBehaviour {
     }
 
 
-    public void SetFaceEmotion(Emotion emotion)
+    public void SetFaceEmotion(E_motion emotion)
     {
         faceCotroller.frame = (int)emotion;
         //Debug.Log("faceChange = " + faceCotroller.frame.ToString());

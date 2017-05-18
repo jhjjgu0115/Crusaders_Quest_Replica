@@ -1,4 +1,4 @@
-﻿public enum Emotion
+﻿public enum E_motion
 {
     Normal=0,
     Laugh = 1,
@@ -8,7 +8,7 @@
     Groggy=5,
 }
 
-public enum EStatType
+public enum E_StatType
 {
     None=0,
     //체력
@@ -62,4 +62,35 @@ public enum EStatType
     MotionAccelerationRate,
     //크기 배율
     ScaleMultiplier
+}
+
+/// <summary>
+/// 버프 타입
+/// </summary>
+public enum E_BuffType
+{
+    None,
+    Attack,
+    Defence,
+    technical
+}
+/// <summary>
+/// 버프 정렬
+/// </summary>
+public enum E_BuffSort
+{
+    None,
+    positive,
+    negative,
+    neutral
+}
+/// <summary>
+/// 타겟 필터
+/// </summary>
+public enum E_ApplyTargetFilter
+{
+    Caster,
+    Target,
+    Someone,
+    ApplyTarget
 }

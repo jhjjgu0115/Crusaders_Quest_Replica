@@ -69,21 +69,21 @@ public partial class StatFloat
         baseValue = _baseValue;
         modifiedValue = baseValue;
     }
-    public StatFloat(EStatType _statType, string _name, float _baseValue)
+    public StatFloat(E_StatType _statType, string _name, float _baseValue)
     {
         statType = _statType;
         statName = _name;
         baseValue = _baseValue;
         modifiedValue = baseValue;
     }
-    public StatFloat(EStatType _statType, float _baseValue)
+    public StatFloat(E_StatType _statType, float _baseValue)
     {
         statType = _statType;
         statName = _statType.ToString();
         baseValue = _baseValue;
         modifiedValue = baseValue;
     }
-    public StatFloat(EStatType _statType, string _name, float _baseValue,float _modifiedValue)
+    public StatFloat(E_StatType _statType, string _name, float _baseValue,float _modifiedValue)
     {
         statType = _statType;
         statName = _name;

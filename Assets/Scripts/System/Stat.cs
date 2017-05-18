@@ -5,10 +5,10 @@ using UnityEngine;
 public class Stat
 {
     protected string statName;
-    protected EStatType statType;
+    protected E_StatType statType;
 
 
-    public EStatType StatType
+    public E_StatType StatType
     {
         get
         {

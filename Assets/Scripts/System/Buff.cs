@@ -1,16 +1,55 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Buff : MonoBehaviour {
+public partial class Buff : MonoBehaviour
+{
+    string id;
+    Unit caster;
+    Unit applyTarget;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public string ID
+    {
+        get
+        {
+            return id;
+        }
+        set
+        {
+            id = value;
+        }
+    }
+    public Unit Caster
+    {
+        get
+        {
+            return caster;
+        }
+        set
+        {
+            caster = value;
+        }
+    }
+    public Unit ApplyTarget
+    {
+        get
+        {
+            return applyTarget;
+        }
+        set
+        {
+            applyTarget = value;
+        }
+    }
+
+}
+public partial class Buff : MonoBehaviour
+{
+
+
+
+    public void Activate()
+    {
+
+    }
 }

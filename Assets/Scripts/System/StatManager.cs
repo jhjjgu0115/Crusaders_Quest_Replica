@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class StatManager
 {
-    public Dictionary<EStatType, Stat> statDictionary;
+    public Dictionary<E_StatType, Stat> statDictionary;
     public StatManager()
     {
-        statDictionary = new Dictionary<EStatType, Stat>();
+        statDictionary = new Dictionary<E_StatType, Stat>();
     }
 
     /// <summary>
@@ -15,7 +15,7 @@ public class StatManager
     /// </summary>
     /// <param name="_statType"></param>
     /// <returns></returns>
-    public bool Contains(EStatType _statType)
+    public bool Contains(E_StatType _statType)
     {
         return statDictionary.ContainsKey(_statType);
     }
@@ -24,7 +24,7 @@ public class StatManager
     /// </summary>
     /// <param name="_statType"></param>
     /// <returns></returns>
-    public Stat Get_Stat(EStatType _statType)
+    public Stat Get_Stat(E_StatType _statType)
     {
         if (Contains(_statType))
         {
@@ -37,10 +37,9 @@ public class StatManager
     /// </summary>
     /// <param name="_statType"></param>
     /// <returns></returns>
-    public Stat Create_Stat(EStatType _statType)
+    public Stat Create_Stat(E_StatType _statType)
     {
-        Stat stat = System.Activator.CreateInstance<Stat>();
-        stat.StatType = _statType;
+        Stat stat = new StatFloat(_statType, 0);
         statDictionary.Add(_statType, stat);
         return stat;
     }
@@ -49,7 +48,7 @@ public class StatManager
     /// </summary>
     /// <param name="_statType"></param>
     /// <returns></returns>
-    public Stat CreateOrGetStat(EStatType _statType)
+    public Stat CreateOrGetStat(E_StatType _statType)
     {
         Stat stat = Get_Stat(_statType);
         if (stat == null)
@@ -64,7 +63,7 @@ public class StatManager
     /// <typeparam name="T"></typeparam>
     /// <param name="stat_Type"></param>
     /// <param name="stat"></param>
-    public void AddStat(EStatType stat_Type, Stat stat)
+    public void AddStat(E_StatType stat_Type, Stat stat)
     {
         if (Contains(stat_Type))
         {
@@ -75,5 +74,4 @@ public class StatManager
             statDictionary.Add(stat_Type, stat);
         }
     }
-
 }
