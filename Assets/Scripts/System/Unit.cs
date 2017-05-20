@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -8,42 +9,33 @@ public class Unit : MonoBehaviour
     StatManager statManager = new StatManager();
     BuffManager buffManager = new BuffManager();
 
-
-    public void GetDamage()
+    public StatManager StatManager
     {
+        get
+        {
+            return statManager;
+        }
     }
-    public void Move()
+    public BuffManager BuffManager
     {
-    }
-    public void StartBasicAttack()
-    {
-    }
-    public void Groggy()
-    {
-
-    }
-
-    public void Dead()
-    {
-
-    }
-    public void Birth()
-    {
-
+        get
+        {
+            return buffManager;
+        }
     }
 
 
 
-    //피해를 입는다.
-    //앞으로 달려간다.
-    //적을 발견한다.
-    //기본 공격을 개시한다.
-    //기절한다.
-    //
+    public void GetHit(ref float amount)
+    {
 
-    //사망한다.
-    //초기상태로 리셋한다.
-    //
+    }
 
-    
+    public void ShowAllStat()
+    {
+        foreach (E_StatType _statType in Enum.GetValues(typeof(E_StatType)))
+        {
+            Debug.Log(statManager.Get_Stat(_statType).StatName + "/" + statManager.Get_Stat(_statType).StatType + "/" + statManager.Get_Stat(_statType).ModifiedValue);
+        }
+    }
 }

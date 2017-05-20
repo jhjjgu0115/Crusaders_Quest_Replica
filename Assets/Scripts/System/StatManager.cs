@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class StatManager
 {
-    public Dictionary<E_StatType, Stat> statDictionary;
+    Dictionary<E_StatType, StatFloat> statDictionary;
     public StatManager()
     {
-        statDictionary = new Dictionary<E_StatType, Stat>();
+        statDictionary = new Dictionary<E_StatType, StatFloat>();
     }
 
     /// <summary>
@@ -24,7 +24,7 @@ public class StatManager
     /// </summary>
     /// <param name="_statType"></param>
     /// <returns></returns>
-    public Stat Get_Stat(E_StatType _statType)
+    public StatFloat Get_Stat(E_StatType _statType)
     {
         if (Contains(_statType))
         {
@@ -37,9 +37,15 @@ public class StatManager
     /// </summary>
     /// <param name="_statType"></param>
     /// <returns></returns>
-    public Stat Create_Stat(E_StatType _statType)
+    public StatFloat Create_Stat(E_StatType _statType)
     {
-        Stat stat = new StatFloat(_statType, 0);
+        StatFloat stat = new StatFloat(_statType, 0);
+        statDictionary.Add(_statType, stat);
+        return stat;
+    }
+    public StatFloat Create_Stat(E_StatType _statType,float baseValue)
+    {
+        StatFloat stat = new StatFloat(_statType, baseValue);
         statDictionary.Add(_statType, stat);
         return stat;
     }
@@ -48,9 +54,9 @@ public class StatManager
     /// </summary>
     /// <param name="_statType"></param>
     /// <returns></returns>
-    public Stat CreateOrGetStat(E_StatType _statType)
+    public StatFloat CreateOrGetStat(E_StatType _statType)
     {
-        Stat stat = Get_Stat(_statType);
+        StatFloat stat = Get_Stat(_statType);
         if (stat == null)
         {
             stat = Create_Stat(_statType);
@@ -63,7 +69,7 @@ public class StatManager
     /// <typeparam name="T"></typeparam>
     /// <param name="stat_Type"></param>
     /// <param name="stat"></param>
-    public void AddStat(E_StatType stat_Type, Stat stat)
+    public void AddStat(E_StatType stat_Type, StatFloat stat)
     {
         if (Contains(stat_Type))
         {
