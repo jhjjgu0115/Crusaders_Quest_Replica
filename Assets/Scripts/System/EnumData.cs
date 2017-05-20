@@ -94,3 +94,11 @@ public enum E_ApplyTargetFilter
     Someone,
     ApplyTarget
 }
+
+public enum E_DamageType
+{
+    None,
+    TrueType,
+    Physics,
+    Magical
+}
