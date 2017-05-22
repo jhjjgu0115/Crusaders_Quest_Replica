@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
 
 
         player.ShowAllStat();
+        player.GetComponent<Animator>().Play("Dance", 0, 0.03f);
     }
 	
 	// Update is called once per frame
