@@ -24,12 +24,45 @@ public class Unit : MonoBehaviour
         }
     }
 
+    public Queue<string> actionQueue = new Queue<string>();
+    public Queue<Skill> skillQueue = new Queue<Skill>();
 
-
-    public void GetHit(ref float amount)
+    private void Start()
     {
-
+        StartCoroutine(AutoAction());
     }
+
+
+    IEnumerator AutoAction()
+    {
+        Animator animator = GetComponent<Animator>();
+        while(true)
+        {
+            if (actionQueue.Count!=0)
+            {
+                string curruntAnim = actionQueue.Dequeue();
+                animator.Play(curruntAnim);
+                yield return null;
+                while (animator.GetCurrentAnimatorStateInfo(0).IsName(curruntAnim))
+                {
+                    Debug.Log(curruntAnim);
+                    yield return null;
+                }
+                Debug.Log(curruntAnim + "done!");
+            }
+            yield return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
     public void ShowAllStat()
     {
