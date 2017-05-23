@@ -21,31 +21,9 @@ public class GameManager : MonoBehaviour {
         {
             enemy.StatManager.Create_Stat(_statType, 0);
         }
-
-        StartCoroutine(TestAction());
+        
     }
 	
 
-    IEnumerator TestAction()
-    {
-        yield return new WaitForSeconds(0.5f);
-        player.actionQueue.Enqueue("Attack1");
-        player.actionQueue.Enqueue("Uria_Skill1");
-        player.actionQueue.Enqueue("Uria_Skill1");
-        player.actionQueue.Enqueue("Uria_Skill1");
-        player.actionQueue.Enqueue("Uria_Skill1");
-        player.actionQueue.Enqueue("Uria_Skill1");
-        player.actionQueue.Enqueue("Attack1");
-        yield return new WaitForSeconds(0.5f);
-        player.actionQueue.Enqueue("Attack1");
-        yield return new WaitForSeconds(0.5f);
-        player.actionQueue.Enqueue("Attack1");
-        yield return new WaitForSeconds(0.5f);
-        player.actionQueue.Enqueue("Attack1");
-        yield return new WaitForSeconds(0.5f);
-        player.actionQueue.Enqueue("Attack1");
-        yield return new WaitForSeconds(0.5f);
-        player.actionQueue.Enqueue("Attack1");
-        yield return null;
-    }
+ 
 }
