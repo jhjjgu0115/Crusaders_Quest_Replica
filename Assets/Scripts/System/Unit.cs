@@ -61,6 +61,7 @@ public class Unit : MonoBehaviour
     IEnumerator MoveForward()
     {
         Rigidbody2D rig = GetComponent<Rigidbody2D>();
+        rig.AddForce(transform.right * 3, ForceMode2D.Impulse);
         while (canForward)
         {
             rig.AddForce(transform.right * 3,ForceMode2D.Force);
