@@ -9,8 +9,8 @@
 }
 
 public enum E_StatType
-{
-    None=0,
+{  
+
     //체력
     MaxHealth,
     MinHealth,
@@ -27,12 +27,14 @@ public enum E_StatType
     MaxSpecialPoint,
     MinSpecialPoint,
     SpecialPoint,
+    
 
-    //방어관련
-    PhysicalDefense,
-    MagicalDefense,
+    //방어 속성
+    PhysicalDefense = 255,
+    MagicalDefense = 256,
     //피해감소
-    DamageReduceRate,
+    DamageReduceRate = 257,
+
     //흡혈율
     BloodSuckingRate,
 
@@ -61,9 +63,10 @@ public enum E_StatType
     //모션 가속율
     MotionAccelerationRate,
     //크기 배율
-    ScaleMultiplier
-}
+    ScaleMultiplier,
 
+}
+ 
 /// <summary>
 /// 버프 타입
 /// </summary>
@@ -85,20 +88,18 @@ public enum E_BuffSort
     neutral
 }
 /// <summary>
-/// 타겟 필터
+/// 적용 대상
 /// </summary>
 public enum E_ApplyTargetFilter
 {
     Caster,
-    Target,
-    Someone,
-    ApplyTarget
+    Target
 }
 
 public enum E_DamageType
 {
     None,
-    TrueType,
-    Physics,
-    Magical
+    Physics=255,
+    Magical= 256,
+    TrueType = 257
 }

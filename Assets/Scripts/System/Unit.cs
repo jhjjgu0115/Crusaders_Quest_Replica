@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    Animator animator;
 
     StatManager statManager = new StatManager();
     BuffManager buffManager = new BuffManager();
@@ -25,11 +26,107 @@ public class Unit : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 사망 여부
+    /// </summary>
+    public bool isDead = false;
+    public bool isGroggy = false;
+    public bool inBattle = false;
+    public bool isEnemyInRange = false;
+    public bool canMove = true;
+
+    public bool isNormalState = true;
+
+
+
+
     private void Start()
     {
-        StartCoroutine(AutoAction());
+        animator = GetComponent<Animator>();
+        StartMoveForward();
+    }
+    //전진
+    public void StartMoveForward()
+    {
         StartCoroutine(MoveForward());
     }
+    IEnumerator MoveForward()
+    {
+        StatFloat moveSpeed = StatManager.CreateOrGetStat(E_StatType.MoveSpeed);
+        while(true)
+        {
+            transform.Translate(Time.deltaTime*moveSpeed.ModifiedValue,0,0);
+            yield return null;
+        }
+
+    }
+
+
+
+    public bool isAttackCoolDownState = false;
+    public void Attack()
+    {
+        animator.Play("Attack1");
+        isAttackCoolDownState = true;
+        StartCoroutine(AttackCoolDown());
+    }
+    
+    IEnumerator AttackCoolDown()
+    {
+        float coolTime = StatManager.CreateOrGetStat(E_StatType.AttackSpeed).ModifiedValue;
+        float remainCoolTime = 0;
+        while (true)
+        {
+            if(coolTime> remainCoolTime)
+            {
+                remainCoolTime += Time.deltaTime;
+            }
+            else
+            {
+                isAttackCoolDownState = false;
+                StartCoroutine(TryAttack());
+                break;
+            }
+            yield return null;
+        }
+    }
+    IEnumerator TryAttack()
+    {
+        while (true)
+        {
+            if(!isAttackCoolDownState)//기본공격 가능상태
+            {
+                if(isEnemyInRange)//사거리내 적이 있음
+                {
+                    if(isNormalState)//캐릭터가 정상
+                    {
+                        Attack();//기본 공격 개시
+                    }
+                }
+            }
+            yield return null;
+        }
+    }
+
+    /// <summary>
+    /// 넉백
+    /// </summary>
+    /// <param name="_power"></param>
+    public void GiveKnockBack(float _power)
+    {
+        GetComponent<Rigidbody2D>().AddForce(-transform.right * _power, ForceMode2D.Impulse);
+    }
+
+
+
+
+
+
+
+
+
+
+
     //기본 행위자.
     //전진
     //후진
@@ -58,21 +155,12 @@ public class Unit : MonoBehaviour
 
 
     bool canForward = true;
-    IEnumerator MoveForward()
-    {
-        Rigidbody2D rig = GetComponent<Rigidbody2D>();
-        rig.AddForce(transform.right * 3, ForceMode2D.Impulse);
-        while (canForward)
-        {
-            rig.AddForce(transform.right * 3,ForceMode2D.Force);
-            yield return null;
-        }
-    }
+
     bool isOverRange = false;
     IEnumerator MoveBackWard()
     {
         Rigidbody2D rig = GetComponent<Rigidbody2D>();
-        while (isOverRange)
+        while (true)
         {
             rig.AddForce(-transform.right * 10, ForceMode2D.Impulse);
             yield return new WaitForSeconds(3.0f);

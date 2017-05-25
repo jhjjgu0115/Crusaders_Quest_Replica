@@ -8,7 +8,7 @@ public partial class StatFloat : Stat
     FloatEvent modificationEvent= new FloatEvent();
 }
 
-public partial class StatFloat
+public partial class StatFloat : Stat
 {
 
 
@@ -67,6 +67,12 @@ public partial class StatFloat
     {
         statName = _name;
         baseValue = _baseValue;
+        modifiedValue = baseValue;
+    }
+    public StatFloat(E_StatType _statType)
+    {
+        statName = _statType.ToString();
+        baseValue = 0;
         modifiedValue = baseValue;
     }
     public StatFloat(E_StatType _statType, string _name, float _baseValue)
