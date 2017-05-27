@@ -45,16 +45,23 @@ public class Unit : MonoBehaviour
         animator = GetComponent<Animator>();
         StartMoveForward();
     }
-    //전진
+
+
+
+    /// <summary>
+    /// 전진 시작
+    /// </summary>
     public void StartMoveForward()
     {
-        StartCoroutine(MoveForward());
+        moveCoroutine=StartCoroutine(MoveForward());
     }
+    Coroutine moveCoroutine;
     IEnumerator MoveForward()
     {
         StatFloat moveSpeed = StatManager.CreateOrGetStat(E_StatType.MoveSpeed);
         while(true)
         {
+            Debug.Log(GetComponent<Rigidbody2D>().velocity);
             transform.Translate(Time.deltaTime*moveSpeed.ModifiedValue,0,0);
             yield return null;
         }
@@ -107,14 +114,36 @@ public class Unit : MonoBehaviour
             yield return null;
         }
     }
-
+    Coroutine KnockBackCoroutine;
+    bool isKnockBackRunning = false;
     /// <summary>
     /// 넉백
     /// </summary>
     /// <param name="_power"></param>
     public void GiveKnockBack(float _power)
     {
-        GetComponent<Rigidbody2D>().AddForce(-transform.right * _power, ForceMode2D.Impulse);
+        GetComponent<Rigidbody2D>().AddForce(-transform.right * _power*(10-statManager.CreateOrGetStat(E_StatType.KnockbackResistance).ModifiedValue), ForceMode2D.Impulse);
+        if(!isKnockBackRunning)
+        {
+            if(((-transform.right * _power * (10 - statManager.CreateOrGetStat(E_StatType.KnockbackResistance).ModifiedValue)).x < -1.0f))
+            {
+                StopCoroutine(moveCoroutine);
+                isKnockBackRunning = true;
+                KnockBackCoroutine = StartCoroutine(KnockBackEndCheck());
+            }
+        }
+        
+    }
+    IEnumerator KnockBackEndCheck()
+    {
+        Rigidbody2D rig = GetComponent<Rigidbody2D>();
+        while (rig.velocity.x<-1)
+        {
+            yield return null;
+        }
+        rig.velocity = Vector2.zero;
+        isKnockBackRunning = false;
+        StartMoveForward();
     }
 
 

@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Anima2D;
 
 namespace CrusadersQuest
 {
-    public class SkinReader : MonoBehaviour
+    public class SkinManager : MonoBehaviour
     {
         [SerializeField]
         [HideInInspector]
-        List<Pose> m_Poses;
+        List<Skin> m_Skins;
     }
 }

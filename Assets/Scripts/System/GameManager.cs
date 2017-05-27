@@ -22,12 +22,7 @@ public class GameManager : MonoBehaviour {
             enemy.StatManager.Create_Stat(_statType, 0);
         }
         player.StatManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue = 3;
+        player.StatManager.CreateOrGetStat(E_StatType.KnockbackResistance).ModifiedValue = 5;
         player.StatManager.CreateOrGetStat(E_StatType.AttackSpeed).ModifiedValue = 1f;
     }
-
-    public void GiveKnockBack(float _power)
-    {
-        player.GetComponent<Rigidbody2D>().AddForce(-transform.right*_power, ForceMode2D.Impulse);
-    }
- 
 }
