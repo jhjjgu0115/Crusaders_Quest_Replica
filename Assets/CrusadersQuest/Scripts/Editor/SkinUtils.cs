@@ -97,7 +97,7 @@ namespace CrusadersQuest
                 root.Find(entriesProp1.GetArrayElementAtIndex(0).FindPropertyRelative("path").stringValue).GetComponent<SpriteMeshAnimation>().frames = faces.ToArray();
             }
             Undo.RecordObject(root.Find(entriesProp1.GetArrayElementAtIndex(0).FindPropertyRelative("path").stringValue).GetComponent<SpriteMeshAnimation>(), "Load Skin");
-            EditorUpdater.SetDirty("Load Skin");
+            //EditorUpdater.SetDirty("Load Skin");
             SceneView.RepaintAll();
         }
     }
