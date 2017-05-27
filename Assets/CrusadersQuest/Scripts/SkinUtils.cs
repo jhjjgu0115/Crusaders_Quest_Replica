@@ -40,33 +40,25 @@ namespace CrusadersQuest
         {
             SerializedObject skinSO = new SerializedObject(skin);
             SerializedProperty entriesProp = skinSO.FindProperty("m_SkinEntries");
-            /*
-            List<Ik2D> iks = new List<Ik2D>();
+            
+            List<Skin> iks = new List<Skin>();
 
             for (int i = 0; i < entriesProp.arraySize; i++)
             {
                 SerializedProperty element = entriesProp.GetArrayElementAtIndex(i);
 
-                Transform boneTransform = root.Find(element.FindPropertyRelative("path").stringValue);
+                Transform skinTransform = root.Find(element.FindPropertyRelative("path").stringValue);
 
-                if (boneTransform)
+                if (skinTransform)
                 {
-                    Bone2D boneComponent = boneTransform.GetComponent<Bone2D>();
+                    SpriteMeshInstance skinComponent = skinTransform.GetComponent<SpriteMeshInstance>();
 
-                    if (boneComponent && boneComponent.attachedIK && !iks.Contains(boneComponent.attachedIK))
-                    {
-                        iks.Add(boneComponent.attachedIK);
-                    }
-
-                    Undo.RecordObject(boneTransform, "Load Pose");
-
-                    boneTransform.localPosition = element.FindPropertyRelative("localPosition").vector3Value;
-                    boneTransform.localRotation = element.FindPropertyRelative("localRotation").quaternionValue;
-                    boneTransform.localScale = element.FindPropertyRelative("localScale").vector3Value;
+                    Undo.RecordObject(skinTransform, "Load Pose");
+                    skinComponent.spriteMesh = element.FindPropertyRelative("skin").objectReferenceValue as SpriteMesh;
                 }
             }
 
-            EditorUpdater.SetDirty("Load Pose");*/
+            //EditorUpdater.SetDirty("Load Pose");
         }
     }
 }
