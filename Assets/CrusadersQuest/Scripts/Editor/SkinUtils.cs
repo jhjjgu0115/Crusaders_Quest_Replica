@@ -16,7 +16,7 @@ namespace CrusadersQuest
 
             SerializedObject skin0s = new SerializedObject(skin);
             SerializedProperty entriesProp = skin0s.FindProperty("m_SkinEntries");
-            
+
 
             skin0s.Update();
             entriesProp.arraySize = skins.Count;
@@ -34,6 +34,30 @@ namespace CrusadersQuest
             }
 
             skin0s.ApplyModifiedProperties();
+            List<SpriteMesh> faces = new List<SpriteMesh>(50);
+            faces.AddRange(root.GetComponentInChildren<SpriteMeshAnimation>().frames);
+
+            SerializedObject face0s = new SerializedObject(skin);
+            SerializedProperty entriesProp1 = face0s.FindProperty("m_FaceEntries");
+
+
+            face0s.Update();
+            entriesProp1.arraySize = faces.Count;
+            for (int i = 0; i < faces.Count; i++)
+            {
+                SpriteMesh faceMesh = faces[i];
+
+                if (faceMesh)
+                {
+                    SerializedProperty element = entriesProp1.GetArrayElementAtIndex(i);
+                    element.FindPropertyRelative("path").stringValue = SpriteMeshUtils.GetSpriteMeshPath(root, root.GetComponentInChildren<SpriteMeshAnimation>());
+                    element.FindPropertyRelative("skin").objectReferenceValue = faceMesh;
+                }
+            }
+
+
+
+            face0s.ApplyModifiedProperties();
         }
 
         public static void LoadPose(Skin skin, Transform root)
@@ -41,7 +65,7 @@ namespace CrusadersQuest
             SerializedObject skinSO = new SerializedObject(skin);
             SerializedProperty entriesProp = skinSO.FindProperty("m_SkinEntries");
             
-            List<Skin> iks = new List<Skin>();
+            List<Skin> skins = new List<Skin>();
 
             for (int i = 0; i < entriesProp.arraySize; i++)
             {
@@ -53,12 +77,28 @@ namespace CrusadersQuest
                 {
                     SpriteMeshInstance skinComponent = skinTransform.GetComponent<SpriteMeshInstance>();
 
-                    Undo.RecordObject(skinTransform, "Load Pose");
+                    Undo.RecordObject(skinTransform.GetComponent<SpriteMeshInstance>(), "Load Skin");
                     skinComponent.spriteMesh = element.FindPropertyRelative("skin").objectReferenceValue as SpriteMesh;
+                    
                 }
             }
+            
+            SerializedProperty entriesProp1 = skinSO.FindProperty("m_FaceEntries");
 
-            //EditorUpdater.SetDirty("Load Pose");
+            List<SpriteMesh> faces = new List<SpriteMesh>();
+
+            for (int i = 0; i < entriesProp1.arraySize; i++)
+            {
+                SerializedProperty element = entriesProp1.GetArrayElementAtIndex(i);
+                faces.Add(element.FindPropertyRelative("skin").objectReferenceValue as SpriteMesh);
+            }
+            if (faces.Count>=1)
+            {
+                root.Find(entriesProp1.GetArrayElementAtIndex(0).FindPropertyRelative("path").stringValue).GetComponent<SpriteMeshAnimation>().frames = faces.ToArray();
+            }
+            Undo.RecordObject(root.Find(entriesProp1.GetArrayElementAtIndex(0).FindPropertyRelative("path").stringValue).GetComponent<SpriteMeshAnimation>(), "Load Skin");
+            EditorUpdater.SetDirty("Load Skin");
+            SceneView.RepaintAll();
         }
     }
 }

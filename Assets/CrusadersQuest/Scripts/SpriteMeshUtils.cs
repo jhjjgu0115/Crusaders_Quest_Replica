@@ -14,6 +14,10 @@ namespace CrusadersQuest
         {
             return GetPath(root, spm.transform);
         }
+        public static string GetSpriteMeshPath(Transform root, SpriteMeshAnimation spm)
+        {
+            return GetPath(root, spm.transform);
+        }
 
         public static string GetPath(Transform root, Transform transform)
         {

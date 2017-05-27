@@ -17,5 +17,7 @@ namespace CrusadersQuest
 
         [SerializeField]
         List<SkinEntry> m_SkinEntries;
+        [SerializeField]
+        List<SkinEntry> m_FaceEntries;
     }
 }
