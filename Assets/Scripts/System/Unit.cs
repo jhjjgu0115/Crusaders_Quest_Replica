@@ -34,26 +34,9 @@ public partial class Unit : MonoBehaviour
     bool canInteraction;
     public Unit()
     {
-        //스테이터스 세팅
-
-        InBattle = false;
-    }
-    public void StopMoveForward()
-    {
-        StopCoroutine(moveCoroutine);
-    }
-    Coroutine moveCoroutine;
-    IEnumerator MoveForward()
-    {
-        StatFloat moveSpeed = StatManager.CreateOrGetStat(E_StatType.MoveSpeed);
-        while(true)
-        {
-            Debug.Log(GetComponent<Rigidbody2D>().velocity);
-            transform.Translate(Time.deltaTime*moveSpeed.ModifiedValue,0,0);
-            yield return null;
-        }
 
     }
+
 
     /*
 
@@ -218,13 +201,7 @@ public partial class Unit : MonoBehaviour
 
 */
 
-    public void ShowAllStat()
-    {
-        foreach (E_StatType _statType in Enum.GetValues(typeof(E_StatType)))
-        {
-            Debug.Log(statManager.Get_Stat(_statType).StatName + "/" + statManager.Get_Stat(_statType).StatType + "/" + statManager.Get_Stat(_statType).ModifiedValue);
-        }
-    }
+  
 }
 public partial class Unit : MonoBehaviour
 {
@@ -296,6 +273,7 @@ public partial class Unit : MonoBehaviour
     }
     
     
+    
     public void GroggyStart()
     {
         if(canInteraction)
@@ -322,14 +300,25 @@ public partial class Unit : MonoBehaviour
         CanInteraction = true;
         IsDead = false;
     }
-
+    Coroutine moveforward;
     public void RunForward()
     {
-        
+        moveforward = StartCoroutine(MoveForward());
+
+    }
+    IEnumerator MoveForward()
+    {
         //기능 : 앞으로 전진한다.
         //조건 : 적이 최소사거리 내에 들어오기 전까지
-        
+        StatFloat moveSpeed = StatManager.CreateOrGetStat(E_StatType.MoveSpeed);
+        while (canInteraction)
+        {
+            transform.Translate(Time.deltaTime * moveSpeed.ModifiedValue, 0, 0);
+            yield return null;
+        }
     }
+
+
     public void RunSteady()
     {
         //기능 : 제자리 달리가.
@@ -346,6 +335,26 @@ public partial class Unit : MonoBehaviour
         //기능: 적에게 기본 공격을 시전함.
         //조건: 적이 최대 사거리 안으로 들어옴.
         //      스킬 대기열이 비어있음.
+    }
+
+    IEnumerator RangeCheck()
+    {
+        while(true)
+        {
+            //여기서 레인지 체크
+            yield return null;
+        }
+    }
+
+    public void EnterTheBattle()
+    {
+        InBattle = true;
+
+    }
+    public void EscapeTheBattle()
+    {
+        InBattle = false;
+
     }
 
 
@@ -382,5 +391,17 @@ public partial class Unit : MonoBehaviour
     {
         StatManager.CreateOrGetStat(E_StatType.CurrentHealth).AddEvent(CheckHP);
 
+    }
+
+}
+//디버그
+public partial class Unit : MonoBehaviour
+{
+    public void ShowAllStat()
+    {
+        foreach (E_StatType _statType in Enum.GetValues(typeof(E_StatType)))
+        {
+            Debug.Log(statManager.Get_Stat(_statType).StatName + "/" + statManager.Get_Stat(_statType).StatType + "/" + statManager.Get_Stat(_statType).ModifiedValue);
+        }
     }
 }
