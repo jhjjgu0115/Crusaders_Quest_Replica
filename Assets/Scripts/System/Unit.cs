@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class Unit : MonoBehaviour
+public partial class Unit : MonoBehaviour
 {
     Animator animator;
 
@@ -25,35 +25,22 @@ public class Unit : MonoBehaviour
         }
     }
 
-
-    /// <summary>
-    /// 사망 여부
-    /// </summary>
-    public bool isDead = false;
-    public bool isGroggy = false;
-    public bool inBattle = false;
-    public bool isEnemyInRange = false;
-    public bool canMove = true;
-
-    public bool isNormalState = true;
-
-
-
-
-    private void Start()
+    bool isDead;
+    bool isGroggy;
+    bool inBattle;
+    bool isEnemyInRange;
+    bool canMove;
+    bool isNormalState;
+    bool canInteraction;
+    public Unit()
     {
-        animator = GetComponent<Animator>();
-        StartMoveForward();
+        //스테이터스 세팅
+
+        InBattle = false;
     }
-
-
-
-    /// <summary>
-    /// 전진 시작
-    /// </summary>
-    public void StartMoveForward()
+    public void StopMoveForward()
     {
-        moveCoroutine=StartCoroutine(MoveForward());
+        StopCoroutine(moveCoroutine);
     }
     Coroutine moveCoroutine;
     IEnumerator MoveForward()
@@ -68,7 +55,7 @@ public class Unit : MonoBehaviour
 
     }
 
-
+    /*
 
     public bool isAttackCoolDownState = false;
     public void Attack()
@@ -146,7 +133,7 @@ public class Unit : MonoBehaviour
         StartMoveForward();
     }
 
-
+        
 
 
 
@@ -216,7 +203,7 @@ public class Unit : MonoBehaviour
                     yield return null;
                 }
                 Debug.Log(curruntAnim + "done!");
-            }*/
+            }
             yield return null;
         }
     }
@@ -229,7 +216,7 @@ public class Unit : MonoBehaviour
 
 
 
-
+*/
 
     public void ShowAllStat()
     {
@@ -237,5 +224,163 @@ public class Unit : MonoBehaviour
         {
             Debug.Log(statManager.Get_Stat(_statType).StatName + "/" + statManager.Get_Stat(_statType).StatType + "/" + statManager.Get_Stat(_statType).ModifiedValue);
         }
+    }
+}
+public partial class Unit : MonoBehaviour
+{
+    public bool CanMove
+    {
+        get
+        {
+            return canMove;
+        }
+        set
+        {
+            canMove = value;
+        }
+    }
+    public bool IsGroggy
+    {
+        get
+        {
+            return isGroggy;
+        }
+        set
+        {
+            isGroggy = value;
+            animator.SetBool("isGroggy", value);
+        }
+    }
+    public bool CanInteraction
+    {
+        get
+        {
+            return canInteraction;
+        }
+        set
+        {
+            canInteraction = value;
+            if(value)
+            {
+                
+            }
+            else
+            {
+                //충돌체 off
+            }
+        }
+    }
+    public bool IsDead
+    {
+        get
+        {
+            return isDead;
+        }
+        set
+        {
+            isDead = value;
+            animator.SetBool("isDead", value);
+        }
+    }
+    public bool InBattle
+    {
+        get
+        {
+            return inBattle;
+        }
+        set
+        {
+            inBattle = value;
+            animator.SetBool("inBattle", value);
+        }
+    }
+    
+    
+    public void GroggyStart()
+    {
+        if(canInteraction)
+        {
+            IsGroggy = true;
+            animator.SetTrigger("groggyTrigger");
+        }
+    }
+
+    public void Kill()
+    {
+        if(canInteraction)
+        {
+            IsDead = true;
+            CanInteraction = false;
+            animator.SetTrigger("deadTrigger");
+            statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue = 0;
+        }
+    }
+
+    public void Revive(float value)
+    {
+        statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue = value;
+        CanInteraction = true;
+        IsDead = false;
+    }
+
+    public void RunForward()
+    {
+        
+        //기능 : 앞으로 전진한다.
+        //조건 : 적이 최소사거리 내에 들어오기 전까지
+        
+    }
+    public void RunSteady()
+    {
+        //기능 : 제자리 달리가.
+        //조건 : 적이 최소사거리 오차범위내
+
+    }
+    public void RunBackWard()
+    {
+        //기능 : 뒤로 천천히 후진
+        //조건 : 적이 최소 사거리 안으로 들어옴
+    }
+    public void BasicAttack()
+    {
+        //기능: 적에게 기본 공격을 시전함.
+        //조건: 적이 최대 사거리 안으로 들어옴.
+        //      스킬 대기열이 비어있음.
+    }
+
+
+
+    
+
+    /// <summary>
+    /// 사망 조건 체크
+    /// </summary>
+    /// <param name="_HP"></param>
+    void CheckHP(float _HP)
+    {
+        if (_HP > 0)
+        {
+        }
+        else
+        {
+            if(canInteraction)
+            {
+                IsDead = false;
+                CanInteraction = false;
+                animator.SetTrigger("deadTrigger");
+                statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue = 0;
+            }
+        }
+    }
+
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+    private void Start()
+    {
+        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).AddEvent(CheckHP);
+
     }
 }

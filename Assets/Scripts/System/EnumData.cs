@@ -14,7 +14,7 @@ public enum E_StatType
     //체력
     MaxHealth,
     MinHealth,
-    CurruntHealth,
+    CurrentHealth,
 
     //공격력
     AttackPoint,
@@ -26,7 +26,7 @@ public enum E_StatType
     //SP
     MaxSpecialPoint,
     MinSpecialPoint,
-    SpecialPoint,
+    CurrentSpecialPoint,
     
 
     //방어 속성
@@ -41,16 +41,22 @@ public enum E_StatType
     //명중률
     MaxAccuracy,
     MinAccuracy,
-    Accuracy,
+    CurrentAccuracy,
     //회피율
     MaxEvasionRate,
     MinEvasionRate,
     CurrentEvasionRate,
-    
+
     //사거리
-    Range,
+    MaxRange,
+    MinRange,
+    CurrentRange,
+
     //평타속도
-    AttackSpeed,
+    MaxAttackSpeed,
+    MinAttackSpeed,
+    CurrentAttackSpeed,
+
     //관통력
     PhysicalPenetration,
     MagicalPenetration,
