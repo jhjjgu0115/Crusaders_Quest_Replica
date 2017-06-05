@@ -92,13 +92,17 @@ namespace CrusadersQuest
                 SerializedProperty element = entriesProp1.GetArrayElementAtIndex(i);
                 faces.Add(element.FindPropertyRelative("skin").objectReferenceValue as SpriteMesh);
             }
+            SpriteMeshAnimation sma = root.Find(entriesProp1.GetArrayElementAtIndex(0).FindPropertyRelative("path").stringValue).GetComponent<SpriteMeshAnimation>();
             if (faces.Count>=1)
             {
-                root.Find(entriesProp1.GetArrayElementAtIndex(0).FindPropertyRelative("path").stringValue).GetComponent<SpriteMeshAnimation>().frames = faces.ToArray();
+                sma.frames = faces.ToArray();
+                sma.frame = 0;
+                
+                Undo.RecordObject(sma, "Load Skin");
             }
-            Undo.RecordObject(root.Find(entriesProp1.GetArrayElementAtIndex(0).FindPropertyRelative("path").stringValue).GetComponent<SpriteMeshAnimation>(), "Load Skin");
+            EditorUtility.SetDirty(sma);
             //EditorUpdater.SetDirty("Load Skin");
-            //SceneView.RepaintAll();
+
         }
     }
 }

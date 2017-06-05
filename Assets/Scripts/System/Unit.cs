@@ -311,7 +311,7 @@ public partial class Unit : MonoBehaviour
         //기능 : 앞으로 전진한다.
         //조건 : 적이 최소사거리 내에 들어오기 전까지
         StatFloat moveSpeed = StatManager.CreateOrGetStat(E_StatType.MoveSpeed);
-        while (canInteraction)
+        while (canInteraction&&(true))
         {
             transform.Translate(Time.deltaTime * moveSpeed.ModifiedValue, 0, 0);
             yield return null;
@@ -339,9 +339,18 @@ public partial class Unit : MonoBehaviour
 
     IEnumerator RangeCheck()
     {
-        while(true)
+        StatFloat maxRange = StatManager.CreateOrGetStat(E_StatType.MaxRange);
+        StatFloat minRange = StatManager.CreateOrGetStat(E_StatType.MinRange);
+        while (true)
         {
-            //여기서 레인지 체크
+            RaycastHit2D hit;
+            Debug.DrawLine(transform.position+ transform.right * 0.176f, transform.position+ transform.right * 0.175f + transform.right * maxRange.ModifiedValue,Color.red);
+            hit = Physics2D.Raycast(transform.position+transform.right* 0.176f, transform.right,maxRange.ModifiedValue);
+            if(hit.collider!=null)
+            {
+                //Debug.Log(name+"의 사거리내에"+hit.collider.gameObject + "가 들어옴");
+            }
+            
             yield return null;
         }
     }
@@ -390,7 +399,7 @@ public partial class Unit : MonoBehaviour
     private void Start()
     {
         StatManager.CreateOrGetStat(E_StatType.CurrentHealth).AddEvent(CheckHP);
-
+        StartCoroutine(RangeCheck());
     }
 
 }
