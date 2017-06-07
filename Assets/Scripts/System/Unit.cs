@@ -25,228 +25,47 @@ public partial class Unit : MonoBehaviour
         }
     }
 
-    bool isDead;
-    bool isGroggy;
-    bool inBattle;
-    bool isEnemyInRange;
-    bool canMove;
-    bool isNormalState;
-    bool canInteraction;
-    public Unit()
-    {
-
-    }
-
-
-    /*
-
-    public bool isAttackCoolDownState = false;
-    public void Attack()
-    {
-        animator.Play("Attack1");
-        isAttackCoolDownState = true;
-        StartCoroutine(AttackCoolDown());
-    }
-    
-    IEnumerator AttackCoolDown()
-    {
-        float coolTime = StatManager.CreateOrGetStat(E_StatType.AttackSpeed).ModifiedValue;
-        float remainCoolTime = 0;
-        while (true)
-        {
-            if(coolTime> remainCoolTime)
-            {
-                remainCoolTime += Time.deltaTime;
-            }
-            else
-            {
-                isAttackCoolDownState = false;
-                StartCoroutine(TryAttack());
-                break;
-            }
-            yield return null;
-        }
-    }
-    IEnumerator TryAttack()
-    {
-        while (true)
-        {
-            if(!isAttackCoolDownState)//기본공격 가능상태
-            {
-                if(isEnemyInRange)//사거리내 적이 있음
-                {
-                    if(isNormalState)//캐릭터가 정상
-                    {
-                        Attack();//기본 공격 개시
-                    }
-                }
-            }
-            yield return null;
-        }
-    }
-    Coroutine KnockBackCoroutine;
-    bool isKnockBackRunning = false;
-    /// <summary>
-    /// 넉백
-    /// </summary>
-    /// <param name="_power"></param>
-    public void GiveKnockBack(float _power)
-    {
-        GetComponent<Rigidbody2D>().AddForce(-transform.right * _power*(10-statManager.CreateOrGetStat(E_StatType.KnockbackResistance).ModifiedValue), ForceMode2D.Impulse);
-        if(!isKnockBackRunning)
-        {
-            if(((-transform.right * _power * (10 - statManager.CreateOrGetStat(E_StatType.KnockbackResistance).ModifiedValue)).x < -1.0f))
-            {
-                StopCoroutine(moveCoroutine);
-                isKnockBackRunning = true;
-                KnockBackCoroutine = StartCoroutine(KnockBackEndCheck());
-            }
-        }
-        
-    }
-    IEnumerator KnockBackEndCheck()
-    {
-        Rigidbody2D rig = GetComponent<Rigidbody2D>();
-        while (rig.velocity.x<-1)
-        {
-            yield return null;
-        }
-        rig.velocity = Vector2.zero;
-        isKnockBackRunning = false;
-        StartMoveForward();
-    }
-
-        
-
-
-
-
-
-
-
-
-
-    //기본 행위자.
-    //전진
-    //후진
-    //대기
-
-    //기본 공격
-    //스킬 시전
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    bool canForward = true;
-
-    bool isOverRange = false;
-    IEnumerator MoveBackWard()
-    {
-        Rigidbody2D rig = GetComponent<Rigidbody2D>();
-        while (true)
-        {
-            rig.AddForce(-transform.right * 10, ForceMode2D.Impulse);
-            yield return new WaitForSeconds(3.0f);
-        }
-    }
-
-
-
-
-
-
-    IEnumerator AutoAction()
-    {
-        Animator animator = GetComponent<Animator>();
-        while(true)
-        {
-            /*if (actionQueue.Count!=0)
-            {
-                string curruntAnim = actionQueue.Dequeue();
-                animator.Play(curruntAnim);
-                yield return null;
-                while (animator.GetCurrentAnimatorStateInfo(0).IsName(curruntAnim))
-                {
-                    yield return null;
-                }
-                Debug.Log(curruntAnim + "done!");
-            }
-            yield return null;
-        }
-    }
-
-
-
-
-
-
-
-
-
-*/
-
-  
 }
 public partial class Unit : MonoBehaviour
 {
-    public bool CanMove
+    public E_GroupTag groupTag;
+
+    /*
+     * 상태 정보
+     * 행동
+     * 이벤트 
+     */
+
+
+    //전투 관련
+    bool inBattle;
+    /// <summary>
+    /// 전투 진입
+    /// </summary>
+    public void EnterBattle()
     {
-        get
+        inBattle = true;
+        foreach(Effect effect in EnterBattleEffect)
         {
-            return canMove;
-        }
-        set
-        {
-            canMove = value;
+            effect.ActivateEffect();
         }
     }
-    public bool IsGroggy
+    /// <summary>
+    /// 전투 이탈
+    /// </summary>
+    public void ExitBattle()
     {
-        get
+        inBattle = false;
+        foreach (Effect effect in ExitBattleEffect)
         {
-            return isGroggy;
-        }
-        set
-        {
-            isGroggy = value;
-            animator.SetBool("isGroggy", value);
+            effect.ActivateEffect();
         }
     }
-    public bool CanInteraction
-    {
-        get
-        {
-            return canInteraction;
-        }
-        set
-        {
-            canInteraction = value;
-            if(value)
-            {
-                
-            }
-            else
-            {
-                //충돌체 off
-            }
-        }
-    }
+    public List<Effect> EnterBattleEffect = new List<Effect>();
+    public List<Effect> ExitBattleEffect = new List<Effect>();
+    
+    //사망 관련
+    bool isDead;
     public bool IsDead
     {
         get
@@ -256,140 +75,323 @@ public partial class Unit : MonoBehaviour
         set
         {
             isDead = value;
-            animator.SetBool("isDead", value);
+            IsNormal = (!value) & (!isGroggy);
         }
     }
-    public bool InBattle
+    /// <summary>
+    /// 사망 시작
+    /// </summary>
+    public void DeadStart()
+    {
+        isGroggy = false;
+        IsDead = true;
+        //모든 버프를 해제한다.
+        //이 용사와 관계된 모든걸 해제한다.
+        //사망 애니메이션 시작.
+        //충돌체도 꺼야겠지?
+        //아래 효과는 필요 없어 보인다. 이후 수정
+        foreach (Effect effect in DeadStartEffect)
+        {
+            effect.ActivateEffect();
+        }
+    }
+    /// <summary>
+    /// 사망 종료
+    /// </summary>
+    public void DeadEnd()
+    {
+        foreach (Effect effect in DeadEndEffect)
+        {
+            effect.ActivateEffect();
+        }
+    }
+    public List<Effect> DeadStartEffect = new List<Effect>();
+    public List<Effect> DeadEndEffect = new List<Effect>();
+   
+    /// <summary>
+    /// 부활
+    /// </summary>
+    public void Rebirth()
+    {
+        IsDead = false;
+        //사망과 반대겠지?
+    }
+    public List<Effect> RebirthEffect = new List<Effect>();
+
+    //기절 관련
+    bool isGroggy;
+    public bool IsGroggy
     {
         get
         {
-            return inBattle;
+            return isGroggy;
         }
         set
         {
-            inBattle = value;
-            animator.SetBool("inBattle", value);
+            isGroggy = value;
+            IsNormal = (!value)&(!isDead);
         }
     }
-    
-    
-    
+    /// <summary>
+    /// 기절 시작
+    /// </summary>
     public void GroggyStart()
     {
-        if(canInteraction)
+        IsGroggy = true;
+        //시전중이던 모션 캔슬
+        //그로기 애니메이션 실행
+        //기절중 스킬 스택 저장여부는 확인해봐.
+        foreach (Effect effect in GroggyStartEffect)
         {
-            IsGroggy = true;
-            animator.SetTrigger("groggyTrigger");
+            effect.ActivateEffect();
+        }
+    }
+    /// <summary>
+    /// 기절 종료
+    /// </summary>
+    public void GroggyEnd()
+    {
+        IsGroggy = false;
+        //그로기 애니메이션 종료
+        //달리기 모션으로 되돌림.
+
+        foreach (Effect effect in GroggyEndEffect)
+        {
+            effect.ActivateEffect();
+        }
+    }
+    public List<Effect> GroggyStartEffect = new List<Effect>();
+    public List<Effect> GroggyEndEffect = new List<Effect>();
+    
+    //정상 여부
+    bool isNormal;
+    public bool IsNormal
+    {
+        get
+        {
+            return isNormal;
+        }
+        set
+        {
+            isNormal = value;
         }
     }
 
-    public void Kill()
+    //적과 사정거리
+    E_Range enemyRange = E_Range.OutOfRange;
+
+    void RangeSearchStart()
     {
-        if(canInteraction)
-        {
-            IsDead = true;
-            CanInteraction = false;
-            animator.SetTrigger("deadTrigger");
-            statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue = 0;
-        }
+        StartCoroutine(RangeSearch());
     }
 
-    public void Revive(float value)
-    {
-        statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue = value;
-        CanInteraction = true;
-        IsDead = false;
-    }
-    Coroutine moveforward;
-    public void RunForward()
-    {
-        moveforward = StartCoroutine(MoveForward());
-
-    }
-    IEnumerator MoveForward()
-    {
-        //기능 : 앞으로 전진한다.
-        //조건 : 적이 최소사거리 내에 들어오기 전까지
-        StatFloat moveSpeed = StatManager.CreateOrGetStat(E_StatType.MoveSpeed);
-        while (canInteraction&&(true))
-        {
-            transform.Translate(Time.deltaTime * moveSpeed.ModifiedValue, 0, 0);
-            yield return null;
-        }
-    }
-
-
-    public void RunSteady()
-    {
-        //기능 : 제자리 달리가.
-        //조건 : 적이 최소사거리 오차범위내
-
-    }
-    public void RunBackWard()
-    {
-        //기능 : 뒤로 천천히 후진
-        //조건 : 적이 최소 사거리 안으로 들어옴
-    }
-    public void BasicAttack()
-    {
-        //기능: 적에게 기본 공격을 시전함.
-        //조건: 적이 최대 사거리 안으로 들어옴.
-        //      스킬 대기열이 비어있음.
-    }
-
-    IEnumerator RangeCheck()
+    IEnumerator RangeSearch()
     {
         StatFloat maxRange = StatManager.CreateOrGetStat(E_StatType.MaxRange);
         StatFloat minRange = StatManager.CreateOrGetStat(E_StatType.MinRange);
-        while (true)
+        float enemyDistance = 0;
+
+        Ray2D ray = new Ray2D(new Vector2(transform.position.x,0.1f), transform.right);
+        RaycastHit2D hit;
+
+        while(true)
         {
-            RaycastHit2D hit;
-            Debug.DrawLine(transform.position+ transform.right * 0.176f, transform.position+ transform.right * 0.175f + transform.right * maxRange.ModifiedValue,Color.red);
-            hit = Physics2D.Raycast(transform.position+transform.right* 0.176f, transform.right,maxRange.ModifiedValue);
-            if(hit.collider!=null)
-            {
-                //Debug.Log(name+"의 사거리내에"+hit.collider.gameObject + "가 들어옴");
-            }
-            
+            Debug.DrawRay(new Vector2(transform.position.x, 0.1f), transform.right,Color.red);
+            //나중에 위해서 메모를 하는건데
+            //여기를 Transfrom으로 아예 저장을 해서 쉽게 처리가 가능할거같다. 한번 생각해봐라.
+            //추가적으로 raycast2D를 새로 정의내려도 되고.
+            hit = Physics2D.Raycast(transform.position, transform.right);
+            Debug.Log(hit.collider);
+            //if (hit.collider.GetComponent<Unit>().groupTag != groupTag)
+            //{
+            //    Debug.Log(hit.transform.name);
+            //    enemyDistance = transform.position.x - hit.tr
+            //}
             yield return null;
+
         }
+
+        //레이로 탐지
+        //레인지로 가장 앞의 적과 사거리 관계를 비교하여 갱신
+        //최소 사거리 밖인지
+        //아니라면 최소 사거리 안?
+        //둘다아니면 당연 정지
     }
 
-    public void EnterTheBattle()
-    {
-        InBattle = true;
-
-    }
-    public void EscapeTheBattle()
-    {
-        InBattle = false;
-
-    }
-
-
-
+    //n체인 트리거
+    bool ChainTrigger1;
+    bool ChainTrigger2;
+    bool ChainTrigger3;
     
 
-    /// <summary>
-    /// 사망 조건 체크
-    /// </summary>
-    /// <param name="_HP"></param>
-    void CheckHP(float _HP)
-    {
-        if (_HP > 0)
-        {
-        }
-        else
-        {
-            if(canInteraction)
-            {
-                IsDead = false;
-                CanInteraction = false;
-                animator.SetTrigger("deadTrigger");
-                statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue = 0;
-            }
-        }
-    }
+
+
+
+
+
+    /*
+     * 상태 확인 [그로기, 사망이면 비정상]
+     * 
+     * 각각 이벤트를 갖고있다.
+     * 
+     * 그로기 시작
+     * 그로기 중
+     * 그로기 완료
+     * 
+     * 
+     * 사망 시작
+     * 사망 중
+     * 사망 완료
+     * 
+     * 기본 공격 시작
+     * 기본 공격 중
+     * 기본 공격 종료
+     * 
+     * 
+     *
+     * 
+     * 달리기 - 전진
+     * 달리기 - 정지
+     * 달리기 - 후진
+     * 
+     * 
+     * 기본 공격 사거리 탐지 시작
+     * 기본 공격 사거리 탐지 중
+     * 
+     * 1체인 블록 스킬 시전 시작
+     * 1체인 블록 스킬 시전 중
+     * 1체인 블록 스킬 시전 종료
+     * 
+     * 2체인 블록 스킬 시전 시작
+     * 2체인 블록 스킬 시전 중
+     * 2체인 블록 스킬 시전 종료
+     * 
+     * 3체인 블록 스킬 시전 시작
+     * 3체인 블록 스킬 시전 중
+     * 3체인 블록 스킬 시전 종료
+     * 
+     * 1체인 트리거 장전
+     * 2체인 트리거 장전
+     * 3체인 트리거 장전
+     * 
+     * 블록 사용
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 패시브 시작
+     * 패시브 중지
+     * 
+     * 
+     * 
+     * 
+     * 상호 작용 시작
+     * 상호 작용 중지
+     * 
+     * 
+     * 넉백 시작
+     * 넉백 중
+     * 넉백 종료
+     * 
+     * 
+     * 사망 조건 체크
+     * 
+     * 
+     * 전투 진입
+     * 전투 중
+     * 전투 이탈
+     * 
+     * 
+     * 피격 당함
+     * 피해 입음
+     * 
+     * 회복 받음
+     * 
+     * 스테이터스 변화
+     * 
+     * 
+     * SP 상승
+     * SP 감소
+     * 
+     * 회피 체크
+     * 
+     * 명중 체크
+     * 
+     * 치명타 체크
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 각종 이벤트를 아래 기술
+     * 
+     * 그로기 시작 이벤트
+     * 그로기 종료 이벤트
+     * 
+     * 사망 시작 이벤트
+     * 사망 종료 이벤트
+     * 
+     * 기본 공격 시작 이벤트
+     * 기본 공격 종료 이벤트
+     * 
+     * 달리기 - 전진 이벤트
+     * 달리기 - 정지 이벤트
+     * 달리기 - 후진 이벤트
+     * 
+     * 넉백 시작 이벤트
+     * 넉백 종료 이벤트
+     * 
+     * 1체인 스킬 시전 시작 이벤트
+     * 1체인 스킬 시전 종료 이벤트
+     * 2체인 스킬 시전 시작 이벤트
+     * 2체인 스킬 시전 종료 이벤트
+     * 3체인 스킬 시전 시작 이벤트
+     * 3체인 스킬 시전 종료 이벤트
+     * 
+     * 
+     * 1체인 트리거 이벤트
+     * 2체인 트리거 이벤트
+     * 3체인 트리거 이벤트
+     * 
+     * 블록 사용 이벤트
+     * 3체인 트리거 이벤트
+     * 
+     * 회피 이벤트
+     * 명중 이벤트
+     * 
+     * 
+     * 전투 진입 이벤트
+     * 전투 이탈 이벤트
+     * 
+     * 
+     * 캐릭터 부활 이벤트
+     * 
+     * 피격 이벤트
+     * 회복 이벤트
+     * 
+     * 스테이터스 변화 이벤트
+     * 
+     * SP 상승 이벤트
+     * SP 감소 이벤트
+     * 
+     * 감속 이벤트
+     * 
+     * 치명타 발동 이벤트
+     * 
+     * 
+     */
+
+
+
+
+
+
+
+
+
 
 
     private void Awake()
@@ -398,8 +400,7 @@ public partial class Unit : MonoBehaviour
     }
     private void Start()
     {
-        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).AddEvent(CheckHP);
-        StartCoroutine(RangeCheck());
+        RangeSearchStart();
     }
 
 }

@@ -109,3 +109,32 @@ public enum E_DamageType
     Magical= 256,
     TrueType = 257
 }
+
+
+public enum E_Range
+{
+    /// <summary>
+    /// 사거리 안
+    /// </summary>
+    WithInRange,
+    /// <summary>
+    /// 사거리와 동일, 쓸일 없어보임
+    /// </summary>
+    SameRange,
+    /// <summary>
+    /// 사거리 밖
+    /// </summary>
+    OutOfRange,
+}
+
+public enum E_GroupTag
+{
+    Player,
+    Enemy
+}
+public enum E_Race
+{
+    Human,
+    Monster,
+    Boss
+}

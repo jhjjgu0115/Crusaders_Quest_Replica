@@ -17,8 +17,6 @@ public class GameManager : MonoBehaviour {
         foreach (Unit _hero in heroesList)
         {
             SetTestHero(_hero);
-            _hero.CanInteraction = true;
-            _hero.InBattle = true;
         }
     }
 
@@ -79,7 +77,7 @@ public class GameManager : MonoBehaviour {
         _hero.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).ModifiedValue = 1;
         _hero.StatManager.CreateOrGetStat(E_StatType.MotionAccelerationRate).ModifiedValue = 1;
         _hero.StatManager.CreateOrGetStat(E_StatType.ScaleMultiplier).ModifiedValue = 1;
-        _hero.InBattle = true;
+        //_hero.InBattle = true;
     }
 
     // Use this for initialization
