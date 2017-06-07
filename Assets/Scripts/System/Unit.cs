@@ -189,24 +189,42 @@ public partial class Unit : MonoBehaviour
     {
         StatFloat maxRange = StatManager.CreateOrGetStat(E_StatType.MaxRange);
         StatFloat minRange = StatManager.CreateOrGetStat(E_StatType.MinRange);
-        float enemyDistance = 0;
 
-        Ray2D ray = new Ray2D(new Vector2(transform.position.x,0.1f), transform.right);
+        //레이어 마스크를 지정함
+        //만약에 게임에서 아군으로 만드는 기능이 있다면 이부분을 루프안으로 넣어야한다.
+        LayerMask mask=~(1<<gameObject.layer);
+        
+        Vector2 origin;
+        Vector3 direction;
         RaycastHit2D hit;
 
-        while(true)
+        //적과의 사거리
+        float enemyDistance = 0;
+
+        while (true)
         {
-            Debug.DrawRay(new Vector2(transform.position.x, 0.1f), transform.right,Color.red);
+            direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
+            origin = new Vector2(transform.position.x + (0.301f * direction.x), transform.position.y + 0.1f);
             //나중에 위해서 메모를 하는건데
             //여기를 Transfrom으로 아예 저장을 해서 쉽게 처리가 가능할거같다. 한번 생각해봐라.
             //추가적으로 raycast2D를 새로 정의내려도 되고.
-            hit = Physics2D.Raycast(transform.position, transform.right);
-            Debug.Log(hit.collider);
-            //if (hit.collider.GetComponent<Unit>().groupTag != groupTag)
-            //{
-            //    Debug.Log(hit.transform.name);
-            //    enemyDistance = transform.position.x - hit.tr
-            //}
+            if( hit = Physics2D.Raycast(origin, direction, float.MaxValue,mask) )
+            {
+                if (hit.collider.GetComponent<Unit>().groupTag != groupTag)
+                {
+                    enemyDistance = direction .x * (hit.transform.position.x -transform.position.x);
+                    Debug.Log(name+" find Enemy : "+ hit.transform.name +"("+ enemyDistance+"m) " + enemyRange.ToString());
+                    if(enemyDistance<minRange.ModifiedValue)
+                    {
+                        enemyRange = E_Range.WithInRange;
+                    }
+                    else
+                    {
+                        enemyRange = E_Range.OutOfRange;
+                    }
+                }
+            }
+
             yield return null;
 
         }

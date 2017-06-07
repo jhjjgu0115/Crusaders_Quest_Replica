@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour {
         {
             SetTestHero(_hero);
         }
+        foreach (Unit _hero in enemyList)
+        {
+            SetTestHero(_hero);
+        }
     }
 
 
@@ -25,7 +29,7 @@ public class GameManager : MonoBehaviour {
     {
         foreach (E_StatType _statType in Enum.GetValues(typeof(E_StatType)))
         {
-            _hero.StatManager.Create_Stat(_statType, 0);
+            _hero.StatManager.CreateOrGetStat(_statType);
         }
 
 
@@ -84,7 +88,7 @@ public class GameManager : MonoBehaviour {
     void Start()
     {
 
-        //EnterTheBattle();
+        EnterTheBattle();
     }
 
 
