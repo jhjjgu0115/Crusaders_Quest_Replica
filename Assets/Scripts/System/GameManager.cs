@@ -62,8 +62,8 @@ public class GameManager : MonoBehaviour {
         _hero.StatManager.CreateOrGetStat(E_StatType.MinEvasionRate).ModifiedValue = 0f;
         _hero.StatManager.CreateOrGetStat(E_StatType.CurrentEvasionRate).ModifiedValue = 0.15f;
 
-        _hero.StatManager.CreateOrGetStat(E_StatType.MaxRange).ModifiedValue = 3;
-        _hero.StatManager.CreateOrGetStat(E_StatType.MinRange).ModifiedValue = 1;
+        _hero.StatManager.CreateOrGetStat(E_StatType.MaxRange).ModifiedValue = 7;
+        _hero.StatManager.CreateOrGetStat(E_StatType.MinRange).ModifiedValue = 3;
         _hero.StatManager.CreateOrGetStat(E_StatType.CurrentRange).ModifiedValue = 0;
 
 
@@ -73,8 +73,8 @@ public class GameManager : MonoBehaviour {
 
         _hero.StatManager.CreateOrGetStat(E_StatType.PhysicalPenetration).ModifiedValue = 0;
         _hero.StatManager.CreateOrGetStat(E_StatType.MagicalPenetration).ModifiedValue = 0;
-
-        _hero.StatManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue = 3;
+        //이동속도
+        _hero.StatManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue = 75;
 
         _hero.StatManager.CreateOrGetStat(E_StatType.KnockbackResistance).ModifiedValue = 0;
 
@@ -89,6 +89,9 @@ public class GameManager : MonoBehaviour {
     {
 
         EnterTheBattle();
+        enemyList[0].StatManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue = 0;
+        //enemyList[0].StatManager.CreateOrGetStat(E_StatType.MaxRange).ModifiedValue = 1;
+        //enemyList[0].StatManager.CreateOrGetStat(E_StatType.MinRange).ModifiedValue = 0;
     }
 
 

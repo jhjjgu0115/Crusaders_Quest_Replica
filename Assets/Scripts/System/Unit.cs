@@ -177,25 +177,30 @@ public partial class Unit : MonoBehaviour
         }
     }
 
-    //적과 사정거리
-    E_Range enemyRange = E_Range.OutOfRange;
 
+
+
+    //적과 사정거리
+
+    //사거리 관련
+    E_Range enemyRange = E_Range.OutOfRange;
     void RangeSearchStart()
     {
+        rigid2D = GetComponent<Rigidbody2D>();
         StartCoroutine(RangeSearch());
     }
-
+    Vector3 direction;
     IEnumerator RangeSearch()
     {
         StatFloat maxRange = StatManager.CreateOrGetStat(E_StatType.MaxRange);
         StatFloat minRange = StatManager.CreateOrGetStat(E_StatType.MinRange);
+        E_Range deltaRange=E_Range.OutOfRange;
 
         //레이어 마스크를 지정함
         //만약에 게임에서 아군으로 만드는 기능이 있다면 이부분을 루프안으로 넣어야한다.
         LayerMask mask=~(1<<gameObject.layer);
         
         Vector2 origin;
-        Vector3 direction;
         RaycastHit2D hit;
 
         //적과의 사거리
@@ -213,20 +218,32 @@ public partial class Unit : MonoBehaviour
                 if (hit.collider.GetComponent<Unit>().groupTag != groupTag)
                 {
                     enemyDistance = direction .x * (hit.transform.position.x -transform.position.x);
-                    Debug.Log(name+" find Enemy : "+ hit.transform.name +"("+ enemyDistance+"m) " + enemyRange.ToString());
+                    
                     if(enemyDistance<minRange.ModifiedValue)
                     {
+                        if(deltaRange!= E_Range.WithInRange)
+                        {
+                            rigid2D.velocity = Vector2.zero;
+                            Debug.Log(rigid2D.velocity);
+                        }
                         enemyRange = E_Range.WithInRange;
+                        deltaRange = enemyRange;
                     }
                     else
                     {
+                        if (deltaRange != E_Range.OutOfRange)
+                        {
+                            rigid2D.velocity = Vector2.zero;
+                            Debug.Log(rigid2D.velocity);
+                        }
                         enemyRange = E_Range.OutOfRange;
+                        deltaRange = enemyRange;
                     }
+
+                    Debug.Log(name + " find Enemy : " + hit.transform.name + "(" + enemyDistance + "m) " + enemyRange.ToString());
                 }
             }
-
             yield return null;
-
         }
 
         //레이로 탐지
@@ -236,6 +253,74 @@ public partial class Unit : MonoBehaviour
         //둘다아니면 당연 정지
     }
 
+    //달리기 관련 
+    Rigidbody2D rigid2D;
+    void RunningStart()
+    {
+        rigid2D = GetComponent<Rigidbody2D>();
+        StartCoroutine(Running());
+    }
+
+    IEnumerator Running()
+    {
+        StatFloat moveSpeed = statManager.CreateOrGetStat(E_StatType.MoveSpeed);
+        
+        
+        while (true)
+        {
+            if(isNormal)
+            {
+                if(inBattle)
+                {
+                    //스킬 큐가 비어있는지 체크하는 부분           
+                    if (true)
+                    {
+                        //달리기 애니메이션이 미실행중이라면 애니메이션 재생
+                        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+                        {
+                            animator.Play("Run");
+                        }
+
+                        if (enemyRange == E_Range.OutOfRange)
+                        {
+                            rigid2D.AddForce(direction * moveSpeed.ModifiedValue, ForceMode2D.Force);
+                            //transform.Translate(direction*moveSpeed.ModifiedValue*Time.deltaTime);
+                            //전진
+                        }
+                        else
+                        {
+                            if(!(moveSpeed.ModifiedValue==0))
+                            {
+                                rigid2D.AddForce(-direction*moveSpeed.ModifiedValue*0.5f,ForceMode2D.Force);
+                            }
+                            //transform.Translate(-direction * Time.deltaTime);
+                            //후진
+                        }
+                    }
+                }
+            }
+            yield return null;
+        }
+    }
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //n체인 트리거
     bool ChainTrigger1;
     bool ChainTrigger2;
@@ -419,6 +504,9 @@ public partial class Unit : MonoBehaviour
     private void Start()
     {
         RangeSearchStart();
+        RunningStart();
+        IsNormal = true;
+        inBattle = true;
     }
 
 }
