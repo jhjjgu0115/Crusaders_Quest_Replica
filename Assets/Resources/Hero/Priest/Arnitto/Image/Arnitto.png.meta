@@ -115,7 +115,7 @@ TextureImporter:
         width: 49
         height: 37
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.53061223, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -128,7 +128,7 @@ TextureImporter:
         width: 49
         height: 37
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.53061223, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -154,7 +154,7 @@ TextureImporter:
         width: 49
         height: 37
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.53061223, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -167,7 +167,7 @@ TextureImporter:
         width: 49
         height: 37
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.53061223, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -180,7 +180,7 @@ TextureImporter:
         width: 49
         height: 37
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.53061223, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -193,7 +193,7 @@ TextureImporter:
         width: 49
         height: 37
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.53061223, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -303,6 +303,6 @@ TextureImporter:
       tessellationDetail: 0
     outline: []
   spritePackingTag: 
-  userData: 97966203137865
+  userData: 98108517027838
   assetBundleName: 
   assetBundleVariant: 
