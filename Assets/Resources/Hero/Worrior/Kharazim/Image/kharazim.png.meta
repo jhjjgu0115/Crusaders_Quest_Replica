@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d37b95d6165abe946a89deae2719917e
-timeCreated: 1497015331
+timeCreated: 1497084738
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -185,12 +185,12 @@ TextureImporter:
       name: kharazim_7
       rect:
         serializedVersion: 2
-        x: 7
+        x: 4
         y: 11
-        width: 16
+        width: 19
         height: 19
       alignment: 9
-      pivot: {x: 0.59375, y: 0.65789473}
+      pivot: {x: 0.65789473, y: 0.65789473}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -211,12 +211,12 @@ TextureImporter:
       name: kharazim_9
       rect:
         serializedVersion: 2
-        x: 141
-        y: 9.999999
-        width: 28
-        height: 37
+        x: 135
+        y: 10
+        width: 37
+        height: 43
       alignment: 9
-      pivot: {x: 0.5, y: 0.5810811}
+      pivot: {x: 0.5405406, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -250,17 +250,17 @@ TextureImporter:
       name: kharazim_12
       rect:
         serializedVersion: 2
-        x: 237
-        y: 11
-        width: 16
-        height: 25
+        x: 234
+        y: 10.700001
+        width: 22
+        height: 25.399998
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.5, y: 0.503937}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     outline: []
   spritePackingTag: 
-  userData: 98108691142239
+  userData: 98113039989740
   assetBundleName: 
   assetBundleVariant: 
