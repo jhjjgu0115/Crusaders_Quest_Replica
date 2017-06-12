@@ -8,7 +8,8 @@ using UnityEditor;
 
 namespace Anima2D
 {
-	[ExecuteInEditMode]
+    [SerializeField]
+    [ExecuteInEditMode]
 	public class SpriteMeshInstance : MonoBehaviour
 	{
 		[SerializeField][FormerlySerializedAs("spriteMesh")]

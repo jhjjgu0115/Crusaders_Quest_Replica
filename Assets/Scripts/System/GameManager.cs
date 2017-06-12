@@ -81,12 +81,13 @@ public class GameManager : MonoBehaviour {
         _hero.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).ModifiedValue = 1;
         _hero.StatManager.CreateOrGetStat(E_StatType.MotionAccelerationRate).ModifiedValue = 1;
         _hero.StatManager.CreateOrGetStat(E_StatType.ScaleMultiplier).ModifiedValue = 1;
-        //_hero.InBattle = true;
+        _hero.GetComponent<Animator>().SetBool("inBattle",true);
     }
 
     // Use this for initialization
     void Start()
     {
+        
 
         EnterTheBattle();
         enemyList[0].StatManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue = 0;
