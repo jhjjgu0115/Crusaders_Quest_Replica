@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Skill
 {
-    
-
+    public string name;
+    public string motionName;
 }

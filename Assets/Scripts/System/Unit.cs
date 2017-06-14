@@ -25,9 +25,12 @@ public partial class Unit : MonoBehaviour
         }
     }
 
+    public ActionQueueManager skillQueue = new ActionQueueManager();
+
 }
 public partial class Unit : MonoBehaviour
 {
+    //진영정보
     public E_GroupTag groupTag;
 
     /*
@@ -224,7 +227,7 @@ public partial class Unit : MonoBehaviour
                         if(deltaRange!= E_Range.WithInRange)
                         {
                             rigid2D.velocity = Vector2.zero;
-                            Debug.Log(rigid2D.velocity);
+                            //Debug.Log(rigid2D.velocity);
                         }
                         enemyRange = E_Range.WithInRange;
                         deltaRange = enemyRange;
@@ -234,13 +237,13 @@ public partial class Unit : MonoBehaviour
                         if (deltaRange != E_Range.OutOfRange)
                         {
                             rigid2D.velocity = Vector2.zero;
-                            Debug.Log(rigid2D.velocity);
+                            //Debug.Log(rigid2D.velocity);
                         }
                         enemyRange = E_Range.OutOfRange;
                         deltaRange = enemyRange;
                     }
 
-                    Debug.Log(name + " find Enemy : " + hit.transform.name + "(" + enemyDistance + "m) " + enemyRange.ToString());
+                    //Debug.Log(name + " find Enemy : " + hit.transform.name + "(" + enemyDistance + "m) " + enemyRange.ToString());
                 }
             }
             yield return null;
@@ -264,37 +267,35 @@ public partial class Unit : MonoBehaviour
     IEnumerator Running()
     {
         StatFloat moveSpeed = statManager.CreateOrGetStat(E_StatType.MoveSpeed);
-        
-        
+        animator.Play("Run");
         while (true)
         {
             if(isNormal)
             {
                 if(inBattle)
                 {
-                    //스킬 큐가 비어있는지 체크하는 부분           
-                    if (true)
+                    //스킬 큐가 비어있는지 체크하는 부분
+                    if (skillQueue.IsEmpty)
                     {
                         //달리기 애니메이션이 미실행중이라면 애니메이션 재생
-                        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+                        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                         {
-                            animator.Play("Run");
-                        }
 
-                        if (enemyRange == E_Range.OutOfRange)
-                        {
-                            rigid2D.AddForce(direction * moveSpeed.ModifiedValue, ForceMode2D.Force);
-                            //transform.Translate(direction*moveSpeed.ModifiedValue*Time.deltaTime);
-                            //전진
-                        }
-                        else
-                        {
-                            if(!(moveSpeed.ModifiedValue==0))
+                            if (enemyRange == E_Range.OutOfRange)
                             {
-                                rigid2D.AddForce(-direction*moveSpeed.ModifiedValue*0.5f,ForceMode2D.Force);
+                                rigid2D.AddForce(direction * moveSpeed.ModifiedValue, ForceMode2D.Force);
+                                //transform.Translate(direction*moveSpeed.ModifiedValue*Time.deltaTime);
+                                //전진
                             }
-                            //transform.Translate(-direction * Time.deltaTime);
-                            //후진
+                            else
+                            {
+                                if (!(moveSpeed.ModifiedValue == 0))
+                                {
+                                    rigid2D.AddForce(-direction * moveSpeed.ModifiedValue * 0.5f, ForceMode2D.Force);
+                                }
+                                //transform.Translate(-direction * Time.deltaTime);
+                                //후진
+                            }
                         }
                     }
                 }
@@ -303,24 +304,54 @@ public partial class Unit : MonoBehaviour
         }
     }
     
-    
+    void ActionQueueCheckingStart()
+    {
+        StartCoroutine(ActionQueueChecking());
+    }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    IEnumerator ActionQueueChecking()
+    {
+        string currentSkillInfo = string.Empty;
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        while (true)
+        {
+            Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"));
+            if(!animator.GetCurrentAnimatorStateInfo(0).IsName(currentSkillInfo))
+            {
+                if (!skillQueue.IsEmpty)
+                {
+                    Debug.Log(1);
+                    rigid2D.velocity = Vector2.zero;
+                    currentSkillInfo = skillQueue.DequeueAction().motionName;
+                    animator.Play(currentSkillInfo);
+                }
+            }
+            yield return null;
+
+        }
+    }
+
+    public void TestSkillAdd(string skillName)
+    {
+        Skill skill = new Skill();
+        skill.motionName = skillName;
+        skillQueue.AddAction(skill);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //n체인 트리거
     bool ChainTrigger1;
     bool ChainTrigger2;
@@ -507,6 +538,7 @@ public partial class Unit : MonoBehaviour
         RunningStart();
         IsNormal = true;
         inBattle = true;
+        ActionQueueCheckingStart();
     }
 
 }
