@@ -260,7 +260,7 @@ public partial class Unit : MonoBehaviour
             //추가적으로 raycast2D를 새로 정의내려도 되고.
             if( hit = Physics2D.Raycast(origin, direction, float.MaxValue,mask) )
             {
-                if (hit.collider.GetComponent<Unit>().groupTag != groupTag)
+                if (hit.transform.tag!=tag)
                 {
                     enemyDistance = direction .x * (hit.transform.position.x -transform.position.x);
 
@@ -309,7 +309,6 @@ public partial class Unit : MonoBehaviour
     IEnumerator Running()
     {
         StatFloat moveSpeed = statManager.CreateOrGetStat(E_StatType.MoveSpeed);
-        animator.Play("Run");
         while (true)
         {
             if(isNormal)
@@ -415,8 +414,6 @@ public partial class Unit : MonoBehaviour
         isAttacking = false;
         while (true)
         {
-            if(groupTag==E_GroupTag.Player)
-            //Debug.Log(isAttacking);
             //쿨다운 완료.
                 //적이 사거리내에 있다.
                 //스킬 대기열도 비어있다.
