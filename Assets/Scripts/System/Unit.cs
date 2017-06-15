@@ -225,8 +225,6 @@ public partial class Unit : MonoBehaviour
 
 
         */
-        
-
     //적과 사정거리
     //사거리 관련
     E_Range enemyRange = E_Range.OutOfRange;
@@ -308,7 +306,6 @@ public partial class Unit : MonoBehaviour
         rigid2D = GetComponent<Rigidbody2D>();
         StartCoroutine(Running());
     }
-
     IEnumerator Running()
     {
         StatFloat moveSpeed = statManager.CreateOrGetStat(E_StatType.MoveSpeed);
@@ -373,11 +370,11 @@ public partial class Unit : MonoBehaviour
         }
     }
     
+    //스킬 자동 시전
     void ActionQueueCheckingStart()
     {
         StartCoroutine(ActionQueueChecking());
     }
-
     IEnumerator ActionQueueChecking()
     {
         string currentSkillInfo = string.Empty;
@@ -400,19 +397,13 @@ public partial class Unit : MonoBehaviour
         }
     }
 
-    public void TestSkillAdd(string skillName)
-    {
-        Skill skill = new Skill();
-        skill.motionName = skillName;
-        skillQueue.AddAction(skill);
-    }
 
+    //기본 공격
     public bool isAttacking = false;
     void BaseAttackCoolDownStart()
     {
         StartCoroutine(BaseAttackChecking());
     }
-
     IEnumerator BaseAttackChecking()
     {
         Skill skill = new Skill();
@@ -653,6 +644,12 @@ public partial class Unit : MonoBehaviour
 //디버그
 public partial class Unit : MonoBehaviour
 {
+    public void TestSkillAdd(string skillName)
+    {
+        Skill skill = new Skill();
+        skill.motionName = skillName;
+        skillQueue.AddAction(skill);
+    }
     public void ShowAllStat()
     {
         foreach (E_StatType _statType in Enum.GetValues(typeof(E_StatType)))
