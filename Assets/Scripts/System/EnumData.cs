@@ -114,13 +114,13 @@ public enum E_DamageType
 public enum E_Range
 {
     /// <summary>
+    /// 최소 사거리 내
+    /// </summary>
+    WithInMinRange,
+    /// <summary>
     /// 사거리 안
     /// </summary>
-    WithInRange,
-    /// <summary>
-    /// 사거리와 동일, 쓸일 없어보임
-    /// </summary>
-    SameRange,
+    WithInMaxRange,
     /// <summary>
     /// 사거리 밖
     /// </summary>

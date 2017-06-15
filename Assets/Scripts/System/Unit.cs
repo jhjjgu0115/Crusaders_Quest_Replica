@@ -179,14 +179,60 @@ public partial class Unit : MonoBehaviour
             isNormal = value;
         }
     }
+/*
+    void RunningStart()
+    {
+        StartCoroutine(Running());
+    }
+    IEnumerator Running()
+    {
+        yield return null;
+        Unit headEnemy;
+        float enemyDistance=0;
+
+        StatFloat moveSpeed = statManager.CreateOrGetStat(E_StatType.MoveSpeed);
+        StatFloat minRange = statManager.CreateOrGetStat(E_StatType.MinRange);
+        StatFloat maxRange = statManager.CreateOrGetStat(E_StatType.MaxRange);
+
+        while (true)
+        {
+            if(groupTag==E_GroupTag.Player)
+            {
+
+                headEnemy = GameManager.monsterHeadUnit;
+                enemyDistance = headEnemy.transform.position.x - transform.position.x;
+
+                if (enemyDistance> minRange.ModifiedValue)
+                {
+                    //최소 사거리 밖일때
+                    Debug.Log(1);
+                    transform.position= Vector3.Lerp(transform.position, headEnemy.transform.position-new Vector3(minRange.ModifiedValue,0), Time.deltaTime * moveSpeed.ModifiedValue);
+                }
+                else
+                {
+                    //최소 사거리 안일때.
+                }
+            }
+            else
+            {
+
+            }
 
 
+            yield return null;
+        }
+    }
 
+
+        */
+        
 
     //적과 사정거리
-
     //사거리 관련
     E_Range enemyRange = E_Range.OutOfRange;
+    E_Range deltaRange = E_Range.OutOfRange;
+    float enemyDistance = 0;
+    
     void RangeSearchStart()
     {
         rigid2D = GetComponent<Rigidbody2D>();
@@ -197,7 +243,6 @@ public partial class Unit : MonoBehaviour
     {
         StatFloat maxRange = StatManager.CreateOrGetStat(E_StatType.MaxRange);
         StatFloat minRange = StatManager.CreateOrGetStat(E_StatType.MinRange);
-        E_Range deltaRange=E_Range.OutOfRange;
 
         //레이어 마스크를 지정함
         //만약에 게임에서 아군으로 만드는 기능이 있다면 이부분을 루프안으로 넣어야한다.
@@ -207,9 +252,8 @@ public partial class Unit : MonoBehaviour
         RaycastHit2D hit;
 
         //적과의 사거리
-        float enemyDistance = 0;
 
-        while (true)
+        while (name=="Player")
         {
             direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
             origin = new Vector2(transform.position.x + (0.301f * direction.x), transform.position.y + 0.1f);
@@ -221,24 +265,25 @@ public partial class Unit : MonoBehaviour
                 if (hit.collider.GetComponent<Unit>().groupTag != groupTag)
                 {
                     enemyDistance = direction .x * (hit.transform.position.x -transform.position.x);
-                    
+
+                    //최소 사거리 내
                     if(enemyDistance<minRange.ModifiedValue)
                     {
-                        if(deltaRange!= E_Range.WithInRange)
+                        if(deltaRange!= E_Range.WithInMinRange)
                         {
                             rigid2D.velocity = Vector2.zero;
-                            //Debug.Log(rigid2D.velocity);
+                            //Debug.Log(name + " 사거리밖>> 사거리안");
                         }
-                        enemyRange = E_Range.WithInRange;
+                        enemyRange = E_Range.WithInMinRange;
+                        deltaRange = enemyRange;
+                    }//최대 사거리 밖
+                    else if(enemyDistance < maxRange.ModifiedValue)
+                    {
+                        enemyRange = E_Range.WithInMaxRange;
                         deltaRange = enemyRange;
                     }
                     else
                     {
-                        if (deltaRange != E_Range.OutOfRange)
-                        {
-                            rigid2D.velocity = Vector2.zero;
-                            //Debug.Log(rigid2D.velocity);
-                        }
                         enemyRange = E_Range.OutOfRange;
                         deltaRange = enemyRange;
                     }
@@ -280,10 +325,31 @@ public partial class Unit : MonoBehaviour
                         //달리기 애니메이션이 미실행중이라면 애니메이션 재생
                         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                         {
+                            if(enemyRange!=E_Range.WithInMinRange)
+                            {
+                                //Debug.Log(name + " "+ enemyDistance);
+                                //rigid2D.velocity = direction * moveSpeed.ModifiedValue;
+                                rigid2D.AddForce(direction * moveSpeed.ModifiedValue, ForceMode2D.Force);
 
+                            }
+                            else
+                            {
+                                //Debug.Log(name+" "+ enemyDistance);
+                                //rigid2D.velocity = -direction * moveSpeed.ModifiedValue*0.5f;
+                                rigid2D.AddForce(-direction * moveSpeed.ModifiedValue * 0.5f, ForceMode2D.Force);
+                            }
+                            /*
                             if (enemyRange == E_Range.OutOfRange)
                             {
-                                rigid2D.AddForce(direction * moveSpeed.ModifiedValue, ForceMode2D.Force);
+                                if (deltaRange != E_Range.WithInMaxRange)
+                                {
+                                    rigid2D.velocity = Vector2.zero;
+                                    Debug.Log(name + " 사거리밖>> 사거리안");
+                                }
+                                rigid2D.velocity = direction * moveSpeed.ModifiedValue;
+                                Debug.Log(name + " 전진");
+                                //rigid2D.AddForce(direction * moveSpeed.ModifiedValue, ForceMode2D.Force);
+                                //Debug.Log(rigid2D.velocity);
                                 //transform.Translate(direction*moveSpeed.ModifiedValue*Time.deltaTime);
                                 //전진
                             }
@@ -291,11 +357,14 @@ public partial class Unit : MonoBehaviour
                             {
                                 if (!(moveSpeed.ModifiedValue == 0))
                                 {
-                                    rigid2D.AddForce(-direction * moveSpeed.ModifiedValue * 0.5f, ForceMode2D.Force);
+                                    rigid2D.velocity = -direction * moveSpeed.ModifiedValue*0.5f;
+                                    Debug.Log(name+" 후진"+ rigid2D.velocity);
+                                    // rigid2D.AddForce(-direction * moveSpeed.ModifiedValue * 0.5f, ForceMode2D.Force);
                                 }
                                 //transform.Translate(-direction * Time.deltaTime);
                                 //후진
-                            }
+                            }*/
+
                         }
                     }
                 }
@@ -315,12 +384,12 @@ public partial class Unit : MonoBehaviour
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         while (true)
         {
-            Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"));
+            //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"));
             if(!animator.GetCurrentAnimatorStateInfo(0).IsName(currentSkillInfo))
             {
                 if (!skillQueue.IsEmpty)
                 {
-                    Debug.Log(1);
+                    //Debug.Log(1);
                     rigid2D.velocity = Vector2.zero;
                     currentSkillInfo = skillQueue.DequeueAction().motionName;
                     animator.Play(currentSkillInfo);
@@ -338,11 +407,49 @@ public partial class Unit : MonoBehaviour
         skillQueue.AddAction(skill);
     }
 
+    public bool isAttacking = false;
+    void BaseAttackCoolDownStart()
+    {
+        StartCoroutine(BaseAttackChecking());
+    }
 
+    IEnumerator BaseAttackChecking()
+    {
+        Skill skill = new Skill();
+        skill.motionName = "Attack1";
 
+        StatFloat attackSpeed = statManager.CreateOrGetStat(E_StatType.CurrentAttackSpeed);
+        float currentCoolTime = 10;
+        float attackPeriod = 1f;
+        isAttacking = false;
+        while (true)
+        {
+            if(groupTag==E_GroupTag.Player)
+            //Debug.Log(isAttacking);
+            //쿨다운 완료.
+                //적이 사거리내에 있다.
+                //스킬 대기열도 비어있다.
+            if((!isAttacking) &(attackPeriod > currentCoolTime))
+            {
+                currentCoolTime += Time.deltaTime * attackSpeed.ModifiedValue;
+            }
+            else
+            {
+                if((enemyRange!=E_Range.OutOfRange)&(skillQueue.IsEmpty)&(!isAttacking))
+                {
+                    currentCoolTime = 0;
+                    isAttacking = true;
+                    skillQueue.AddAction(skill);
+                }
+            }
 
-
-
+            yield return null;
+        }
+    }
+    public void SetIsAttacking()
+    {
+        isAttacking = false;
+    }
 
 
 
@@ -539,6 +646,7 @@ public partial class Unit : MonoBehaviour
         IsNormal = true;
         inBattle = true;
         ActionQueueCheckingStart();
+        BaseAttackCoolDownStart();
     }
 
 }

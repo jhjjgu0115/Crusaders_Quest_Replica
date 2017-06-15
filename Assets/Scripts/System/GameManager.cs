@@ -6,6 +6,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public List<Unit> heroesList = new List<Unit>();
     public List<Unit> enemyList = new List<Unit>();
+    public static Unit playerHeadUnit;
+    public static Unit monsterHeadUnit;
+
+
     //웨이브 정보
 
 
@@ -62,8 +66,8 @@ public class GameManager : MonoBehaviour {
         _hero.StatManager.CreateOrGetStat(E_StatType.MinEvasionRate).ModifiedValue = 0f;
         _hero.StatManager.CreateOrGetStat(E_StatType.CurrentEvasionRate).ModifiedValue = 0.15f;
 
-        _hero.StatManager.CreateOrGetStat(E_StatType.MaxRange).ModifiedValue = 7;
-        _hero.StatManager.CreateOrGetStat(E_StatType.MinRange).ModifiedValue = 3;
+        _hero.StatManager.CreateOrGetStat(E_StatType.MaxRange).ModifiedValue = 3;
+        _hero.StatManager.CreateOrGetStat(E_StatType.MinRange).ModifiedValue = 2.5f;
         _hero.StatManager.CreateOrGetStat(E_StatType.CurrentRange).ModifiedValue = 0;
 
 
@@ -93,7 +97,36 @@ public class GameManager : MonoBehaviour {
         enemyList[0].StatManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue = 0;
         //enemyList[0].StatManager.CreateOrGetStat(E_StatType.MaxRange).ModifiedValue = 1;
         //enemyList[0].StatManager.CreateOrGetStat(E_StatType.MinRange).ModifiedValue = 0;
+        CheckingHeadUnitStart();
     }
 
 
+    void CheckingHeadUnitStart()
+    {
+        StartCoroutine(CheckingHeadUnit());
+    }
+    IEnumerator CheckingHeadUnit()
+    {
+        playerHeadUnit = heroesList[0];
+        monsterHeadUnit = enemyList[0];
+
+        while (true)
+        {
+            foreach(Unit unit in heroesList)
+            {
+                if(unit.transform.position.x > playerHeadUnit.transform.position.x)
+                {
+                    playerHeadUnit = unit;
+                }
+            }
+            foreach (Unit unit in enemyList)
+            {
+                if (unit.transform.position.x < monsterHeadUnit.transform.position.x)
+                {
+                    playerHeadUnit = unit;
+                }
+            }
+            yield return null;
+        }
+    }
 }
