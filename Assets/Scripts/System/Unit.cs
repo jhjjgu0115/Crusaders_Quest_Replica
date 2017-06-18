@@ -441,6 +441,16 @@ public partial class Unit : MonoBehaviour
 
 
 
+    public void GetHit(ref float amount)
+    {
+
+    }
+
+    public void GetDamage(float damage)
+    {
+
+    }
+
 
 
 

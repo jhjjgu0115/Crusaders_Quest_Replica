@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
  
-public class AreaOfEffect : Effect
+public class AreaSearchEffect : Effect
 {
-    List<Effect> enterEffectList = new List<Effect>();
-    List<Effect> periodEffectList = new List<Effect>();
-    List<Effect> exitEffectList = new List<Effect>();
+    public List<Effect> enterEffectList = new List<Effect>();
+    public List<Effect> periodEffectList = new List<Effect>();
+    public List<Effect> exitEffectList = new List<Effect>();
 
 
     private void OnTriggerEnter2D(Collider2D collision)
