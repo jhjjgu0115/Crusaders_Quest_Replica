@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LaunchMissileEffect : Effect
 {
-    public float launchAngle = 0;
-    public float launchVelocity = 0;
+    public Vector3 launchAngle;
+    public Vector3 launchVelocity;
     public GameObject launchPosition;
     public Vector3 offset;
 
@@ -17,17 +17,22 @@ public class LaunchMissileEffect : Effect
 
     public override void ActivateEffect()
     {
-
+        StartCoroutine(Launch());
     }
-    public override void ActivateEffect(Unit caster, Unit targetList)
+    public override void ActivateEffect(Unit caster, Unit target)
     {
+        this.caster = caster;
+        StartCoroutine(Launch());
     }
-    public override void ActivateEffect(Unit caster, Unit targetList, float multiplier)
+    public override void ActivateEffect(Unit caster, Unit target, float multiplier)
     {
+        this.caster = caster;
+        StartCoroutine(Launch());
     }
-    public override void ActivateEffect(Unit caster, Unit targetList, ref float amount, float multiplier)
+    public override void ActivateEffect(Unit caster, Unit target, ref float amount, float multiplier)
     {
-
+        this.caster = caster;
+        StartCoroutine(Launch());
 
         //instanceProjectile.Initialize(caster, target, multiplier);
         //instanceProjectile.FlyingStart();
@@ -36,7 +41,7 @@ public class LaunchMissileEffect : Effect
     IEnumerator Launch()
     {
         int currentCount = 0;
-        float currentPeriod = 0;
+        float currentPeriod = float.MaxValue;
         while(true)
         {
             if(currentCount<launchCount)
@@ -47,6 +52,7 @@ public class LaunchMissileEffect : Effect
                 }
                 else
                 {
+                    LaunchMissile();
                     currentPeriod = 0;
                     currentCount++;
                 }
@@ -59,7 +65,9 @@ public class LaunchMissileEffect : Effect
     {
         Projectile instanceProjectile = Instantiate(projectile);
         instanceProjectile.transform.position = launchPosition.transform.position + offset;
-        instanceProjectile.Initialize(caster, target);
+        instanceProjectile.GetComponent<Rigidbody2D>().velocity = launchVelocity;
+        instanceProjectile.Initialize(caster);
+        instanceProjectile.FlyStart();
     }
 
     public override bool ConditionCheck()

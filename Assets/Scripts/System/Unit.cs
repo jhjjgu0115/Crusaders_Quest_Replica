@@ -451,8 +451,12 @@ public partial class Unit : MonoBehaviour
 
     }
 
+    public void SkillActivate(int skillNum)
+    {
+        effectList[skillNum].ActivateEffect(this, null);
+    }
 
-
+    public List<Effect> effectList =new List<Effect>();
 
 
 
