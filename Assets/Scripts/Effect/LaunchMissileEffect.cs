@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissileLaunchEffect : Effect
+public class LaunchMissileEffect : Effect
 {
     public float launchAngle = 0;
     public float launchVelocity = 0;
-    public Vector3 launchOffset;
+    public GameObject launchPosition;
+    public Vector3 offset;
+
 
     public Projectile projectile;
-    public bool isLockOn = false;
-    
+    public int launchCount=0;
+    public float launchPeriod = 0;
+
+
     public override void ActivateEffect()
     {
 
@@ -23,26 +27,40 @@ public class MissileLaunchEffect : Effect
     }
     public override void ActivateEffect(Unit caster, Unit targetList, ref float amount, float multiplier)
     {
-        Projectile instanceProjectile = Instantiate(projectile);
+
 
         //instanceProjectile.Initialize(caster, target, multiplier);
         //instanceProjectile.FlyingStart();
     }
 
-    public override void RefreshAllAmount(Unit caster, Unit targetList)
+    IEnumerator Launch()
     {
+        int currentCount = 0;
+        float currentPeriod = 0;
+        while(true)
+        {
+            if(currentCount<launchCount)
+            {
+                if(currentPeriod<launchPeriod)
+                {
+                    currentPeriod += Time.deltaTime;
+                }
+                else
+                {
+                    currentPeriod = 0;
+                    currentCount++;
+                }
+            }
+            yield return null;
+        }
     }
-    public override void RefreshTargetBasedAmount(Unit targetList)
+    
+    void LaunchMissile()
     {
+        Projectile instanceProjectile = Instantiate(projectile);
+        instanceProjectile.transform.position = launchPosition.transform.position + offset;
+        instanceProjectile.Initialize(caster, target);
     }
-    public override void RefreshCasterBasedAmount(Unit caster)
-    {
-    }
-    public override void RefreshFixedAllAmount()
-    {
-
-    }
-
 
     public override bool ConditionCheck()
     {/*
