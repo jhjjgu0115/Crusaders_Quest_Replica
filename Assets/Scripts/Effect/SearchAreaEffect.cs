@@ -20,11 +20,28 @@ public class SearchAreaEffect : Effect
     int currentCount = 0;
 
 
+    public override void ActivateEffect()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public override void ActivateEffect(Unit caster, Unit target)
+    {
+        gameObject.SetActive(true);
+    }
+    public override void ActivateEffect(Unit caster, Unit target, float multiplier)
+    {
+        gameObject.SetActive(true);
+    }
+    public override void ActivateEffect(Unit caster, Unit target, ref float amount, float multiplier)
+    {
+        gameObject.SetActive(true);
+    }
+
     private void OnTriggerEnter2D(Collider2D targetCollider)
     {
         if(currentCount<maximumCount)
         {
-            Debug.Log(currentCount);
             currentCount++;
             foreach (Effect effect in enterEffectList)
             {
