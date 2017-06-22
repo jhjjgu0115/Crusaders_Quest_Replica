@@ -48,6 +48,9 @@ public partial class Effect : MonoBehaviour
     public virtual void ActivateEffect()
     {
     }
+    public virtual void ActivateEffect(Unit caster)
+    {
+    }
     public virtual void ActivateEffect(Unit caster, Unit target)
     {
     }

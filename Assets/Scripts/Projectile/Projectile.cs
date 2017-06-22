@@ -75,11 +75,16 @@ public class Projectile : MonoBehaviour
             foreach (Effect effect in impactEffectList)
             {
                 effect.ActivateEffect(caster, other.GetComponent<Unit>());
+                GetComponent<Animator>().Play("Impact");
+                GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             }
-            Destroy(gameObject);
         }
     }
-
+    
+    public void DestroyThis()
+    {
+        Destroy(gameObject);
+    }
 
 
 

@@ -19,6 +19,11 @@ public class LaunchMissileEffect : Effect
     {
         StartCoroutine(Launch());
     }
+    public override void ActivateEffect(Unit caster)
+    {
+        this.caster = caster;
+        StartCoroutine(Launch());
+    }
     public override void ActivateEffect(Unit caster, Unit target)
     {
         this.caster = caster;

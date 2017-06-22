@@ -33,13 +33,6 @@ public partial class Unit : MonoBehaviour
     //진영정보
     public E_GroupTag groupTag;
 
-    /*
-     * 상태 정보
-     * 행동
-     * 이벤트 
-     */
-
-
     //전투 관련
     bool inBattle;
     /// <summary>
@@ -66,8 +59,15 @@ public partial class Unit : MonoBehaviour
     }
     public List<Effect> EnterBattleEffect = new List<Effect>();
     public List<Effect> ExitBattleEffect = new List<Effect>();
-    
-    //사망 관련
+   
+    /*
+     * 사망
+     * 사망시 버프,디버프 제거.
+     * 상호작용 중단.
+     * 사망 애니메이션 재생
+     * 사망 시작 이벤트 발생
+     * 사망 애니메이션 종료시 이벤트 발생
+     */
     bool isDead;
     public bool IsDead
     {
@@ -81,9 +81,6 @@ public partial class Unit : MonoBehaviour
             IsNormal = (!value) & (!isGroggy);
         }
     }
-    /// <summary>
-    /// 사망 시작
-    /// </summary>
     public void DeadStart()
     {
         isGroggy = false;
@@ -95,17 +92,14 @@ public partial class Unit : MonoBehaviour
         //아래 효과는 필요 없어 보인다. 이후 수정
         foreach (Effect effect in DeadStartEffect)
         {
-            effect.ActivateEffect();
+            effect.ActivateEffect(this);
         }
     }
-    /// <summary>
-    /// 사망 종료
-    /// </summary>
     public void DeadEnd()
     {
         foreach (Effect effect in DeadEndEffect)
         {
-            effect.ActivateEffect();
+            effect.ActivateEffect(this);
         }
     }
     public List<Effect> DeadStartEffect = new List<Effect>();
@@ -120,6 +114,7 @@ public partial class Unit : MonoBehaviour
         //사망과 반대겠지?
     }
     public List<Effect> RebirthEffect = new List<Effect>();
+
 
     //기절 관련
     bool isGroggy;
@@ -166,6 +161,7 @@ public partial class Unit : MonoBehaviour
     public List<Effect> GroggyStartEffect = new List<Effect>();
     public List<Effect> GroggyEndEffect = new List<Effect>();
     
+
     //정상 여부
     bool isNormal;
     public bool IsNormal
@@ -438,12 +434,13 @@ public partial class Unit : MonoBehaviour
     {
         isAttacking = false;
     }
+    public List<Skill> baseAttackList = new List<Skill>();
 
 
 
     public void GetHit(ref float amount)
     {
-
+        Debug.Log(name + " hit!");
     }
 
     public void GetDamage(float damage)
@@ -451,12 +448,21 @@ public partial class Unit : MonoBehaviour
 
     }
 
+    //애니메이션 트리거
     public void SkillActivate(int skillNum)
     {
-        effectList[skillNum].ActivateEffect(this, null);
+        skillList[skillNum].ActivateEffect(this);
     }
 
     public List<Effect> effectList =new List<Effect>();
+    public List<Skill> skillList = new List<Skill>();
+
+
+
+
+
+
+
 
 
 

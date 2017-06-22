@@ -1,9 +1,10 @@
 fileFormatVersion: 2
-guid: e27919e60cecbb54a9cc255bfcab6085
-timeCreated: 1497930936
+guid: 5a6209a8f53ae6d4e93bcf00c5685559
+timeCreated: 1498116400
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: fx_priest_attack_head_r_0
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -76,7 +77,20 @@ TextureImporter:
     overridden: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: fx_priest_attack_head_r_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 2
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
     outline: []
   spritePackingTag: 
   userData: 
