@@ -8,6 +8,10 @@ public class DebugEffect : Effect
     {
         Debug.Log(gameObject.name+" Effected!");
     }
+    public override void ActivateEffect(Unit caster)
+    {
+        Debug.Log(gameObject.name + " Effected! : " + caster + " >> " + target);
+    }
     public override void ActivateEffect(Unit caster, Unit target)
     {
         Debug.Log(gameObject.name + " Effected! : "+caster+" >> "+target);

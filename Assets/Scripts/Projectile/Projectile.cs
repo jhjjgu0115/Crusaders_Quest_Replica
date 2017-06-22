@@ -16,6 +16,9 @@ public class Projectile : MonoBehaviour
     Unit target;
 
     public List<Effect> impactEffectList = new List<Effect>();
+    public List<Effect> destroyEffectList = new List<Effect>();
+    public Model impactModel;
+    public Model destroyModel;
 
     private void Start()
     {
@@ -30,8 +33,6 @@ public class Projectile : MonoBehaviour
         caster = _caster;
         launchPosition = transform.position;
     }
-
-
 
     public void FlyStart()
     {
@@ -64,6 +65,7 @@ public class Projectile : MonoBehaviour
     {
         if (currentCount < penetrationCount-1)
         {
+            Instantiate(impactModel).transform.position = transform.position;
             foreach (Effect effect in impactEffectList)
             {
                 effect.ActivateEffect(caster, other.GetComponent<Unit>());
@@ -72,21 +74,31 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            foreach (Effect effect in impactEffectList)
+            if(currentCount< penetrationCount )
             {
-                effect.ActivateEffect(caster, other.GetComponent<Unit>());
-                GetComponent<Animator>().Play("Impact");
+                Instantiate(destroyModel).transform.position = transform.position;
                 GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+                foreach (Effect effect in destroyEffectList)
+                {
+                    effect.ActivateEffect(caster, other.GetComponent<Unit>());
+                }
+                currentCount++;
+                StartCoroutine(DelayDestory());
             }
+            
         }
     }
-    
-    public void DestroyThis()
+    IEnumerator DelayDestory()
     {
+        yield return null;
+        yield return null;
         Destroy(gameObject);
     }
 
-
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
 
 
 

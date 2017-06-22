@@ -24,17 +24,24 @@ public class SearchAreaEffect : Effect
     {
         gameObject.SetActive(true);
     }
-
+    public override void ActivateEffect(Unit caster)
+    {
+        this.caster = caster;
+        gameObject.SetActive(true);
+    }
     public override void ActivateEffect(Unit caster, Unit target)
     {
+        this.caster = caster;
         gameObject.SetActive(true);
     }
     public override void ActivateEffect(Unit caster, Unit target, float multiplier)
     {
+        this.caster = caster;
         gameObject.SetActive(true);
     }
     public override void ActivateEffect(Unit caster, Unit target, ref float amount, float multiplier)
     {
+        this.caster = caster;
         gameObject.SetActive(true);
     }
 
