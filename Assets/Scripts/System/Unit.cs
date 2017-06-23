@@ -265,7 +265,8 @@ public partial class Unit : MonoBehaviour
                     {
                         if(deltaRange!= E_Range.WithInMinRange)
                         {
-                            rigid2D.velocity = Vector2.zero;
+
+                            rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
                             //Debug.Log(name + " 사거리밖>> 사거리안");
                         }
                         enemyRange = E_Range.WithInMinRange;
@@ -335,7 +336,8 @@ public partial class Unit : MonoBehaviour
                             {
                                 if (deltaRange != E_Range.WithInMaxRange)
                                 {
-                                    rigid2D.velocity = Vector2.zero;
+                                    
+                                    rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
                                     Debug.Log(name + " 사거리밖>> 사거리안");
                                 }
                                 rigid2D.velocity = direction * moveSpeed.ModifiedValue;
@@ -382,7 +384,7 @@ public partial class Unit : MonoBehaviour
                 if (!skillQueue.IsEmpty)
                 {
                     //Debug.Log(1);
-                    rigid2D.velocity = Vector2.zero;
+                    rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
                     currentSkillInfo = skillQueue.DequeueAction().motionName;
                     animator.Play(currentSkillInfo);
                 }
@@ -438,14 +440,17 @@ public partial class Unit : MonoBehaviour
 
 
 
-    public void GetHit(ref float amount)
+    public void GetHit(ref float damage,E_DamageType damageType,float penetrationPower)
     {
+        GetDamage(damage);
         Debug.Log(name + " hit!");
     }
 
     public void GetDamage(float damage)
     {
 
+
+        //StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue =
     }
 
     //애니메이션 트리거
@@ -458,7 +463,7 @@ public partial class Unit : MonoBehaviour
     public List<Skill> skillList = new List<Skill>();
 
 
-
+    //n체인 스킬 사용.
 
 
 
