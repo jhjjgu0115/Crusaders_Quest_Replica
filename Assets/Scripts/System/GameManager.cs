@@ -13,7 +13,28 @@ public class GameManager : MonoBehaviour {
     //웨이브 정보
 
 
+    Unit targetUnit;
+    int targetUnitNum=0;
     public Unit leaderHero;
+
+
+    public void UseChainBlock(int skillNum)
+    {
+        targetUnit.skillQueue.AddAction(targetUnit.skillList[skillNum]);
+    }
+    public void ChangeSkillTarget()
+    {
+        //2명일때
+        targetUnitNum++;
+        if(targetUnitNum>=heroesList.Count)
+        {
+            targetUnitNum = 0;
+        }
+        targetUnit = heroesList[targetUnitNum];
+    }
+
+
+
 
 
     void EnterTheBattle()
@@ -98,6 +119,9 @@ public class GameManager : MonoBehaviour {
         //enemyList[0].StatManager.CreateOrGetStat(E_StatType.MaxRange).ModifiedValue = 1;
         //enemyList[0].StatManager.CreateOrGetStat(E_StatType.MinRange).ModifiedValue = 0;
         CheckingHeadUnitStart();
+
+        leaderHero = heroesList[0];
+        targetUnit = leaderHero;
     }
 
 

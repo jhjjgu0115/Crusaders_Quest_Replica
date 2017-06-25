@@ -14,7 +14,7 @@ public class DebugEffect : Effect
     }
     public override void ActivateEffect(Unit caster, Unit target)
     {
-        Debug.Log(gameObject.name + " Effected! : "+caster+" >> "+target);
+        //Debug.Log(gameObject.name + " Effected! : "+caster+" >> "+target);
     }
     public override void ActivateEffect(Unit caster, Unit target, float multiplier)
     {

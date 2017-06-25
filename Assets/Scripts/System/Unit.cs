@@ -403,8 +403,7 @@ public partial class Unit : MonoBehaviour
     }
     IEnumerator BaseAttackChecking()
     {
-        Skill skill = new Skill();
-        skill.motionName = "Attack1";
+        Skill skill = skillList[0];
 
         StatFloat attackSpeed = statManager.CreateOrGetStat(E_StatType.CurrentAttackSpeed);
         float currentCoolTime = 10;
@@ -412,9 +411,9 @@ public partial class Unit : MonoBehaviour
         isAttacking = false;
         while (true)
         {
-            //쿨다운 완료.
-                //적이 사거리내에 있다.
-                //스킬 대기열도 비어있다.
+            //공격이 끝난 후부터 쿨다운 시작.
+            //
+            Debug.Log(isAttacking);
             if((!isAttacking) &(attackPeriod > currentCoolTime))
             {
                 currentCoolTime += Time.deltaTime * attackSpeed.ModifiedValue;
@@ -424,7 +423,6 @@ public partial class Unit : MonoBehaviour
                 if((enemyRange!=E_Range.OutOfRange)&(skillQueue.IsEmpty)&(!isAttacking))
                 {
                     currentCoolTime = 0;
-                    isAttacking = true;
                     skillQueue.AddAction(skill);
                 }
             }
@@ -432,9 +430,13 @@ public partial class Unit : MonoBehaviour
             yield return null;
         }
     }
-    public void SetIsAttacking()
+    public void SetIsntAttack()
     {
         isAttacking = false;
+    }
+    public void SetIsAttack()
+    {
+        isAttacking = true;
     }
     public List<Skill> baseAttackList = new List<Skill>();
 
