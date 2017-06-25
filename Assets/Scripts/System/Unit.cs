@@ -412,8 +412,7 @@ public partial class Unit : MonoBehaviour
         while (true)
         {
             //공격이 끝난 후부터 쿨다운 시작.
-            //
-            Debug.Log(isAttacking);
+            Debug.Log(currentCoolTime);
             if((!isAttacking) &(attackPeriod > currentCoolTime))
             {
                 currentCoolTime += Time.deltaTime * attackSpeed.ModifiedValue;
@@ -423,6 +422,7 @@ public partial class Unit : MonoBehaviour
                 if((enemyRange!=E_Range.OutOfRange)&(skillQueue.IsEmpty)&(!isAttacking))
                 {
                     currentCoolTime = 0;
+                    isAttacking = true;
                     skillQueue.AddAction(skill);
                 }
             }
