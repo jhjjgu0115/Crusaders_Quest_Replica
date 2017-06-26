@@ -402,7 +402,11 @@ public partial class Unit : MonoBehaviour
         StartCoroutine(BaseAttackChecking());
     }
     IEnumerator BaseAttackChecking()
-    {
+    { 
+        if (skillList.Count==0)
+        {
+            yield break;
+        }
         Skill skill = skillList[0];
 
         StatFloat attackSpeed = statManager.CreateOrGetStat(E_StatType.CurrentAttackSpeed);
@@ -412,7 +416,7 @@ public partial class Unit : MonoBehaviour
         while (true)
         {
             //공격이 끝난 후부터 쿨다운 시작.
-            Debug.Log(currentCoolTime);
+            
             if((!isAttacking) &(attackPeriod > currentCoolTime))
             {
                 currentCoolTime += Time.deltaTime * attackSpeed.ModifiedValue;
