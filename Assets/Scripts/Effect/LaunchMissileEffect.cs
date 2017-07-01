@@ -14,6 +14,68 @@ public class LaunchMissileEffect : Effect
     public int launchCount=0;
     public float launchPeriod = 0;
 
+    public override void RefreshAllAmount(Unit caster, Unit target)
+    {
+        foreach(Effect effect in projectile.destroyEffectList)
+        {
+            effect.RefreshAllAmount(caster, target);
+        }
+        foreach (Effect effect in projectile.impactEffectList)
+        {
+            effect.RefreshAllAmount(caster, target);
+        }
+    }
+    public override void RefreshFixedAllAmount()
+    {
+        foreach (Effect effect in projectile.destroyEffectList)
+        {
+            effect.RefreshFixedAllAmount();
+        }
+        foreach (Effect effect in projectile.impactEffectList)
+        {
+            effect.RefreshFixedAllAmount();
+        }
+    }
+    public override void RefreshCasterBasedAmount(Unit caster)
+    {
+        foreach (Effect effect in projectile.destroyEffectList)
+        {
+            effect.RefreshCasterBasedAmount(caster);
+        }
+        foreach (Effect effect in projectile.impactEffectList)
+        {
+            effect.RefreshCasterBasedAmount(caster);
+        }
+    }
+    public override void RefreshTargetBasedAmount(Unit target)
+    {
+        foreach (Effect effect in projectile.destroyEffectList)
+        {
+            effect.RefreshTargetBasedAmount(target);
+        }
+        foreach (Effect effect in projectile.impactEffectList)
+        {
+            effect.RefreshTargetBasedAmount(target);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public override void ActivateEffect()
     {

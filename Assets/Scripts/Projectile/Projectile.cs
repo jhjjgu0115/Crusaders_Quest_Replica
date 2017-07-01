@@ -9,12 +9,9 @@ public class Projectile : MonoBehaviour
     public float limitRange = 0;
 
     Vector3 launchPosition;
-    Vector3 targetPosition;
 
 
     Unit caster;
-    Unit target;
-
     public List<Effect> impactEffectList = new List<Effect>();
     public List<Effect> destroyEffectList = new List<Effect>();
     public Model impactModel;
@@ -24,13 +21,9 @@ public class Projectile : MonoBehaviour
     {
         launchPosition = transform.position;
     }
-
-    float directionMagnitude;
     
     public void Initialize(Unit _caster)
     {
-
-        caster = _caster;
         launchPosition = transform.position;
     }
 
@@ -63,12 +56,14 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Unit target = other.GetComponent<Unit>();
         if (currentCount < penetrationCount-1)
         {
             Instantiate(impactModel).transform.position = transform.position;
             foreach (Effect effect in impactEffectList)
             {
-                effect.ActivateEffect(caster, other.GetComponent<Unit>());
+                effect.RefreshTargetBasedAmount(target);
+                effect.ActivateEffect(caster, target);
             }
             currentCount++;
         }
@@ -80,7 +75,8 @@ public class Projectile : MonoBehaviour
                 GetComponent<Rigidbody2D>().velocity = Vector3.zero;
                 foreach (Effect effect in destroyEffectList)
                 {
-                    effect.ActivateEffect(caster, other.GetComponent<Unit>());
+                    effect.RefreshTargetBasedAmount(target);
+                    effect.ActivateEffect(caster, target);
                 }
                 currentCount++;
                 StartCoroutine(DelayDestory());

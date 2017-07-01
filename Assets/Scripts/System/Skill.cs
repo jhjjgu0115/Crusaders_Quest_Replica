@@ -14,6 +14,7 @@ public class Skill:MonoBehaviour
     {
         foreach(Effect effect in effectList)
         {
+            effect.RefreshCasterBasedAmount(caster);
             effect.ActivateEffect(caster);
         }
     }

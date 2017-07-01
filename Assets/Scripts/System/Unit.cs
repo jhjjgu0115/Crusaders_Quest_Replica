@@ -448,14 +448,27 @@ public partial class Unit : MonoBehaviour
 
     public void GetHit(ref float damage,E_DamageType damageType,float penetrationPower)
     {
-        GetDamage(damage);
+
+        //버프 순회
+        //피격 판정
+        GetDamage(ref damage, damageType, penetrationPower);
         Debug.Log(name + " hit!");
     }
 
-    public void GetDamage(float damage)
-    {
+    public void GetDamage(ref float damage, E_DamageType damageType, float penetrationPower)
+    {/*
+        float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
+        float defencePoint = StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower;
 
+        currentHP -= damage * (100/ ((defencePoint * 0.348f) + 100));
+        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue = currentHP;
 
+        */
+        float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
+        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= damage * (100 / (((StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower) * 0.348f) + 100));
+        Debug.Log(name +"_HP Change : "+ currentHP+ " >> " + StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue);
+        Debug.Log(name+"_GetDamage : " + damage + " >> " + (currentHP - statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue));
+        
         //StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue =
     }
 

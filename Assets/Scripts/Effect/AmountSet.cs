@@ -3,9 +3,9 @@ using System.Collections;
 [System.Serializable]
 public class AmountSet
 {
-    float fixedAmount;
+    public float fixedAmount;
     public E_StatType casterBasedStatType;
-    float casterBasedAmount;
+    public float casterBasedAmount;
     public float FixedAmount
     {
         get
@@ -29,8 +29,8 @@ public class AmountSet
             casterBasedAmount = value;
         }
     }
-    
-    float targetBasedAmount;
+
+    public float targetBasedAmount;
     public float TargetBasedAmount
     {
         get

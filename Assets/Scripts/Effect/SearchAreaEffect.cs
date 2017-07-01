@@ -20,6 +20,43 @@ public class SearchAreaEffect : Effect
     int currentCount = 0;
 
 
+    public override void RefreshAllAmount(Unit caster, Unit target)
+    {
+        foreach (Effect effect in enterEffectList)
+        {
+            effect.RefreshAllAmount(caster, target);
+        }
+    }
+    public override void RefreshFixedAllAmount()
+    {
+        foreach (Effect effect in enterEffectList)
+        {
+            effect.RefreshFixedAllAmount();
+        }
+    }
+    public override void RefreshCasterBasedAmount(Unit caster)
+    {
+        foreach (DamageEffect effect in enterEffectList)
+        {
+            effect.RefreshCasterBasedAmount(caster);
+        }
+    }
+    public override void RefreshTargetBasedAmount(Unit target)
+    {
+        foreach (Effect effect in enterEffectList)
+        {
+            effect.RefreshTargetBasedAmount(target);
+        }
+    }
+
+
+
+
+
+
+
+
+
     public override void ActivateEffect()
     {
         gameObject.SetActive(true);
@@ -47,12 +84,14 @@ public class SearchAreaEffect : Effect
 
     private void OnTriggerEnter2D(Collider2D targetCollider)
     {
-        if(currentCount<maximumCount)
+        Unit target = targetCollider.GetComponent<Unit>();
+        if (currentCount<maximumCount)
         {
             currentCount++;
             foreach (Effect effect in enterEffectList)
             {
-                effect.ActivateEffect(caster, targetCollider.GetComponent<Unit>());
+                effect.RefreshTargetBasedAmount(target);
+                effect.ActivateEffect(caster, target);
             }
         }
 
