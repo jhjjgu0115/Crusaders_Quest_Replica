@@ -472,6 +472,13 @@ public partial class Unit : MonoBehaviour
         //StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue =
     }
 
+    public void GetHeal(ref float healAmount)
+    {
+        float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
+        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue += healAmount;
+    }
+
+
     //애니메이션 트리거
     public void SkillActivate(int skillNum)
     {
@@ -480,7 +487,6 @@ public partial class Unit : MonoBehaviour
 
     public List<Effect> effectList =new List<Effect>();
     public List<Skill> skillList = new List<Skill>();
-
 
     //n체인 스킬 사용.
 

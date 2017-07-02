@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BuffManager
-{/*
+{
     Dictionary<string, Buff> buffIdDictionary = new Dictionary<string, Buff>();
 
     /// <summary>
@@ -114,14 +114,14 @@ public class BuffManager
     {
         for (int index = BuffIndexList.Count - 1; 0 <= index; index--)
         {
-            if (!buffIndexList[index].CanPurify)
-            {
+            //if (!buffIndexList[index].CanPurify)
+            //{
                 Buff temp_Buff = buffIndexList[index];
                 buffIdDictionary.Remove(buffIndexList[index].Id);
                 buffIndexList.Remove(temp_Buff);
                 temp_Buff.DestroyBuff();
                 break;
-            }
+            //}
         }
     }
 
@@ -139,5 +139,5 @@ public class BuffManager
         {
             Create(buff, caster, applyTarget);
         }
-    }*/
+    }
 }

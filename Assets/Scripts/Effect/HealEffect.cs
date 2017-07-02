@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class HealEffect : Effect
 {
     public E_DamageType damageType = E_DamageType.Physics;
@@ -68,7 +69,7 @@ public class HealEffect : Effect
     {
         if (true)
         {
-            //target.GetDamage(totalHealAmount * multiplier);
+            target.GetHeal(ref totalHealAmount);
         }
     }
 
