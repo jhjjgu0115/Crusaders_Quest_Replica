@@ -85,16 +85,22 @@ public class SearchAreaEffect : Effect
     private void OnTriggerEnter2D(Collider2D targetCollider)
     {
         Unit target = targetCollider.GetComponent<Unit>();
-        if (currentCount<maximumCount)
+        if (target)
         {
-            currentCount++;
-            foreach (Effect effect in enterEffectList)
+            if (currentCount < maximumCount)
             {
-                effect.RefreshTargetBasedAmount(target);
-                effect.ActivateEffect(caster, target);
+                currentCount++;
+                foreach (Effect effect in enterEffectList)
+                {
+                    effect.RefreshTargetBasedAmount(target);
+                    effect.ActivateEffect(caster, target);
+                }
             }
         }
+        
 
+  
+        
 
     }
     private void OnEnable()

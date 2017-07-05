@@ -14,9 +14,16 @@ public class LaunchMissileEffect : Effect
     public int launchCount=0;
     public float launchPeriod = 0;
 
+    public bool fixedX;
+    public bool fixedY;
+
     public override void RefreshAllAmount(Unit caster, Unit target)
     {
-        foreach(Effect effect in projectile.destroyEffectList)
+        foreach (Effect effect in projectile.explosionEffectList)
+        {
+            effect.RefreshAllAmount(caster, target);
+        }
+        foreach (Effect effect in projectile.destroyEffectList)
         {
             effect.RefreshAllAmount(caster, target);
         }
@@ -27,6 +34,10 @@ public class LaunchMissileEffect : Effect
     }
     public override void RefreshFixedAllAmount()
     {
+        foreach (Effect effect in projectile.explosionEffectList)
+        {
+            effect.RefreshFixedAllAmount();
+        }
         foreach (Effect effect in projectile.destroyEffectList)
         {
             effect.RefreshFixedAllAmount();
@@ -38,6 +49,10 @@ public class LaunchMissileEffect : Effect
     }
     public override void RefreshCasterBasedAmount(Unit caster)
     {
+        foreach (Effect effect in projectile.explosionEffectList)
+        {
+            effect.RefreshCasterBasedAmount(caster);
+        }
         foreach (Effect effect in projectile.destroyEffectList)
         {
             effect.RefreshCasterBasedAmount(caster);
@@ -49,6 +64,10 @@ public class LaunchMissileEffect : Effect
     }
     public override void RefreshTargetBasedAmount(Unit target)
     {
+        foreach (Effect effect in projectile.explosionEffectList)
+        {
+            effect.RefreshTargetBasedAmount(target);
+        }
         foreach (Effect effect in projectile.destroyEffectList)
         {
             effect.RefreshTargetBasedAmount(target);
@@ -130,9 +149,22 @@ public class LaunchMissileEffect : Effect
     
     void LaunchMissile()
     {
+        Vector3 launchTempPosition = new Vector3();
         Projectile instanceProjectile = Instantiate(projectile);
-        instanceProjectile.transform.position = launchPosition.transform.position + offset;
-        instanceProjectile.GetComponent<Rigidbody2D>().velocity = launchVelocity;
+        launchTempPosition= launchPosition.transform.position + offset;
+        if (fixedX)
+        {
+            launchTempPosition.x = offset.x;
+        }
+        if(fixedY)
+        {
+            launchTempPosition.y = offset.y;
+        }
+        instanceProjectile.transform.position = launchTempPosition;
+        if(instanceProjectile.GetComponent<Rigidbody2D>())
+        {
+            instanceProjectile.GetComponent<Rigidbody2D>().velocity = launchVelocity;
+        }
         instanceProjectile.Initialize(caster);
         instanceProjectile.FlyStart();
     }

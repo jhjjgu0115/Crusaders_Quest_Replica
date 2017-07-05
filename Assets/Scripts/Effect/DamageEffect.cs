@@ -67,6 +67,7 @@ public class DamageEffect : Effect
     }
     public override void RefreshTargetBasedAmount(Unit target)
     {
+        Debug.Log(target);
         totalDamage = 0;
         fixedDamage = 0;
         targetBasedDamage = 0;
