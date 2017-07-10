@@ -6,6 +6,123 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Buff : MonoBehaviour
 {
+    string id;
+    string name;
+
+    Unit caster;
+    Unit target;
+
+    E_ApplyTargetFilter applyFilter;
+
+    bool canOverlap;
+    //bool 시전자 구분?
+    /// <summary>
+    /// 최대 중첩수
+    /// </summary>
+    public int maxStackCount;
+
+    /// <summary>
+    /// 버프 타입
+    /// </summary>
+    public E_BuffType buffType;
+    /// <summary>
+    /// 버프 정렬
+    /// </summary>
+    public E_BuffOrder buffOrder;
+
+
+    /// <summary>
+    /// 지속시간. -1이면 무기한 지속
+    /// </summary>
+    public float durationTime;
+    /// <summary>
+    /// 반복 주기
+    /// </summary>
+    public float reiterationPeriod;
+    /// <summary>
+    /// 반복 횟수. -1이면 제한 없음
+    /// </summary>
+    public int repeatCount;
+
+
+
+    /// <summary>
+    /// 시간 배율 출처. 버프내에서 발생하는 시간값에 대한 가속 배율의 출처
+    /// </summary>
+    public E_ApplyTargetFilter timeMultiplierSource;
+    /// <summary>
+    /// 시간 가속 배율
+    /// </summary>
+    public float timeMultiplier;
+
+    /// <summary>
+    /// 시간 배율 새로고침
+    /// </summary>
+    /// <param name="targetSource"></param>                                                  
+    public void RefreshTimeMultiplier(float targetSource)
+    {
+        timeMultiplier = targetSource;
+    }
+    /// <summary>
+    /// 시간 배율 출처에 관한 이벤트 제거
+    /// </summary>
+    void RemoveEventAboutTimeMultiplier()
+    {
+        switch (timeMultiplierSource)
+        {
+            case E_ApplyTargetFilter.Caster:
+                caster.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).RemoveEvent(RefreshTimeMultiplier);
+                break;
+            case E_ApplyTargetFilter.Target:
+                target.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).RemoveEvent(RefreshTimeMultiplier);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
+    //시간 배율 동기화 등록
+    //시간 배율 동기화 해제
+
+    /// <summary>
+    /// 최초 생성 효과 리스트
+    /// </summary>
+    public List<Effect> createEffectList;
+    /// <summary>
+    /// 지속시간 만료 효과 리스트
+    /// </summary>
+    public List<Effect> durationEndEffectList;
+    /// <summary>
+    /// 버프 소멸 효과 리스트
+    /// </summary>
+    public List<Effect> destroyEffectList;
+    /// <summary>
+    /// 새로고침 효과 리스트
+    /// </summary>
+    public List<Effect> refreshEffectList;
+    /// <summary>
+    /// 주기 반복 효과 리스트
+    /// </summary>
+    public List<Effect> periodEffectList;
+    /// <summary>
+    /// 피해 응답 효과 리스트
+    /// </summary>
+    public List<Effect> onHitEffect;
+    
+
+
+
+
+
+
+
+
+
+    /*
+
+
     //기초 정보
     public string id;
     public string Id
@@ -42,7 +159,7 @@ public class Buff : MonoBehaviour
     /// <summary>
     /// 버프 정렬
     /// </summary>
-    public E_BuffSort buffSort;
+    public E_BuffOrder buffSort;
     public E_ApplyTargetFilter applyTargetFilter;
 
     void Start()
@@ -122,48 +239,7 @@ public class Buff : MonoBehaviour
             timeMultiplier = value;
         }
     }
-    /// <summary>
-    /// 시간 배율 새로고침
-    /// </summary>
-    /// <param name="targetSource"></param>                                                  
-    public void RefreshTimeMultiplier(float targetSource)
-    {
-        timeMultiplier = targetSource;
-    }
-    /// <summary>
-    /// 시간 배율 출처에 관한 이벤트 제거
-    /// </summary>
-    void RemoveEventAboutTimeMultiplier()
-    {
-        switch (timeMultiplierSource)
-        {
-            case E_ApplyTargetFilter.Caster:
-                caster.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).RemoveEvent(RefreshTimeMultiplier);
-                break;
-            case E_ApplyTargetFilter.Target:
-                applyTarget.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).RemoveEvent(RefreshTimeMultiplier);
-                break;
-            default:
-                break;
-        }
-    }
-    /// <summary>
-    /// 강제 시간 배율 동기화
-    /// </summary>
-    void ForcingSyncTimeMultiplier()
-    {
-        switch (timeMultiplierSource)
-        {
-            case E_ApplyTargetFilter.Caster:
-                timeMultiplier = caster.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).ModifiedValue;
-                break;
-            case E_ApplyTargetFilter.Target:
-                timeMultiplier = applyTarget.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).ModifiedValue;
-                break;
-            default:
-                break;
-        }
-    }
+
     /// <summary>
     /// 적용 대상필터 검토후 적용
     /// </summary>
@@ -283,7 +359,7 @@ public class Buff : MonoBehaviour
             //마지막 효과 발동
             PeriodEffectActivate();
         }
-        applyTarget.BuffManager.RemoveBuff(id);
+        //applyTarget.BuffManager.RemoveBuff(id);
         yield return null;
     }
     /// <summary>
@@ -439,5 +515,5 @@ public class Buff : MonoBehaviour
         {
             onHitEffect[index].ActivateEffect(caster, applyTarget, ref amount, currentStackCount);
         }
-    }
+    }*/
 }

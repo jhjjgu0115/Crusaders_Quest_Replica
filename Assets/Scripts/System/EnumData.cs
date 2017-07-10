@@ -86,7 +86,7 @@ public enum E_BuffType
 /// <summary>
 /// 버프 정렬
 /// </summary>
-public enum E_BuffSort
+public enum E_BuffOrder
 {
     None,
     positive,
@@ -138,3 +138,4 @@ public enum E_Race
     Monster,
     Boss
 }
+
