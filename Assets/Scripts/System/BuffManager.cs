@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BuffManager
 {
-    Dictionary<string, Buff> buffDictionary = new Dictionary<string, Buff>();
-    List<Buff> positiveBuffList = new List<Buff>();
-    List<Buff> nagativeBuffList = new List<Buff>();
+    Dictionary<string, Buff> idDictionary = new Dictionary<string, Buff>();
+    Dictionary<string, List<Buff>> nameDictionary = new Dictionary<string, List<Buff>>();
+    Dictionary<E_BuffOrder, List<Buff>> orderDictionary = new Dictionary<E_BuffOrder, List<Buff>>();
+   
     /// <summary>
     /// Id, buff Dictionary
     /// </summary>
@@ -14,12 +15,10 @@ public class BuffManager
     {
         get
         {
-            return buffDictionary;
+            return idDictionary;
         }
     }
-    /// <summary>
-    /// 버프 리스트
-    /// </summary>
+    int idCount = 0;
 
     /*
     * bool Contain(id)
@@ -28,56 +27,111 @@ public class BuffManager
     * Create //버프를 생성
     * public Add//있으면 중첩, 없으면 생성.
     * public Remove//아예 소멸
-    * 
+    
     * Refresh//중첩시 새로고침효과 발동
     * Overlap//중첩 규칙에 따른 중첩
     */
 
+
+
     public bool Contain(string name)
     {
-        return buffDictionary.ContainsKey(name);
+        if (nameDictionary.ContainsKey(name))
+        {
+            return nameDictionary[name].Count != 0;
+        }
+        else
+        {
+            return false;
+        }
     }
     public bool Contain(E_BuffOrder orderValue)
     {
-        if(orderValue==E_BuffOrder.positive)
+        if(orderDictionary.ContainsKey(orderValue))
         {
-            if (positiveBuffList.Count != 0)
-                return true;
-            else
-                return false;
+            return orderDictionary[orderValue].Capacity != 0;
+            
         }
         else
         {
-            if (nagativeBuffList.Count != 0)
-                return true;
-            else
-                return false;
+            return false;
         }
     }
 
-    Buff Create(Buff buff)
+    Buff Create(Buff buff, Unit caster, Unit target)
     {
-        return buff;
-    }
-    Buff Add(Buff buff)
-    {
-        Buff tempBuff;
-        if(Contain(buff.name))
-        {
-            if(buffDictionary[buff.name])
-            {
+        /*Buff tempBuff = MonoBehaviour.Instantiate(buff);
+        tempBuff.Caster = caster;
+        tempBuff.ApplyTarget = applyTarget;
+        buffIdDictionary.Add(tempBuff.Id, tempBuff);
+        buffIndexList.Add(tempBuff);
+        tempBuff.Activate();*/
+        //버프를 처음 등록한다.
+        //신규 버프 생성
 
-            }
+        Buff tempBuff = MonoBehaviour.Instantiate(buff);
+        tempBuff.caster = caster;
+        tempBuff.target = target;
+        tempBuff.id = tempBuff.name + "_" + tempBuff.caster.ToString() + "_" + idCount;
+        idCount++;
+
+        idDictionary.Add(tempBuff.id, tempBuff);
+
+        if (!nameDictionary.ContainsKey(tempBuff.name))
+        {
+            nameDictionary.Add(buff.name, new List<Buff>());
+        }
+        nameDictionary[tempBuff.name].Add(tempBuff);
+
+        if(!orderDictionary.ContainsKey(tempBuff.buffOrder))
+        {
+            orderDictionary.Add(tempBuff.buffOrder,new List<Buff>());
+        }
+        orderDictionary[tempBuff.buffOrder].Add(tempBuff);
+
+        return tempBuff;
+    }
+    public Buff Add(Buff buff, Unit caster, Unit target)
+    {
+        if(nameDictionary.ContainsKey(buff.name))
+        {
+
         }
         else
         {
-            tempBuff=Create(buff);
+            Create(buff, caster, target);
         }
+
+        /*
+         * Buff 임시버프
+         * 
+         * 만약 버프가 존재하지 않다면
+         *     버프 생성
+         * 존재하면
+         *     버프 중첩 가능하면
+         *         시전자 구분해야하면
+         *             시전자
+         *         
+         *     버프 중첩 불가능하면
+         *         새로운 버프 생성
+         *     
+         *         
+         * 
+         */ 
 
         return buff;
     }
+    public void Remove(Buff buff, Unit caster, Unit target)
+    {
+    }
+    void Refresh(Buff buff, Unit caster, Unit target)
+    {
 
+    }
+    void Overlap(Buff buff, Unit caster, Unit target)
+    {
 
+    }
 
 
 
