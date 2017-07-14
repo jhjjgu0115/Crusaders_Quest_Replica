@@ -6,6 +6,7 @@ public class BuffManager
 {
     Dictionary<string, Buff> idDictionary = new Dictionary<string, Buff>();
     Dictionary<string, List<Buff>> nameDictionary = new Dictionary<string, List<Buff>>();
+    Dictionary<string, List<Buff>> casterDictionary = new Dictionary<string, List<Buff>>();
     Dictionary<E_BuffOrder, List<Buff>> orderDictionary = new Dictionary<E_BuffOrder, List<Buff>>();
    
     /// <summary>
@@ -83,7 +84,15 @@ public class BuffManager
         }
         nameDictionary[tempBuff.name].Add(tempBuff);
 
-        if(!orderDictionary.ContainsKey(tempBuff.buffOrder))
+
+        if (!casterDictionary.ContainsKey(tempBuff.caster.name))
+        {
+            casterDictionary.Add(buff.name, new List<Buff>());
+        }
+        casterDictionary[tempBuff.caster.name].Add(tempBuff);
+
+
+        if (!orderDictionary.ContainsKey(tempBuff.buffOrder))
         {
             orderDictionary.Add(tempBuff.buffOrder,new List<Buff>());
         }
@@ -91,12 +100,85 @@ public class BuffManager
 
         return tempBuff;
     }
+
     public Buff Add(Buff buff, Unit caster, Unit target)
     {
-        if(nameDictionary.ContainsKey(buff.name))
+        /*
+         *  해당 이름의 버프가 존재하면
+         *      버프 중첩이 가능하면
+         *          시전자 구분 해야하면
+         *              -해당 이름의 버프 리스트에서 캐스터가 동일한 애가 있다.
+         *                  해당 버프를 받아와서 중첩시킨다.
+         *              -해당 이름의 버프가 리스트에서 없다.
+         *                  생성()
+         *          시전자 구분 안하면
+         *              해당 이름의 버프 첫번째를 받아와 중첩 실행.
+         *              
+         *      버프 중첩이 불가능하면
+         *          생성()
+         *  존재 안하면
+         *      생성()
+         * 
+         * 
+         */
+
+        if (nameDictionary.ContainsKey(buff.name))
         {
+            if(nameDictionary[buff.name].Count==0)
+            {
+                Create(buff, caster, target);
+            }
+            else
+            {
+                if (buff.canOverlap)
+                {
+                    if (buff.isSeparateCaster)
+                    {
+                        foreach (Buff _buff in nameDictionary[buff.name])
+                        {
+                            if (_buff.caster == buff.caster)
+                            {
+                                Overlap(_buff, caster, target);
+                                return _buff;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Overlap(nameDictionary[buff.name][0], caster, target);
+                    }
+                }
+            }
+        }
+        else
+        {
+            Create(buff,caster,target);
+        }
+
+
+
+        if (nameDictionary.ContainsKey(buff.name))
+        {   
+            //버프 중첩이 가능할때
+            if(buff.canOverlap)
+            {
+                //시전자 구분을 할때
+                if (buff.isSeparateCaster)
+                {
+                }
+                //시전자 구분 안할때
+                else
+                {
+
+                }
+            }
+            else
+            {
+                Create(buff, caster, target);
+            }
 
         }
+        //버프가 처음으로 존재할때
         else
         {
             Create(buff, caster, target);

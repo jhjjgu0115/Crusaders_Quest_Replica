@@ -27,7 +27,7 @@ public class Buff : MonoBehaviour
     /// 중첩 가능 여부
     /// </summary>
     public bool canOverlap;
-    //bool 시전자 구분?
+    public bool isSeparateCaster;
     /// <summary>
     /// 최대 중첩수
     /// </summary>
