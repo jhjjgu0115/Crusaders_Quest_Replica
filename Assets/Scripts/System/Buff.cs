@@ -59,10 +59,7 @@ public class Buff : MonoBehaviour
     /// </summary>
     public int repeatCount;
     int currentRepeatCount;
-
-    /********************************************/
-    /***************시간 배율 출처***************/
-    /********************************************/
+    
     /// <summary>
     /// 시간 배율 출처. 버프내에서 발생하는 시간값에 대한 가속 배율의 출처
     /// </summary>
@@ -111,10 +108,7 @@ public class Buff : MonoBehaviour
                 break;
         }
     }
-
-    /*****************************************/
-    /***************효과 리스트***************/
-    /*****************************************/
+    
     /// <summary>
     /// 최초 생성 효과 리스트
     /// </summary>
@@ -139,10 +133,7 @@ public class Buff : MonoBehaviour
     /// 피해 응답 효과 리스트
     /// </summary>
     public List<Effect> onHitEffect;
-
-    /*****************************************/
-    /*************** 효과 발동 ***************/
-    /*****************************************/
+    
     /// <summary>
     /// 생성 효과 발동
     /// </summary>
@@ -194,10 +185,7 @@ public class Buff : MonoBehaviour
             onHitEffect[index].ActivateEffect(caster, target, ref amount, currentStackCount);
         }
     }
-
-    /*****************************************/
-    /*************** 중첩 처리 ***************/
-    /*****************************************/
+    
     /// <summary>
     /// 버프 새로고침. 지속시간 초기화, 제한횟수 초기화.
     /// </summary>
@@ -211,7 +199,7 @@ public class Buff : MonoBehaviour
     /// <summary>
     /// 버프 중첩 적용
     /// </summary>
-    public void OverlapBuff()
+    public void OverlapBuff(/*애드 스택*/)
     {
         if (currentStackCount < maxStackCount)
         {

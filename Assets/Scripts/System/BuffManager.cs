@@ -61,15 +61,6 @@ public class BuffManager
 
     Buff Create(Buff buff, Unit caster, Unit target)
     {
-        /*Buff tempBuff = MonoBehaviour.Instantiate(buff);
-        tempBuff.Caster = caster;
-        tempBuff.ApplyTarget = applyTarget;
-        buffIdDictionary.Add(tempBuff.Id, tempBuff);
-        buffIndexList.Add(tempBuff);
-        tempBuff.Activate();*/
-        //버프를 처음 등록한다.
-        //신규 버프 생성
-
         Buff tempBuff = MonoBehaviour.Instantiate(buff);
         tempBuff.caster = caster;
         tempBuff.target = target;
@@ -84,14 +75,6 @@ public class BuffManager
         }
         nameDictionary[tempBuff.name].Add(tempBuff);
 
-
-        if (!casterDictionary.ContainsKey(tempBuff.caster.name))
-        {
-            casterDictionary.Add(buff.name, new List<Buff>());
-        }
-        casterDictionary[tempBuff.caster.name].Add(tempBuff);
-
-
         if (!orderDictionary.ContainsKey(tempBuff.buffOrder))
         {
             orderDictionary.Add(tempBuff.buffOrder,new List<Buff>());
@@ -103,105 +86,58 @@ public class BuffManager
 
     public Buff Add(Buff buff, Unit caster, Unit target)
     {
-        /*
-         *  해당 이름의 버프가 존재하면
-         *      버프 중첩이 가능하면
-         *          시전자 구분 해야하면
-         *              -해당 이름의 버프 리스트에서 캐스터가 동일한 애가 있다.
-         *                  해당 버프를 받아와서 중첩시킨다.
-         *              -해당 이름의 버프가 리스트에서 없다.
-         *                  생성()
-         *          시전자 구분 안하면
-         *              해당 이름의 버프 첫번째를 받아와 중첩 실행.
-         *              
-         *      버프 중첩이 불가능하면
-         *          생성()
-         *  존재 안하면
-         *      생성()
-         * 
-         * 
-         */
-
-        if (nameDictionary.ContainsKey(buff.name))
-        {
-            if(nameDictionary[buff.name].Count==0)
-            {
-                Create(buff, caster, target);
+        if (nameDictionary.ContainsKey(buff.name))//해당 버프가 걸린적이 있는가?
+        {   //걸린적이 있어 버프[이름]컨테이너는 있다.
+            if(nameDictionary[buff.name].Count==0)//해당 이름의 버프가 있는가?
+            {   //없다.
+                 
+                return Create(buff, caster, target);//그럼 새로 하나 인스턴스를 만들어서
+                //이름 딕셔너리에 등록하고
+                //끝낸다.
             }
             else
-            {
-                if (buff.canOverlap)
-                {
-                    if (buff.isSeparateCaster)
+            {   //해당 이름의 버프가 하나이상 존재.
+                if (buff.canOverlap)//그럼 중첩 가능해?
+                {   //중첩 가능하다.
+                    if (buff.isSeparateCaster)//시전자를 구분해야하나?
                     {
+                        //시전자 구분을 해야한다면
                         foreach (Buff _buff in nameDictionary[buff.name])
                         {
-                            if (_buff.caster == buff.caster)
+                            if (_buff.caster == buff.caster)//순회하며 해당 캐스터가 있는지 확인하고
                             {
+                                //있다면 해당 버프에다가 중첩
                                 Overlap(_buff, caster, target);
+                                //그리고 끝낸다.
                                 return _buff;
                             }
                         }
+                        return Create(buff, caster, target);
+                        //빠져나와버렸다면 버프가 없는것.
+                        //버프를 신규 작성한다.
+                        //등록하고
+                        //끝낸다.
                     }
                     else
-                    {
+                    {//시전자 구분 안한다면
+                        //그냥 이름[0]번째 버프에다 중첩을 시켜버린다.
                         Overlap(nameDictionary[buff.name][0], caster, target);
+                       
                     }
                 }
-            }
-        }
-        else
-        {
-            Create(buff,caster,target);
-        }
-
-
-
-        if (nameDictionary.ContainsKey(buff.name))
-        {   
-            //버프 중첩이 가능할때
-            if(buff.canOverlap)
-            {
-                //시전자 구분을 할때
-                if (buff.isSeparateCaster)
-                {
-                }
-                //시전자 구분 안할때
                 else
-                {
-
+                {   //중첩이 불가능하다.
+                    return Create(buff, caster, target); ;//신규작성하고
+                    //이름에 등록하고
+                    //끝낸다.
                 }
             }
-            else
-            {
-                Create(buff, caster, target);
-            }
-
         }
-        //버프가 처음으로 존재할때
         else
         {
-            Create(buff, caster, target);
+            return Create(buff,caster,target);
         }
-
-        /*
-         * Buff 임시버프
-         * 
-         * 만약 버프가 존재하지 않다면
-         *     버프 생성
-         * 존재하면
-         *     버프 중첩 가능하면
-         *         시전자 구분해야하면
-         *             시전자
-         *         
-         *     버프 중첩 불가능하면
-         *         새로운 버프 생성
-         *     
-         *         
-         * 
-         */ 
-
-        return buff;
+        return null;
     }
     public void Remove(Buff buff, Unit caster, Unit target)
     {
@@ -212,7 +148,7 @@ public class BuffManager
     }
     void Overlap(Buff buff, Unit caster, Unit target)
     {
-
+        buff.OverlapBuff();
     }
 
 
