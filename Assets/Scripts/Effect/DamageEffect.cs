@@ -13,7 +13,7 @@ public class DamageEffect : Effect
     public float targetBasedDamage;
 
     
-    public List<AmountSet> penetrationList;
+    public List<AmountSet> additionalPenetrationList;
     public float totalPenetration;
     public float fixedPenetration;
     public float casterBasedPenetration;
@@ -41,11 +41,11 @@ public class DamageEffect : Effect
         fixedPenetration = 0;
         casterBasedPenetration = 0;
         targetBasedPenetration = 0;
-        for (int index = 0; index < damageList.Count; index++)
+        for (int index = 0; index < additionalPenetrationList.Count; index++)
         {
-            fixedDamage += damageList[index].FixedAmount;
-            casterBasedDamage += penetrationList[index].SetAmountCasterBased(caster);
-            targetBasedDamage += penetrationList[index].SetAmountTargetBased(target);
+            fixedDamage += additionalPenetrationList[index].FixedAmount;
+            casterBasedDamage += additionalPenetrationList[index].SetAmountCasterBased(caster);
+            targetBasedDamage += additionalPenetrationList[index].SetAmountTargetBased(target);
         }
         totalPenetration = fixedPenetration + casterBasedPenetration + targetBasedPenetration;
     }
@@ -59,9 +59,9 @@ public class DamageEffect : Effect
         totalDamage = fixedDamage + targetBasedDamage + casterBasedDamage;
 
         fixedPenetration = 0;
-        for (int index = 0; index < penetrationList.Count; index++)
+        for (int index = 0; index < additionalPenetrationList.Count; index++)
         {
-            fixedPenetration += penetrationList[index].FixedAmount;
+            fixedPenetration += additionalPenetrationList[index].FixedAmount;
         }
         totalPenetration = fixedPenetration + targetBasedPenetration + casterBasedPenetration;
     }
@@ -81,10 +81,10 @@ public class DamageEffect : Effect
         fixedPenetration = 0;
         casterBasedPenetration = 0;
         targetBasedPenetration = 0;
-        for (int index = 0; index < penetrationList.Count; index++)
+        for (int index = 0; index < additionalPenetrationList.Count; index++)
         {
-            fixedPenetration += penetrationList[index].FixedAmount;
-            targetBasedPenetration += penetrationList[index].SetAmountTargetBased(target);
+            fixedPenetration += additionalPenetrationList[index].FixedAmount;
+            targetBasedPenetration += additionalPenetrationList[index].SetAmountTargetBased(target);
         }
         totalPenetration = fixedPenetration + casterBasedPenetration + targetBasedPenetration;
     }
@@ -104,10 +104,10 @@ public class DamageEffect : Effect
         totalPenetration = 0;
         fixedPenetration = 0;
         casterBasedPenetration = 0;
-        for (int index = 0; index < penetrationList.Count; index++)
+        for (int index = 0; index < additionalPenetrationList.Count; index++)
         {
-            fixedPenetration += penetrationList[index].FixedAmount;
-            casterBasedPenetration += penetrationList[index].SetAmountCasterBased(caster);
+            fixedPenetration += additionalPenetrationList[index].FixedAmount;
+            casterBasedPenetration += additionalPenetrationList[index].SetAmountCasterBased(caster);
         }
         totalPenetration = fixedPenetration + casterBasedPenetration + targetBasedPenetration;
     }
@@ -122,7 +122,7 @@ public class DamageEffect : Effect
     {
         if (true)
         {
-            target.GetDamage(ref totalDamage,damageType,totalPenetration);
+            target.GetDamage(ref totalDamage,damageType,totalPenetration+caster.StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue);
         }
     }
 

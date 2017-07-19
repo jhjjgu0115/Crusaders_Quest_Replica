@@ -22,7 +22,24 @@ public class Buff : MonoBehaviour
     /// 적용 대상.
     /// </summary>
     public E_ApplyTargetFilter applyTargetFilter;
-
+    /// <summary>
+    /// 적용 대상필터 검토후 적용
+    /// </summary>
+    void CheckTargetFilter()
+    {
+        switch (applyTargetFilter)
+        {
+            case E_ApplyTargetFilter.Caster:
+                target = caster;
+                break;
+            case E_ApplyTargetFilter.Target:
+                target = target;
+                break;
+            default:
+                target = target;
+                break;
+        }
+    }
     /// <summary>
     /// 중첩 가능 여부
     /// </summary>
@@ -48,18 +65,19 @@ public class Buff : MonoBehaviour
     /// 지속시간. -1이면 무기한 지속
     /// </summary>
     public float durationTime;
-    float currentRemainTime;
+    public float currentRemainTime;
     /// <summary>
     /// 반복 주기
     /// </summary>
     public float reiterationPeriod;
-    float currentReiterationPeriod;
+    public float currentReiterationPeriod;
     /// <summary>
     /// 반복 횟수. -1이면 제한 없음
     /// </summary>
     public int repeatCount;
-    int currentRepeatCount;
+    public int currentRepeatCount;
     
+
     /// <summary>
     /// 시간 배율 출처. 버프내에서 발생하는 시간값에 대한 가속 배율의 출처
     /// </summary>
@@ -68,7 +86,6 @@ public class Buff : MonoBehaviour
     /// 시간 가속 배율
     /// </summary>
     public float timeMultiplier;
-
     /// <summary>
     /// 시간 배율 새로고침
     /// </summary>
@@ -103,6 +120,20 @@ public class Buff : MonoBehaviour
                 break;
             case E_ApplyTargetFilter.Target:
                 target.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).RemoveEvent(RefreshTimeMultiplier);
+                break;
+            default:
+                break;
+        }
+    }
+    void ForcedSyncTimeMultiplier()
+    {
+        switch (timeMultiplierSource)
+        {
+            case E_ApplyTargetFilter.Caster:
+                timeMultiplier = caster.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).ModifiedValue;
+                break;
+            case E_ApplyTargetFilter.Target:
+                timeMultiplier = target.StatManager.CreateOrGetStat(E_StatType.TimeAccelerationRate).ModifiedValue;
                 break;
             default:
                 break;
@@ -246,7 +277,126 @@ public class Buff : MonoBehaviour
 
 
 
+    /// <summary>
+    /// 버프 활성화
+    /// </summary>
+    public void Activate()
+    {
+        CheckTargetFilter();
+        ForcedSyncTimeMultiplier();
+        AddEventAboutTimeMultiplier();
+        //최초 시작시 적용할 효과 발생
+        StartCoroutine(Duration());
+    }
+    /// <summary>
+    /// 지속시간 유지,주기적인 효과 발동, 반복횟수 체크
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator Duration()
+    {
+        RefreshEffectAll(periodEffectList);
+        currentReiterationPeriod = 0;
+        currentRepeatCount = 0;
+        if (durationTime >= 0)    //일정 시간동안 지속
+        {
+            currentRemainTime = durationTime;
+            while (true)
+            {
+                //지속시간이 존재할때.
+                if (currentRemainTime >= 0)
+                {
+                    currentRemainTime -= Time.deltaTime * timeMultiplier;
 
+                    //주기 계산
+                    if (currentReiterationPeriod < reiterationPeriod)//주기가 차지 않으면 채운다.
+                    {
+                        currentReiterationPeriod += Time.deltaTime * timeMultiplier;
+                    }
+                    else//주기가 가득참
+                    {
+                        if (repeatCount == -1)//무제한 발생
+                        {
+                            //효과 발생
+                            PeriodEffectActivate();
+                        }
+                        else if (currentRepeatCount < repeatCount - 1)//반복 횟수 제한
+                        {
+                            //효과발생
+                            PeriodEffectActivate();
+                            currentRepeatCount += 1;
+                        }
+                        else//반복 횟수를 초과
+                        {
+                            break;
+                        }
+                        currentReiterationPeriod -= reiterationPeriod - (Time.deltaTime * timeMultiplier);
+                    }
+                }
+                else//지속시간이 만료되었을때.
+                {
+                    break;
+                }
+
+                yield return null;
+            }
+            //마지막 효과 발동
+            PeriodEffectActivate();
+            //만료 효과 발생
+            DurationEndEffectActivate();
+        }
+        else                    //영구 지속
+        {
+            while (true)
+            {
+
+                //주기 계산
+                if (currentReiterationPeriod < reiterationPeriod)//주기가 차지 않으면 채운다.
+                {
+                    currentReiterationPeriod += Time.deltaTime * timeMultiplier;
+                }
+                else//주기가 가득참
+                {
+                    if (repeatCount == -1)//무제한 발생
+                    {
+                        //효과 발생
+                        PeriodEffectActivate();
+                    }
+                    else if (currentRepeatCount < repeatCount - 1)//반복 횟수 제한
+                    {
+                        //효과발생
+                        PeriodEffectActivate();
+                        currentRepeatCount += 1;
+                    }
+                    else//반복 횟수를 초과
+                    {
+                        break;
+                    }
+                    currentReiterationPeriod -= reiterationPeriod - (Time.deltaTime * timeMultiplier);
+                }
+
+                yield return null;
+            }
+            //마지막 효과 발동
+            PeriodEffectActivate();
+        }
+        target.BuffManager.RemoveBuff(this);
+        yield return null;
+    }
+    /// <summary>
+    /// 해당 버프를 즉시 소멸시킨다.
+    /// </summary>
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
+    /// <summary>
+    /// 버프 소멸시 발생 효과
+    /// </summary>
+    void OnDestroy()
+    {
+        DestroyEffectActivate();
+        RemoveEventAboutTimeMultiplier();
+    }
 
 
 

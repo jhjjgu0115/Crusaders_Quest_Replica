@@ -6,7 +6,6 @@ public class BuffManager
 {
     Dictionary<string, Buff> idDictionary = new Dictionary<string, Buff>();
     Dictionary<string, List<Buff>> nameDictionary = new Dictionary<string, List<Buff>>();
-    Dictionary<string, List<Buff>> casterDictionary = new Dictionary<string, List<Buff>>();
     Dictionary<E_BuffOrder, List<Buff>> orderDictionary = new Dictionary<E_BuffOrder, List<Buff>>();
    
     /// <summary>
@@ -86,12 +85,14 @@ public class BuffManager
 
     public Buff Add(Buff buff, Unit caster, Unit target)
     {
+        Buff tempBuff = null;
         if (nameDictionary.ContainsKey(buff.name))//해당 버프가 걸린적이 있는가?
         {   //걸린적이 있어 버프[이름]컨테이너는 있다.
             if(nameDictionary[buff.name].Count==0)//해당 이름의 버프가 있는가?
             {   //없다.
-                 
-                return Create(buff, caster, target);//그럼 새로 하나 인스턴스를 만들어서
+                tempBuff = Create(buff, caster, target);
+                tempBuff.Activate();
+                return tempBuff; //그럼 새로 하나 인스턴스를 만들어서
                 //이름 딕셔너리에 등록하고
                 //끝낸다.
             }
@@ -106,13 +107,16 @@ public class BuffManager
                         {
                             if (_buff.caster == buff.caster)//순회하며 해당 캐스터가 있는지 확인하고
                             {
+                                tempBuff = Overlap(_buff, caster, target, buff.currentStackCount);
                                 //있다면 해당 버프에다가 중첩
-                                Overlap(_buff, caster, target);
+                                return tempBuff;
                                 //그리고 끝낸다.
-                                return _buff;
+                                
                             }
                         }
-                        return Create(buff, caster, target);
+                        tempBuff = Create(buff, caster, target);
+                        tempBuff.Activate();
+                        return tempBuff;
                         //빠져나와버렸다면 버프가 없는것.
                         //버프를 신규 작성한다.
                         //등록하고
@@ -121,13 +125,16 @@ public class BuffManager
                     else
                     {//시전자 구분 안한다면
                         //그냥 이름[0]번째 버프에다 중첩을 시켜버린다.
-                        Overlap(nameDictionary[buff.name][0], caster, target);
-                       
+                        tempBuff = Overlap(nameDictionary[buff.name][0], caster, target, buff.currentStackCount);
+                        return tempBuff;
+                        
                     }
                 }
                 else
                 {   //중첩이 불가능하다.
-                    return Create(buff, caster, target); ;//신규작성하고
+                    tempBuff = Create(buff, caster, target);
+                    tempBuff.Activate();
+                    return tempBuff; //신규작성하고
                     //이름에 등록하고
                     //끝낸다.
                 }
@@ -135,23 +142,59 @@ public class BuffManager
         }
         else
         {
-            return Create(buff,caster,target);
+            tempBuff = Create(buff, caster, target);
+            tempBuff.Activate();
+            return tempBuff;
         }
-        return null;
     }
     public void Remove(Buff buff, Unit caster, Unit target)
     {
     }
-    void Refresh(Buff buff, Unit caster, Unit target)
+    void Refresh(Buff buff)
     {
-
+        buff.RefreshBuff();
     }
-    void Overlap(Buff buff, Unit caster, Unit target)
+    Buff Overlap(Buff buff, Unit caster, Unit target,int stack)
     {
-        buff.OverlapBuff();
+        buff.currentStackCount += stack;
+        Refresh(buff);
+        return buff;
     }
-
-
+    public Buff Get(string name)
+    {
+        if(nameDictionary.ContainsKey(name))
+        {
+            if (nameDictionary[name].Count !=0)
+            {
+                return nameDictionary[name][0];
+            }
+        }
+            return null;
+    }
+    public Buff Get(string name,Unit caster)
+    {
+        if (nameDictionary.ContainsKey(name))
+        {
+            if (nameDictionary[name].Count != 0)
+            {
+                foreach (Buff _buff in nameDictionary[name])
+                {
+                    if (_buff.caster == caster)//순회하며 해당 캐스터가 있는지 확인하고
+                    {
+                        return _buff;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    public void RemoveBuff(Buff buff)
+    {
+        idDictionary.Remove(buff.id);
+        nameDictionary[buff.name].Remove(buff);
+        orderDictionary[buff.buffOrder].Remove(buff);
+        buff.Destroy();
+    }
 
 
 

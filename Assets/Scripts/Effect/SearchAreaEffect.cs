@@ -36,7 +36,7 @@ public class SearchAreaEffect : Effect
     }
     public override void RefreshCasterBasedAmount(Unit caster)
     {
-        foreach (DamageEffect effect in enterEffectList)
+        foreach (Effect effect in enterEffectList)
         {
             effect.RefreshCasterBasedAmount(caster);
         }
