@@ -39,6 +39,7 @@ public class Buff : MonoBehaviour
                 target = target;
                 break;
         }
+        transform.SetParent(target.transform);
     }
     /// <summary>
     /// 중첩 가능 여부
@@ -76,7 +77,14 @@ public class Buff : MonoBehaviour
     /// </summary>
     public int repeatCount;
     public int currentRepeatCount;
-    
+
+
+
+
+
+
+
+
 
     /// <summary>
     /// 시간 배율 출처. 버프내에서 발생하는 시간값에 대한 가속 배율의 출처
@@ -139,7 +147,25 @@ public class Buff : MonoBehaviour
                 break;
         }
     }
-    
+
+
+    /// <summary>
+    /// 추가 스텟
+    /// </summary>
+    public List<additinalStat> additianalStatList = new List<additinalStat>();
+
+    [System.Serializable]
+    public class additinalStat
+    {
+        public E_StatType targetStat;
+        public float totalStat;
+        public AmountSet addStat;
+        public void SetTotalStat(Unit caster, Unit target)
+        {
+            totalStat = addStat.FixedAmount + addStat.SetAmountCasterBased(caster) + addStat.SetAmountTargetBased(target);
+        }
+    }
+
     /// <summary>
     /// 최초 생성 효과 리스트
     /// </summary>
@@ -222,6 +248,14 @@ public class Buff : MonoBehaviour
     /// </summary>
     public void RefreshBuff()
     {
+        foreach (additinalStat addedstat in additianalStatList)
+        { 
+            target.StatManager.CreateOrGetStat(addedstat.targetStat).ModifiedValue -= addedstat.totalStat;
+            addedstat.SetTotalStat(caster, target);
+            addedstat.totalStat*= currentStackCount;
+            target.StatManager.CreateOrGetStat(addedstat.targetStat).ModifiedValue += addedstat.totalStat;
+        }
+
         currentRemainTime = durationTime;
         currentRepeatCount = 0;
         RefreshEffectAll(periodEffectList);
@@ -286,7 +320,16 @@ public class Buff : MonoBehaviour
         ForcedSyncTimeMultiplier();
         AddEventAboutTimeMultiplier();
         //최초 시작시 적용할 효과 발생
+        foreach(additinalStat addedstat in additianalStatList)
+        {
+            addedstat.SetTotalStat(caster,target);
+            addedstat.totalStat *= currentStackCount;
+            target.StatManager.CreateOrGetStat(addedstat.targetStat).ModifiedValue += addedstat.totalStat;
+        }
         StartCoroutine(Duration());
+        
+
+
     }
     /// <summary>
     /// 지속시간 유지,주기적인 효과 발동, 반복횟수 체크
@@ -394,6 +437,10 @@ public class Buff : MonoBehaviour
     /// </summary>
     void OnDestroy()
     {
+        foreach (additinalStat addedstat in additianalStatList)
+        {
+            target.StatManager.CreateOrGetStat(addedstat.targetStat).ModifiedValue -= addedstat.totalStat;
+        }
         DestroyEffectActivate();
         RemoveEventAboutTimeMultiplier();
     }

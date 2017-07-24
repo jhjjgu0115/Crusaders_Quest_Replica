@@ -383,7 +383,6 @@ public partial class Unit : MonoBehaviour
             {
                 if (!skillQueue.IsEmpty)
                 {
-                    //Debug.Log(1);
                     rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
                     currentSkillInfo = skillQueue.DequeueAction().motionName;
                     animator.Play(currentSkillInfo);
