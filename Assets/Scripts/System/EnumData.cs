@@ -109,7 +109,15 @@ public enum E_DamageType
     Magical= 256,
     TrueType = 257
 }
-
+public enum E_FloatingType
+{
+    None,
+    FullPenetrationgDamage,
+    CriticalDamage,
+    ShieldDamage,
+    NonpenetratingDamage,
+    Heal
+}
 
 public enum E_Range
 {

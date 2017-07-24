@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public  class FloatingNumberManager : MonoBehaviour
 {
-    public GameObject floatingObject;
+    public static GameObject floatingObject;
+    public static Canvas floatingArea;
 
     public static FloatingNumberManager instance = null;
     public static FloatingNumberManager Instance
@@ -39,10 +41,52 @@ public  class FloatingNumberManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        floatingObject = Resources.Load<GameObject>("Prefabs/FloatingNumberObject");
+        foreach(GameObject gamaobject in FindObjectsOfType<GameObject>())
+        {
+            if(gamaobject.name== "FloatingArea")
+            {
+                floatingArea = gamaobject.GetComponent<Canvas>();
+            }
+        }
     }
-
-    public static void FloatingNumber(float number)
+    private void Start()
     {
+    }
+    public static void FloatingNumber(GameObject target,float number,E_FloatingType floatingType)
+    {
+        GameObject floatingNumber = Instantiate<GameObject>(floatingObject);
+        floatingNumber.transform.SetParent(floatingArea.transform);
+        Text floatingText = floatingNumber.GetComponent<Text>();
+        floatingText.text = ((int)number).ToString();
+        floatingNumber.transform.position = target.transform.position + new Vector3(Random.value-0.5f,1.2f + Random.value, 0);
 
+        switch(floatingType)
+        {
+            case E_FloatingType.NonpenetratingDamage:
+                {
+                    floatingText.color = Color.gray;
+                    break;
+                }
+            case E_FloatingType.FullPenetrationgDamage:
+                {
+                    floatingText.color = Color.yellow;
+                    break;
+                }
+            case E_FloatingType.CriticalDamage:
+                {
+                    floatingText.color = Color.red;
+                    break;
+                }
+            case E_FloatingType.Heal:
+                {
+                    floatingText.color = Color.green;
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
     }
 }

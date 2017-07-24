@@ -455,7 +455,11 @@ public partial class Unit : MonoBehaviour
     }
 
     public void GetDamage(ref float damage, E_DamageType damageType, float penetrationPower)
-    {/*
+    {
+        float originalDamage = damage;
+        E_FloatingType floatingType = E_FloatingType.NonpenetratingDamage;
+        
+        /*
         float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
         float defencePoint = StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower;
 
@@ -465,8 +469,9 @@ public partial class Unit : MonoBehaviour
         */
         float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
         StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= damage * (100 / (((StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower) * 0.348f) + 100));
-        Debug.Log(name +"_HP Change : "+ currentHP+ " >> " + StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue);
-        Debug.Log(name+"_GetDamage : " + damage + " >> " + (currentHP - statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue));
+        FloatingNumberManager.FloatingNumber(gameObject, damage, floatingType);
+        // Debug.Log(name +"_HP Change : "+ currentHP+ " >> " + StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue);
+        // Debug.Log(name+"_GetDamage : " + damage + " >> " + (currentHP - statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue));
         
         //StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue =
     }
