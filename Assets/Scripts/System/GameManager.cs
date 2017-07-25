@@ -64,8 +64,8 @@ public class GameManager : MonoBehaviour {
 
         _hero.StatManager.CreateOrGetStat(E_StatType.AttackPoint).ModifiedValue = 860.9f;
 
-        _hero.StatManager.CreateOrGetStat(E_StatType.CriticalRate).ModifiedValue = 21.7f;
-        _hero.StatManager.CreateOrGetStat(E_StatType.CirticalMultiplier).ModifiedValue = 2.05f;
+        _hero.StatManager.CreateOrGetStat(E_StatType.CriticalRate).ModifiedValue = 21.7f/100;
+        _hero.StatManager.CreateOrGetStat(E_StatType.CriticalMultiplier).ModifiedValue = 2.05f;
 
         _hero.StatManager.CreateOrGetStat(E_StatType.MaxSpecialPoint).ModifiedValue = 100;
         _hero.StatManager.CreateOrGetStat(E_StatType.MinSpecialPoint).ModifiedValue = 0;

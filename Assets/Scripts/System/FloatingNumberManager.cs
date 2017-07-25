@@ -5,9 +5,9 @@ using UnityEngine;
 
 public  class FloatingNumberManager : MonoBehaviour
 {
-    public static GameObject floatingObject;
+    public static FloatingObject floatingObject;
     public static Canvas floatingArea;
-
+    public Canvas canvas;
     public static FloatingNumberManager instance = null;
     public static FloatingNumberManager Instance
     {
@@ -41,13 +41,17 @@ public  class FloatingNumberManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        floatingObject = Resources.Load<GameObject>("Prefabs/FloatingNumberObject");
-        foreach(GameObject gamaobject in FindObjectsOfType<GameObject>())
+        floatingObject = Resources.Load<FloatingObject>("Prefabs/System/FloatingSystem/FloatingObject");
+        foreach(FloatingObject gamaobject in FindObjectsOfType<FloatingObject>())
         {
             if(gamaobject.name== "FloatingArea")
             {
                 floatingArea = gamaobject.GetComponent<Canvas>();
             }
+        }
+        if(!floatingArea)
+        {
+            floatingArea = canvas;
         }
     }
     private void Start()
@@ -55,32 +59,42 @@ public  class FloatingNumberManager : MonoBehaviour
     }
     public static void FloatingNumber(GameObject target,float number,E_FloatingType floatingType)
     {
-        GameObject floatingNumber = Instantiate<GameObject>(floatingObject);
-        floatingNumber.transform.SetParent(floatingArea.transform);
-        Text floatingText = floatingNumber.GetComponent<Text>();
+        FloatingObject floatingGameObject = Instantiate<FloatingObject>(floatingObject);
+
+        Animator floatingAnimator = floatingGameObject.floatingAnimator;
+        Animator floatingAnimatorChildren = floatingGameObject.damageFloatingObjectAnimator;
+
+
+
+        floatingGameObject.transform.SetParent(floatingArea.transform);
+        Text floatingText = floatingGameObject.GetComponentInChildren<Text>();
         floatingText.text = ((int)number).ToString();
-        floatingNumber.transform.position = target.transform.position + new Vector3(Random.value-0.5f,1.2f + Random.value, 0);
+        floatingGameObject.transform.position = target.transform.position + new Vector3(Random.value-0.5f,1.2f + Random.value, 0);
 
         switch(floatingType)
         {
             case E_FloatingType.NonpenetratingDamage:
                 {
-                    floatingText.color = Color.gray;
+                    floatingAnimator.Play("DamageFloating");
+                    floatingAnimatorChildren.Play("NonPenetrationDamage");
                     break;
                 }
-            case E_FloatingType.FullPenetrationgDamage:
+            case E_FloatingType.FullPenetrationDamage:
                 {
-                    floatingText.color = Color.yellow;
+                    floatingAnimator.Play("DamageFloating");
+                    floatingAnimatorChildren.Play("FullPenetrationDamage");
                     break;
                 }
             case E_FloatingType.CriticalDamage:
                 {
-                    floatingText.color = Color.red;
+                    floatingAnimator.Play("CriticalFloating");
+                    floatingAnimatorChildren.Play("CriticalDamage");
                     break;
                 }
             case E_FloatingType.Heal:
                 {
-                    floatingText.color = Color.green;
+                    floatingAnimator.Play("HealFloating");
+                    floatingAnimatorChildren.Play("Healing");
                     break;
                 }
             default:

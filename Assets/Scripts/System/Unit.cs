@@ -445,35 +445,76 @@ public partial class Unit : MonoBehaviour
 
 
 
-    public void GetHit(ref float damage,E_DamageType damageType,float penetrationPower)
+    public void GetHit(ref float damage,E_DamageType damageType,float penetrationPower,bool isCritical)
     {
 
         //버프 순회
         //피격 판정
-        GetDamage(ref damage, damageType, penetrationPower);
+        GetDamage(ref damage, damageType, penetrationPower, isCritical);
         Debug.Log(name + " hit!");
     }
 
-    public void GetDamage(ref float damage, E_DamageType damageType, float penetrationPower)
+    public void GetDamage(ref float damage, E_DamageType damageType, float penetrationPower, bool isCritical)
     {
-        float originalDamage = damage;
+        //원래 데미지와 비교하여 관통치가 15%차이가 난다면 비관통으로 출력
+        float damageCalculated = damage;
+        float penetrationPercent = 0;
         E_FloatingType floatingType = E_FloatingType.NonpenetratingDamage;
+
+
+        //관통계산 - 85%이상이면 풀관통 이하면 비관통
+        if(penetrationPower>= StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue)
+        {
+            penetrationPercent = 1;
+        }
+        else
+        {
+            penetrationPercent = (100 / (((StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower) * 0.348f) + 100));
+        }
+        Debug.Log(penetrationPercent);
+        damageCalculated *= penetrationPercent;
+        if (penetrationPercent>0.85f)
+        {
+            floatingType = E_FloatingType.FullPenetrationDamage;
+        }
+
+        //크리티컬 계산
+        if(isCritical)
+        {
+            floatingType = E_FloatingType.CriticalDamage;
+        }
         
+
+        float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
+        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= damageCalculated;
+        FloatingNumberManager.FloatingNumber(gameObject, damageCalculated, floatingType);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Debug.Log(name +"_HP Change : "+ currentHP+ " >> " + StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue);
+        // Debug.Log(name+"_GetDamage : " + damage + " >> " + (currentHP - statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue));
+
+        //StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue =
         /*
         float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
         float defencePoint = StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower;
 
         currentHP -= damage * (100/ ((defencePoint * 0.348f) + 100));
         StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue = currentHP;
-
         */
-        float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
-        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= damage * (100 / (((StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower) * 0.348f) + 100));
-        FloatingNumberManager.FloatingNumber(gameObject, damage, floatingType);
-        // Debug.Log(name +"_HP Change : "+ currentHP+ " >> " + StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue);
-        // Debug.Log(name+"_GetDamage : " + damage + " >> " + (currentHP - statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue));
-        
-        //StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue =
     }
 
     public void GetHeal(ref float healAmount)

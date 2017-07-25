@@ -113,16 +113,30 @@ public class DamageEffect : Effect
     }
     public override void ActivateEffect(Unit caster, Unit target, float multiplier)
     {
+        bool isCritical = false;
+        if (caster.StatManager.CreateOrGetStat(E_StatType.CriticalRate).ModifiedValue > Random.value)
+        {
+            isCritical = true;
+            totalDamage *= caster.StatManager.CreateOrGetStat(E_StatType.CriticalMultiplier).ModifiedValue;
+        }
+
         if (true)
         {
-            target.GetDamage(ref totalDamage, damageType, totalPenetration* multiplier);
+            target.GetDamage(ref totalDamage, damageType, totalPenetration* multiplier, isCritical);
         }
     }
     public override void ActivateEffect(Unit caster, Unit target)
     {
+        bool isCritical = false;
+        if (caster.StatManager.CreateOrGetStat(E_StatType.CriticalRate).ModifiedValue > Random.value)
+        {
+            isCritical = true;
+            totalDamage *= caster.StatManager.CreateOrGetStat(E_StatType.CriticalMultiplier).ModifiedValue;
+        }
+
         if (true)
         {
-            target.GetDamage(ref totalDamage,damageType,totalPenetration+caster.StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue);
+            target.GetDamage(ref totalDamage,damageType,totalPenetration+caster.StatManager.CreateOrGetStat(((E_StatType)damageType)+3).ModifiedValue, isCritical);
         }
     }
 

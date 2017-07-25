@@ -21,7 +21,7 @@ public enum E_StatType
 
     //치명타
     CriticalRate,
-    CirticalMultiplier,
+    CriticalMultiplier,
 
     //SP
     MaxSpecialPoint,
@@ -58,8 +58,8 @@ public enum E_StatType
     CurrentAttackSpeed,
 
     //관통력
-    PhysicalPenetration,
-    MagicalPenetration,
+    PhysicalPenetration=258,
+    MagicalPenetration=259,
     //이동속도
     MoveSpeed,
     //넉백 저항
@@ -112,7 +112,7 @@ public enum E_DamageType
 public enum E_FloatingType
 {
     None,
-    FullPenetrationgDamage,
+    FullPenetrationDamage,
     CriticalDamage,
     ShieldDamage,
     NonpenetratingDamage,
