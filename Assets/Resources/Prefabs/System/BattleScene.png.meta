@@ -1,9 +1,10 @@
 fileFormatVersion: 2
 guid: 8bc1bece9a43d9547ae6d9285b29c509
-timeCreated: 1500818918
+timeCreated: 1501080404
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: BattleScene_0
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -76,7 +77,20 @@ TextureImporter:
     overridden: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: BattleScene_0
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 994
+        width: 169
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
     outline: []
   spritePackingTag: 
   userData: 
