@@ -471,7 +471,6 @@ public partial class Unit : MonoBehaviour
         {
             penetrationPercent = (100 / (((StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower) * 0.348f) + 100));
         }
-        Debug.Log(penetrationPercent);
         damageCalculated *= penetrationPercent;
         if (penetrationPercent>0.85f)
         {
