@@ -3,9 +3,52 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
-    public List<Unit> heroesList = new List<Unit>();
-    public List<Unit> enemyList = new List<Unit>();
+public class GameManager : MonoBehaviour
+{
+    public static GameManager instance = null;
+    public static GameManager Instance
+    {
+        get
+        {
+            if (instance)
+            {
+                return instance;
+            }
+            else
+            {
+                instance = FindObjectOfType<GameManager>();
+                if (!instance)
+                {
+                    GameObject container = new GameObject();
+                    container.name = "GameManager";
+                    instance = container.AddComponent<GameManager>();
+                }
+                return instance;
+            }
+        }
+    }
+    private void Awake()
+    {
+        if (!instance)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    static List<Unit> playerUnitList = new List<Unit>();
+
+    public static List<Unit> PlayerUnitList
+    {
+        get
+        {
+            return playerUnitList;
+        }
+    }
+    public List<Unit> enemyUnitList = new List<Unit>();
     public static Unit playerHeadUnit;
     public static Unit monsterHeadUnit;
 
@@ -26,11 +69,11 @@ public class GameManager : MonoBehaviour {
     {
         //2명일때
         targetUnitNum++;
-        if(targetUnitNum>=heroesList.Count)
+        if(targetUnitNum>=playerUnitList.Count)
         {
             targetUnitNum = 0;
         }
-        targetUnit = heroesList[targetUnitNum];
+        targetUnit = playerUnitList[targetUnitNum];
     }
 
 
@@ -39,11 +82,11 @@ public class GameManager : MonoBehaviour {
 
     void EnterTheBattle()
     {
-        foreach (Unit _hero in heroesList)
+        foreach (Unit _hero in playerUnitList)
         {
             SetTestHero(_hero);
         }
-        foreach (Unit _hero in enemyList)
+        foreach (Unit _hero in enemyUnitList)
         {
             SetTestHero(_hero);
         }
@@ -115,12 +158,12 @@ public class GameManager : MonoBehaviour {
         
 
         EnterTheBattle();
-        enemyList[0].StatManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue = 0;
+        enemyUnitList[0].StatManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue = 0;
         //enemyList[0].StatManager.CreateOrGetStat(E_StatType.MaxRange).ModifiedValue = 1;
         //enemyList[0].StatManager.CreateOrGetStat(E_StatType.MinRange).ModifiedValue = 0;
         CheckingHeadUnitStart();
 
-        leaderHero = heroesList[0];
+        leaderHero = playerUnitList[0];
         targetUnit = leaderHero;
     }
 
@@ -131,19 +174,19 @@ public class GameManager : MonoBehaviour {
     }
     IEnumerator CheckingHeadUnit()
     {
-        playerHeadUnit = heroesList[0];
-        monsterHeadUnit = enemyList[0];
+        playerHeadUnit = playerUnitList[0];
+        monsterHeadUnit = enemyUnitList[0];
 
         while (true)
         {
-            foreach(Unit unit in heroesList)
+            foreach(Unit unit in playerUnitList)
             {
                 if(unit.transform.position.x > playerHeadUnit.transform.position.x)
                 {
                     playerHeadUnit = unit;
                 }
             }
-            foreach (Unit unit in enemyList)
+            foreach (Unit unit in enemyUnitList)
             {
                 if (unit.transform.position.x < monsterHeadUnit.transform.position.x)
                 {

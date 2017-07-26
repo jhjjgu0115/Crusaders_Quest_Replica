@@ -713,7 +713,10 @@ public partial class Unit : MonoBehaviour
 
 
 
+    public void SkillQueueAdd(int index)
+    {
 
+    }
 
 
 
