@@ -38,16 +38,85 @@ public class BlockManager : MonoBehaviour
         }
     }
 
-    List<Block> blockList = new List<Block>();
 
+    /*
+     *블록 풀을 만들어 제어 
+     * 
+     */
+
+    public List<Block> blockPool = new List<Block>(8);
+
+    void InitializeBoolPool()
+    {
+        for(int index=0; index<8; index++)
+        {
+            blockPool[index] = new Block();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    List<Block> blockList = new List<Block>();
     List<Unit> playerUnitList = null;
 
+    Transform lastIndex;
 
-
-	// Use this for initialization
-	void Start ()
+    IEnumerator DropDown(Block dropBlock)
     {
-        playerUnitList = GameManager.PlayerUnitList;
+        while (Vector3.Distance(dropBlock.transform.position, lastIndex.position) >= 0.4f)
+        {
+            dropBlock.transform.position = Vector3.Lerp(transform.position, lastIndex.position, 0.4f);
+            yield return null;
+        }
+        dropBlock.transform.position = lastIndex.position;
+        yield return null;
+    }
+
+    public float blockGeneratePeriod = 0;
+    float currentGeneratingPeriod = 0;
+    /// <summary>
+    /// 자연 블록 생성
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator GeneratingBlockPeriodic()
+    {
+
+        while(true)
+        {
+            if(currentGeneratingPeriod > 0)
+            {
+                currentGeneratingPeriod -= Time.deltaTime;
+            }
+            else
+            {
+                //블록 생성.
+            }
+            yield return null;
+        }
+    }
+
+    void CreateBlock()
+    {
+
+    }
+
+
+    // Use this for initialization
+    void Start ()
+    {
+        playerUnitList = GameManager.Instance.PlayerUnitList;
 
     }
 	

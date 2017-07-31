@@ -39,9 +39,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    static List<Unit> playerUnitList = new List<Unit>();
+    public List<Unit> playerUnitList = new List<Unit>();
 
-    public static List<Unit> PlayerUnitList
+    public List<Unit> PlayerUnitList
     {
         get
         {
