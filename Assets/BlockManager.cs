@@ -52,7 +52,6 @@ public class BlockManager : MonoBehaviour
         {
             blockPool[index] = new Block();
             blockPool[index].Initialize(0, null);
-
         }
     }
 
