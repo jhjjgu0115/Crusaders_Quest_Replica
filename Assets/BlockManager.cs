@@ -46,11 +46,13 @@ public class BlockManager : MonoBehaviour
 
     public List<Block> blockPool = new List<Block>(8);
 
-    void InitializeBoolPool()
+    void InitializeBlockPool()
     {
         for(int index=0; index<8; index++)
         {
             blockPool[index] = new Block();
+            blockPool[index].Initialize(0, null);
+
         }
     }
 
