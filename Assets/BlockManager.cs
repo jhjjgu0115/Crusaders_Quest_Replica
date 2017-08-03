@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
+    public Block block;
     public static BlockManager instance = null;
     public static BlockManager Instance
     {
@@ -38,55 +39,46 @@ public class BlockManager : MonoBehaviour
         }
     }
 
-
     /*
      *블록 풀을 만들어 제어 
      * 
      */
-
-    public List<Block> blockPool = new List<Block>(8);
-
+    //블록 풀
+    public List<Block> blockPool;
     void InitializeBlockPool()
     {
-        for(int index=0; index<8; index++)
+        blockPool = new List<Block>();
+        block = Resources.Load<Block>("Prefabs/System/BlockPanel/Block");
+        for (int index=0; index<8; index++)
         {
-            blockPool[index] = new Block();
+            blockPool.Add(Instantiate<Block>(block));
+            blockPool[index].transform.SetParent(transform,false);
             blockPool[index].Initialize(0, null);
+            blockPool[index].gameObject.SetActive(false);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    List<Block> blockList = new List<Block>();
-    List<Unit> playerUnitList = null;
-
-    Transform lastIndex;
-
-    IEnumerator DropDown(Block dropBlock)
+    Block GetBlockInPool()
     {
-        while (Vector3.Distance(dropBlock.transform.position, lastIndex.position) >= 0.4f)
+        foreach(Block block in blockPool)
         {
-            dropBlock.transform.position = Vector3.Lerp(transform.position, lastIndex.position, 0.4f);
-            yield return null;
+            if(!block.gameObject.activeInHierarchy)
+            {
+                block.gameObject.SetActive(true);
+                return block;
+            }
         }
-        dropBlock.transform.position = lastIndex.position;
-        yield return null;
+        return null;
+    }
+    public void ReturnBlockPool(Block block)
+    {
+        block.gameObject.SetActive(false);
     }
 
+    //블록 주기 생성
+    List<Unit> playerUnitList = null;
     public float blockGeneratePeriod = 0;
     float currentGeneratingPeriod = 0;
+    
     /// <summary>
     /// 자연 블록 생성
     /// </summary>
@@ -94,19 +86,50 @@ public class BlockManager : MonoBehaviour
     IEnumerator GeneratingBlockPeriodic()
     {
 
-        while(true)
+        while (true)
         {
-            if(currentGeneratingPeriod > 0)
+            if(lastBlockIndex<8)
             {
-                currentGeneratingPeriod -= Time.deltaTime;
+                if (currentGeneratingPeriod < blockGeneratePeriod)
+                {
+                    currentGeneratingPeriod += Time.deltaTime;
+                }
+                else
+                {
+                    currentGeneratingPeriod = 0;
+                    Block tempBlock = GetBlockInPool();
+                    //Debug.Log(GetComponent<RectTransform>().rect.xMax);
+                    //tempBlock.transform.position = 
+                    tempBlock.Initialize(3, GameManager.playerHeadUnit);
+                    StartCoroutine(DropDown(tempBlock,blockPanelPostionList[lastBlockIndex]));
+                    lastBlockIndex++;
+                    //블록 생성.
+                }
             }
-            else
-            {
-                //블록 생성.
-            }
+
+
             yield return null;
         }
     }
+
+    //블록 패널
+    public int lastBlockIndex = 0;
+    public List<Transform> blockPanelPostionList = new List<Transform>();
+    public List<Block> blockPanel = new List<Block>();
+
+    IEnumerator DropDown(Block dropBlock,Transform targetPostion)
+    {
+        while (Vector3.Distance(targetPostion.position, dropBlock.transform.position) >= 0.4f)
+        {
+            dropBlock.transform.position = Vector3.Lerp(targetPostion.position, dropBlock.transform.position, 0.4f);
+            yield return null;
+        }
+        dropBlock.transform.position = targetPostion.position;
+        dropBlock.canUse = true;
+        yield return null;
+    }
+
+  
 
     void CreateBlock()
     {
@@ -117,14 +140,15 @@ public class BlockManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        InitializeBlockPool();
         playerUnitList = GameManager.Instance.PlayerUnitList;
+        StartCoroutine(GeneratingBlockPeriodic());
+        for(int index=0;index<8;index++)
+        {
+            blockPanel.Add(null);
+        }
 
-    }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+}
 
     public void BlockSkillActivate(int index,int chain)
     {
