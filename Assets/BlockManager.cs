@@ -39,24 +39,84 @@ public class BlockManager : MonoBehaviour
         }
     }
 
+
     /*
-     *블록 풀을 만들어 제어 
-     * 
+     * 블록 풀 생성
+     * 블록 풀 초기화
+     * 블록 풀에서 꺼내기
+     * 블록 풀에 반납(반납할 블록)
      */
-    //블록 풀
-    public List<Block> blockPool;
+    List<Block> blockPool;
     void InitializeBlockPool()
     {
         blockPool = new List<Block>();
         block = Resources.Load<Block>("Prefabs/System/BlockPanel/Block");
-        for (int index=0; index<8; index++)
+        lastBlockIndex = 0;
+        for (int index = 0; index < 8; index++)
         {
             blockPool.Add(Instantiate<Block>(block));
-            blockPool[index].transform.SetParent(transform,false);
-            blockPool[index].Initialize(0, null);
+            blockPool[index].transform.SetParent(transform, false);
+            blockPool[index].SetBlockData(0, null,E_SkillType.Normal);
             blockPool[index].gameObject.SetActive(false);
         }
     }
+    Block Pop()
+    {
+        foreach (Block block in blockPool)
+        {
+            if (!block.gameObject.activeInHierarchy)
+            {
+                block.gameObject.SetActive(true);
+                block.SetBlockData(0, null, E_SkillType.Normal);
+                return block;
+            }
+        }
+        return null;
+    }
+    void Push(Block block)
+    {
+        block.gameObject.SetActive(false);
+    }
+
+    /* 
+     * 블록 떨구기(떨굴 위치,떨구기
+     * 블록 합치기
+     * 블록 자동 생성 시작
+     * 블록 자동 생성 중지
+     */
+     void DropDown()
+    {
+
+    }
+    void Combine(params Block[] blocks)
+    {
+
+    }
+    void StartGenerateBlock()
+    {
+        StartCoroutine(GenerateBlock());
+    }
+    void StopGenerateBlock()
+    {
+        StopCoroutine(GenerateBlock());
+    }
+    IEnumerator GenerateBlock()
+    {
+        while(true)
+        {
+            yield return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     Block GetBlockInPool()
     {
         foreach(Block block in blockPool)
@@ -100,11 +160,15 @@ public class BlockManager : MonoBehaviour
                     Block tempBlock = GetBlockInPool();
                     //Debug.Log(GetComponent<RectTransform>().rect.xMax);
                     //tempBlock.transform.position = 
-                    tempBlock.Initialize(3, GameManager.playerHeadUnit);
+                    tempBlock.SetBlockData(3, GameManager.playerHeadUnit,E_SkillType.Normal);
                     StartCoroutine(DropDown(tempBlock,blockPanelPostionList[lastBlockIndex]));
                     lastBlockIndex++;
                     //블록 생성.
                 }
+            }
+            else
+            {
+                currentGeneratingPeriod = 0;
             }
 
 
@@ -135,7 +199,7 @@ public class BlockManager : MonoBehaviour
     {
 
     }
-
+    
 
     // Use this for initialization
     void Start ()
@@ -148,7 +212,10 @@ public class BlockManager : MonoBehaviour
             blockPanel.Add(null);
         }
 
-}
+    }
+
+
+
 
     public void BlockSkillActivate(int index,int chain)
     {
@@ -172,5 +239,11 @@ public class BlockManager : MonoBehaviour
     //블록 소멸
     //블록 사용 불가
     //블록 변경
+
+
+
+
+
+
 
 }

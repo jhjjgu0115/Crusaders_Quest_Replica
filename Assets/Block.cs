@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
+    E_SkillType skillType;
     List<Block> linkedBlockList = new List<Block>(2);
     int chainLevel = 0;
     Unit targetUnit = null;
     public bool canUse = false;
 
-    public void Initialize(int chainLevel,Unit targetUnit)
+    public void SetBlockData(int chainLevel,Unit targetUnit,E_SkillType skillType)
     {
+
         canUse = false;
         this.targetUnit = targetUnit;
         this.chainLevel = chainLevel;
+        this.skillType = skillType;
         linkedBlockList.Add(null);
         linkedBlockList.Add(null);
     }

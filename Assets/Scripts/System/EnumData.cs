@@ -147,3 +147,8 @@ public enum E_Race
     Boss
 }
 
+public enum E_SkillType
+{
+    Normal,
+    Special
+}
