@@ -63,4 +63,15 @@ public class Block : MonoBehaviour
         canUse = true;
         yield return null;
     }
+    IEnumerator TryCombine()
+    {
+        while(true)
+        {
+            if(canUse)
+            {
+
+            }
+            yield return null;
+        }
+    }
 }

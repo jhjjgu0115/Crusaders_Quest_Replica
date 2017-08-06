@@ -96,10 +96,6 @@ public class BlockManager : MonoBehaviour
     public int lastBlockIndex = 0;
     public List<Transform> blockPanelPostionList = new List<Transform>();
 
-    void Combine(params Block[] blocks)
-    {
-
-    }
     void StartGenerateBlock()
     {
         StartCoroutine(GenerateBlock());
@@ -144,6 +140,12 @@ public class BlockManager : MonoBehaviour
         block = block.headBlock;
         int usingBlockIndex = blockPanel.IndexOf(block);
         int usingChain = block.chainLevel;
+
+        /*
+         *블록 스킬 시전
+         */
+
+
         foreach (Block linkedBlock in block.linkedBlockList)
         {
             if (linkedBlock)
@@ -155,7 +157,6 @@ public class BlockManager : MonoBehaviour
         blockPanel.Remove(block);
         Push(block);
         lastBlockIndex -= usingChain;
-
         foreach(Block _block in blockPanel)
         {
             _block.DropDownTargetTransform = blockPanelPostionList[blockPanel.IndexOf(_block)];
@@ -164,9 +165,37 @@ public class BlockManager : MonoBehaviour
                 _block.StartDropDown();
             }
         }
+
+        //내려올곳이 맨앞이면 할 필요가 없다.
+        if (usingBlockIndex != 0)
+        {        
+            //앞이 이미 3체인이라면 합칠 필요가 없다.
+            if (blockPanel[usingBlockIndex-1].chainLevel != 3)
+            {
+                //같지 않다면 합칠 필요가 없다.
+                if ((blockPanel[usingBlockIndex - 1].targetUnit == blockPanel[usingBlockIndex].targetUnit) & (blockPanel[usingBlockIndex - 1].skillType == blockPanel[usingBlockIndex].skillType))
+                {
+                    Block tempFrontHeadBlock = blockPanel[usingBlockIndex - 1].headBlock;
+                    Block tempDropedHeadBlock = blockPanel[usingBlockIndex - 1].headBlock;
+
+
+
+                    //해당 인덱스부터 재결합을 시킨다.
+                    
+                    
+                }
+            }
+
+        }
+
+
+
+
+
+
+
+
     }
-
-
 
 
 
