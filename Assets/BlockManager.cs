@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlockManager : MonoBehaviour
 {
     public Block block;
-    public static BlockManager instance = null;
+    static BlockManager instance = null;
     public static BlockManager Instance
     {
         get
@@ -27,6 +27,9 @@ public class BlockManager : MonoBehaviour
             }
         }
     }
+    List<Unit> playerUnitList = null;
+
+
     private void Awake()
     {
         if (!instance)
@@ -38,7 +41,13 @@ public class BlockManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    void Start()
+    {
+        InitializeBlockPool();
+        playerUnitList = GameManager.Instance.PlayerUnitList;
+        StartGenerateBlock();
 
+    }
 
     /*
      * 블록 풀 생성
@@ -67,7 +76,6 @@ public class BlockManager : MonoBehaviour
             if (!block.gameObject.activeInHierarchy)
             {
                 block.gameObject.SetActive(true);
-                block.SetBlockData(0, null, E_SkillType.Normal);
                 return block;
             }
         }
@@ -84,10 +92,10 @@ public class BlockManager : MonoBehaviour
      * 블록 자동 생성 시작
      * 블록 자동 생성 중지
      */
-     void DropDown()
-    {
+    List<Block> blockPanel = new List<Block>();
+    public int lastBlockIndex = 0;
+    public List<Transform> blockPanelPostionList = new List<Transform>();
 
-    }
     void Combine(params Block[] blocks)
     {
 
@@ -102,11 +110,72 @@ public class BlockManager : MonoBehaviour
     }
     IEnumerator GenerateBlock()
     {
-        while(true)
+        while (true)
         {
+            if (lastBlockIndex < 8)
+            {
+                if (currentGeneratingPeriod < blockGeneratePeriod)
+                {
+                    currentGeneratingPeriod += Time.deltaTime;
+                }
+                else
+                {
+                    currentGeneratingPeriod = 0;
+                    Block tempBlock = Pop();
+                    tempBlock.SetBlockData(1, GameManager.playerHeadUnit, E_SkillType.Normal);
+                    tempBlock.DropDownTargetTransform = blockPanelPostionList[lastBlockIndex];
+                    blockPanel.Add(tempBlock);
+                    tempBlock.StartDropDown();
+                    lastBlockIndex++;
+                }
+            }
+            else
+            {
+                currentGeneratingPeriod = 0;
+            }
+
+
             yield return null;
         }
     }
+
+    public void BlockUse(Block block)
+    {
+        block = block.headBlock;
+        int usingBlockIndex = blockPanel.IndexOf(block);
+        int usingChain = block.chainLevel;
+        foreach (Block linkedBlock in block.linkedBlockList)
+        {
+            if (linkedBlock)
+            {
+                blockPanel.Remove(linkedBlock);
+                Push(linkedBlock);
+            }
+        }
+        blockPanel.Remove(block);
+        Push(block);
+        lastBlockIndex -= usingChain;
+
+        foreach(Block _block in blockPanel)
+        {
+            _block.DropDownTargetTransform = blockPanelPostionList[blockPanel.IndexOf(_block)];
+            if(_block.canUse)
+            {
+                _block.StartDropDown();
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -135,51 +204,12 @@ public class BlockManager : MonoBehaviour
     }
 
     //블록 주기 생성
-    List<Unit> playerUnitList = null;
     public float blockGeneratePeriod = 0;
     float currentGeneratingPeriod = 0;
     
-    /// <summary>
-    /// 자연 블록 생성
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator GeneratingBlockPeriodic()
-    {
-
-        while (true)
-        {
-            if(lastBlockIndex<8)
-            {
-                if (currentGeneratingPeriod < blockGeneratePeriod)
-                {
-                    currentGeneratingPeriod += Time.deltaTime;
-                }
-                else
-                {
-                    currentGeneratingPeriod = 0;
-                    Block tempBlock = GetBlockInPool();
-                    //Debug.Log(GetComponent<RectTransform>().rect.xMax);
-                    //tempBlock.transform.position = 
-                    tempBlock.SetBlockData(3, GameManager.playerHeadUnit,E_SkillType.Normal);
-                    StartCoroutine(DropDown(tempBlock,blockPanelPostionList[lastBlockIndex]));
-                    lastBlockIndex++;
-                    //블록 생성.
-                }
-            }
-            else
-            {
-                currentGeneratingPeriod = 0;
-            }
-
-
-            yield return null;
-        }
-    }
 
     //블록 패널
-    public int lastBlockIndex = 0;
-    public List<Transform> blockPanelPostionList = new List<Transform>();
-    public List<Block> blockPanel = new List<Block>();
+
 
     IEnumerator DropDown(Block dropBlock,Transform targetPostion)
     {
@@ -202,17 +232,7 @@ public class BlockManager : MonoBehaviour
     
 
     // Use this for initialization
-    void Start ()
-    {
-        InitializeBlockPool();
-        playerUnitList = GameManager.Instance.PlayerUnitList;
-        StartCoroutine(GeneratingBlockPeriodic());
-        for(int index=0;index<8;index++)
-        {
-            blockPanel.Add(null);
-        }
 
-    }
 
 
 
