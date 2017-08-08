@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BlockManager : MonoBehaviour
 {
@@ -46,7 +47,6 @@ public class BlockManager : MonoBehaviour
         InitializeBlockPool();
         playerUnitList = GameManager.Instance.PlayerUnitList;
         StartGenerateBlock();
-
     }
 
     /*
@@ -60,7 +60,7 @@ public class BlockManager : MonoBehaviour
     {
         blockPool = new List<Block>();
         block = Resources.Load<Block>("Prefabs/System/BlockPanel/Block");
-        lastBlockIndex = 0;
+        lastBlockNextIndex = 0;
         for (int index = 0; index < 8; index++)
         {
             blockPool.Add(Instantiate<Block>(block));
@@ -93,7 +93,7 @@ public class BlockManager : MonoBehaviour
      * 블록 자동 생성 중지
      */
     List<Block> blockPanel = new List<Block>();
-    public int lastBlockIndex = 0;
+    public int lastBlockNextIndex = 0;
     public List<Transform> blockPanelPostionList = new List<Transform>();
 
     void StartGenerateBlock()
@@ -104,11 +104,14 @@ public class BlockManager : MonoBehaviour
     {
         StopCoroutine(GenerateBlock());
     }
+    //블록 주기 생성
+    public float blockGeneratePeriod = 0;
+    float currentGeneratingPeriod = 0;
     IEnumerator GenerateBlock()
     {
         while (true)
         {
-            if (lastBlockIndex < 8)
+            if (lastBlockNextIndex < 8)
             {
                 if (currentGeneratingPeriod < blockGeneratePeriod)
                 {
@@ -119,10 +122,26 @@ public class BlockManager : MonoBehaviour
                     currentGeneratingPeriod = 0;
                     Block tempBlock = Pop();
                     tempBlock.SetBlockData(1, GameManager.playerHeadUnit, E_SkillType.Normal);
-                    tempBlock.DropDownTargetTransform = blockPanelPostionList[lastBlockIndex];
+                    tempBlock.DropDownTargetTransform = blockPanelPostionList[lastBlockNextIndex];
                     blockPanel.Add(tempBlock);
                     tempBlock.StartDropDown();
-                    lastBlockIndex++;
+                    //첫 인덱스가 아니고
+                    if (lastBlockNextIndex!=0)
+                    {
+                        //3체인이 아니며
+                        if(blockPanel[lastBlockNextIndex-1].chainLevel!=3)
+                        {
+                            //동일 블럭이면
+                            if ((blockPanel[lastBlockNextIndex - 1].targetUnit == blockPanel[lastBlockNextIndex].targetUnit) & (blockPanel[lastBlockNextIndex - 1].skillType == blockPanel[lastBlockNextIndex].skillType))
+                            {
+                                tempBlock.StartTryCombine(blockPanel.GetRange(blockPanel.IndexOf(blockPanel[lastBlockNextIndex - 1].headBlock), blockPanel[lastBlockNextIndex - 1].chainLevel+1).ToArray());
+                            }
+
+                        }
+
+                    }
+                    lastBlockNextIndex++;
+
                 }
             }
             else
@@ -135,164 +154,136 @@ public class BlockManager : MonoBehaviour
         }
     }
 
+    //3
+    public void Combine(params Block[] blocks)
+    {
+        int headIndex = 0;                  //맨앖
+        int headIndexChangeCount = 1;       //1
+        int remainBlocks = blocks.Length;   //7
+        int remainBlocksChainLevel = blocks.Length % 3;
+
+        for (int index = 0; index < blocks.Length; index++)
+        {
+            if(!blocks[index].gameObject.activeInHierarchy)
+            {
+                break;
+            }
+            //헤더블록은 현재의 헤더 블록
+            blocks[index].headBlock = blocks[headIndex];    //0번째
+
+            //체인수설정
+            //재설정될 블록이 3개 이상이라면
+            if (remainBlocks>=3)
+            {
+                blocks[index].chainLevel = 3;
+                blocks[index].gameObject.GetComponent<Image>().color = Color.green;
+            }
+            else
+            {
+                blocks[index].chainLevel = remainBlocksChainLevel;
+
+                if(remainBlocksChainLevel == 2)
+                {
+                    blocks[index].gameObject.GetComponent<Image>().color = Color.yellow;
+                }
+
+            }
+
+            //헤더블록 재설정
+            if (headIndexChangeCount == 3)
+            {
+                headIndex += 3;
+                headIndexChangeCount = 1;
+                remainBlocks -= 3;
+            }
+            else
+            {
+                headIndexChangeCount++;
+
+            }
+        }
+    }
     public void BlockUse(Block block)
     {
-        block = block.headBlock;
+        //블록헤더의 정보를 토대로 시전자에게 스킬 인자 전달.
+        //블록헤더의 체인값만큼 이후열의 블록들 소멸 실시
+        //체인값 이후 열부터 드롭다운 실시
+        //드롭다운이 완료되면 앞과 뒤를 비교하여 같을경우 콤바인 진행
+        //
         int usingBlockIndex = blockPanel.IndexOf(block);
-        int usingChain = block.chainLevel;
+        Block headBlock = block.headBlock;              //사용된 블록의 헤더 블록
+        int usingBlockHeadIndex = blockPanel.IndexOf(headBlock);//사용된 블록의 헤더블록의 인덱스
+        int usingChain = block.chainLevel;              //사용된 블록의 체인수
+        int nextBlockIndex = usingBlockHeadIndex + usingChain;  //당겨질 블록의 인덱스
 
+        block.targetUnit.skillQueue.AddAction(block.targetUnit.skillList[usingChain-1]);
         /*
-         *블록 스킬 시전
+         * headBlock.TargetUnit.SkillUse(N체인);
          */
-
-
-        foreach (Block linkedBlock in block.linkedBlockList)
+        //블록 풀에 사용한 블록만큼 반환한다.
+        //헤더 블록을 기준으로 체인갯수만큼 반환
+        foreach (Block usingBlock in blockPanel.GetRange(usingBlockHeadIndex,usingChain))
         {
-            if (linkedBlock)
-            {
-                blockPanel.Remove(linkedBlock);
-                Push(linkedBlock);
-            }
+            Push(usingBlock);
         }
-        blockPanel.Remove(block);
-        Push(block);
-        lastBlockIndex -= usingChain;
-        foreach(Block _block in blockPanel)
-        {
-            _block.DropDownTargetTransform = blockPanelPostionList[blockPanel.IndexOf(_block)];
-            if(_block.canUse)
-            {
-                _block.StartDropDown();
-            }
-        }
+        blockPanel.RemoveRange(usingBlockHeadIndex, usingChain);
 
-        //내려올곳이 맨앞이면 할 필요가 없다.
-        if (usingBlockIndex != 0)
-        {        
-            //앞이 이미 3체인이라면 합칠 필요가 없다.
-            if (blockPanel[usingBlockIndex-1].chainLevel != 3)
+        //드랍이 가능한 마지막 인덱스를 체인값만큼 빼서 재설정.
+        lastBlockNextIndex -= usingChain;
+        //당겨진 블록 위치부터 
+
+
+        int dropDownBlockCount = blockPanel.Count - usingBlockHeadIndex;
+        for (int index = usingBlockHeadIndex; index< usingBlockHeadIndex + dropDownBlockCount; index++)
+        {
+            blockPanel[index].DropDownTargetTransform = blockPanelPostionList[index];
+            blockPanel[index].StartDropDown();
+        }
+        
+        if (usingBlockHeadIndex!=lastBlockNextIndex)
+        { //내려올곳이 맨앞이면 할 필요가 없다.
+            if (usingBlockHeadIndex != 0)
             {
-                //같지 않다면 합칠 필요가 없다.
-                if ((blockPanel[usingBlockIndex - 1].targetUnit == blockPanel[usingBlockIndex].targetUnit) & (blockPanel[usingBlockIndex - 1].skillType == blockPanel[usingBlockIndex].skillType))
+                //앞이 이미 3체인이라면 합칠 필요가 없다.
+                if (blockPanel[usingBlockIndex - 1].chainLevel != 3)
                 {
-                    Block tempFrontHeadBlock = blockPanel[usingBlockIndex - 1].headBlock;
-                    Block tempDropedHeadBlock = blockPanel[usingBlockIndex - 1].headBlock;
+                    //같지 않다면 합칠 필요가 없다.
+                    if ((blockPanel[usingBlockIndex - 1].targetUnit == blockPanel[usingBlockIndex].targetUnit) & (blockPanel[usingBlockIndex - 1].skillType == blockPanel[usingBlockIndex].skillType))
+                    {
+                        int frontHeadBlockIndex = blockPanel.IndexOf(blockPanel[usingBlockIndex - 1].headBlock);
+                        int lastDropBlockIndex = usingBlockIndex;
+                        int totalCombineBlockCount = blockPanel[frontHeadBlockIndex].chainLevel;
 
 
-
-                    //해당 인덱스부터 재결합을 시킨다.
-                    
-                    
+                        //내려오는 블록중 마지막 블록 찾기
+                        for (int index = usingBlockIndex; index < blockPanel.Count; index++)
+                        {
+                            if ((blockPanel[frontHeadBlockIndex].targetUnit != blockPanel[index].targetUnit) & (blockPanel[frontHeadBlockIndex].skillType != blockPanel[index].skillType))
+                            {
+                                lastDropBlockIndex = index;
+                                break;
+                            }
+                            totalCombineBlockCount++;
+                        }
+                        blockPanel[usingBlockIndex].StartTryCombine(blockPanel.GetRange(frontHeadBlockIndex, totalCombineBlockCount).ToArray());
+                    }
                 }
-            }
 
-        }
-
-
-
-
-
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    Block GetBlockInPool()
-    {
-        foreach(Block block in blockPool)
-        {
-            if(!block.gameObject.activeInHierarchy)
-            {
-                block.gameObject.SetActive(true);
-                return block;
             }
         }
-        return null;
-    }
-    public void ReturnBlockPool(Block block)
-    {
-        block.gameObject.SetActive(false);
-    }
-
-    //블록 주기 생성
-    public float blockGeneratePeriod = 0;
-    float currentGeneratingPeriod = 0;
-    
-
-    //블록 패널
 
 
-    IEnumerator DropDown(Block dropBlock,Transform targetPostion)
-    {
-        while (Vector3.Distance(targetPostion.position, dropBlock.transform.position) >= 0.4f)
-        {
-            dropBlock.transform.position = Vector3.Lerp(targetPostion.position, dropBlock.transform.position, 0.4f);
-            yield return null;
-        }
-        dropBlock.transform.position = targetPostion.position;
-        dropBlock.canUse = true;
-        yield return null;
-    }
 
-  
 
-    void CreateBlock()
-    {
+       
+
+
+
+
+
+
+
 
     }
     
-
-    // Use this for initialization
-
-
-
-
-
-    public void BlockSkillActivate(int index,int chain)
-    {
-        //해당 체인의 스킬을 사용한다.
-    }
-
-
-    //블록 생성
-    public void CreateBlock(Unit target,int number)
-    {
-        //해당 유닛의 블록을 생성.
-        //BlockSet(target,스킬Index,스킬타입.노말or특수)
-    }
-    public void BlockSet()
-    {
-        //스킬타입,색상,해당유닛,시전스킬인덱스
-
-    }
-    //블록 합치기
-    //해당 캐릭터에게 스킬 전달.
-    //블록 소멸
-    //블록 사용 불가
-    //블록 변경
-
-
-
-
-
-
-
 }

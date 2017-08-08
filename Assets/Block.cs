@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Block : MonoBehaviour
 {
@@ -26,11 +27,12 @@ public class Block : MonoBehaviour
     public void SetBlockData(int chainLevel,Unit targetUnit,E_SkillType skillType)
     {
         GetComponent<RectTransform>().anchoredPosition = new Vector3(BlockManager.Instance.GetComponent<RectTransform>().rect.width, 0);
-        canUse = false;
+        canUse = true;
         this.targetUnit = targetUnit;
         this.chainLevel = chainLevel;
         this.skillType = skillType;
         headBlock = this;
+        GetComponent<Image>().color = Color.white;
     }
     private void Start()
     {
@@ -49,29 +51,34 @@ public class Block : MonoBehaviour
 
     public void StartDropDown()
     {
-        canUse = false;
-        StartCoroutine(DropDown());
+        if (canUse)
+        {
+            StartCoroutine(DropDown());
+        }
     }
     IEnumerator DropDown()
     {
+        canUse = false;
         while (Vector3.Distance(transform.position, dropDownTargetTransform.transform.position) >= 0.4f)
         {
-            transform.position = Vector3.Lerp(transform.position, dropDownTargetTransform.position, 0.3f);
+            transform.position = Vector3.Lerp(transform.position, dropDownTargetTransform.position, 0.4f);
             yield return null;
         }
         transform.position = dropDownTargetTransform.position;
         canUse = true;
         yield return null;
     }
-    IEnumerator TryCombine()
+    public void StartTryCombine(params Block[] blocks)
     {
-        while(true)
-        {
-            if(canUse)
-            {
+        StartCoroutine(TryCombine(blocks));
+    }
 
-            }
+    IEnumerator TryCombine(params Block[] blocks)
+    {
+        while(!canUse)
+        {
             yield return null;
         }
+        BlockManager.Instance.Combine(blocks);
     }
 }
