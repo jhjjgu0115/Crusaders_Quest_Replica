@@ -32,7 +32,14 @@ public class Block : MonoBehaviour
         this.chainLevel = chainLevel;
         this.skillType = skillType;
         headBlock = this;
-        GetComponent<Image>().color = Color.white;
+        //디버그
+        if(targetUnit)
+        {
+            if (targetUnit.name == "Player")
+                GetComponent<Image>().color = Color.yellow;
+            else
+                GetComponent<Image>().color = Color.green;
+        }
     }
     private void Start()
     {
@@ -61,15 +68,23 @@ public class Block : MonoBehaviour
         canUse = false;
         while (Vector3.Distance(transform.position, dropDownTargetTransform.transform.position) >= 0.4f)
         {
-            transform.position = Vector3.Lerp(transform.position, dropDownTargetTransform.position, 0.4f);
+            transform.position = Vector3.Lerp(transform.position, dropDownTargetTransform.position, 0.05f);
             yield return null;
         }
         transform.position = dropDownTargetTransform.position;
-        canUse = true;
         yield return null;
+        canUse = true;
+        
+
+
+
+
+
+
     }
     public void StartTryCombine(params Block[] blocks)
     {
+        StopCoroutine(TryCombine());
         StartCoroutine(TryCombine(blocks));
     }
 
@@ -79,6 +94,22 @@ public class Block : MonoBehaviour
         {
             yield return null;
         }
+
+
+
+
+
+
+
         BlockManager.Instance.Combine(blocks);
+    }
+    IEnumerator Combine()
+    {
+        while (!canUse)
+        {
+            yield return null;
+        }
+        /*나와 앞뒤를 확인한뒤 합치기
+         */
     }
 }

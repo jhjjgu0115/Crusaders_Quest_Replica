@@ -155,10 +155,10 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        
-
         EnterTheBattle();
         enemyUnitList[0].StatManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue = 0;
+
+        enemyUnitList[1].StatManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue = 0;
         //enemyList[0].StatManager.CreateOrGetStat(E_StatType.MaxRange).ModifiedValue = 1;
         //enemyList[0].StatManager.CreateOrGetStat(E_StatType.MinRange).ModifiedValue = 0;
         CheckingHeadUnitStart();

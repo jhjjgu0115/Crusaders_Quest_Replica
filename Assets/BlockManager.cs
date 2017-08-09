@@ -29,7 +29,7 @@ public class BlockManager : MonoBehaviour
         }
     }
     List<Unit> playerUnitList = null;
-
+    List<int> dropTable = new List<int>(); 
 
     private void Awake()
     {
@@ -47,6 +47,15 @@ public class BlockManager : MonoBehaviour
         InitializeBlockPool();
         playerUnitList = GameManager.Instance.PlayerUnitList;
         StartGenerateBlock();
+        dropTable.Add(1);
+        dropTable.Add(1);
+        dropTable.Add(0);
+        dropTable.Add(1);
+
+        dropTable.Add(1);
+        dropTable.Add(1);
+        dropTable.Add(1);
+        dropTable.Add(0);
     }
 
     /*
@@ -92,7 +101,7 @@ public class BlockManager : MonoBehaviour
      * 블록 자동 생성 시작
      * 블록 자동 생성 중지
      */
-    List<Block> blockPanel = new List<Block>();
+    public List<Block> blockPanel = new List<Block>();
     public int lastBlockNextIndex = 0;
     public List<Transform> blockPanelPostionList = new List<Transform>();
 
@@ -121,7 +130,15 @@ public class BlockManager : MonoBehaviour
                 {
                     currentGeneratingPeriod = 0;
                     Block tempBlock = Pop();
-                    tempBlock.SetBlockData(1, GameManager.playerHeadUnit, E_SkillType.Normal);
+                    Unit randomUnit;
+                    
+                    if (dropTable[blockPanel.Count] ==0)
+                        randomUnit= GameManager.Instance.PlayerUnitList[0];
+                    else
+                        randomUnit= GameManager.instance.PlayerUnitList[1];
+
+
+                    tempBlock.SetBlockData(1, randomUnit, E_SkillType.Normal);
                     tempBlock.DropDownTargetTransform = blockPanelPostionList[lastBlockNextIndex];
                     blockPanel.Add(tempBlock);
                     tempBlock.StartDropDown();
@@ -134,7 +151,8 @@ public class BlockManager : MonoBehaviour
                             //동일 블럭이면
                             if ((blockPanel[lastBlockNextIndex - 1].targetUnit == blockPanel[lastBlockNextIndex].targetUnit) & (blockPanel[lastBlockNextIndex - 1].skillType == blockPanel[lastBlockNextIndex].skillType))
                             {
-                                tempBlock.StartTryCombine(blockPanel.GetRange(blockPanel.IndexOf(blockPanel[lastBlockNextIndex - 1].headBlock), blockPanel[lastBlockNextIndex - 1].chainLevel+1).ToArray());
+                                Debug.Log(" : ");
+                                tempBlock.StartTryCombine(blockPanel.GetRange(blockPanel.IndexOf(blockPanel[lastBlockNextIndex - 1].headBlock), blockPanel[lastBlockNextIndex - 1].chainLevel + 1).ToArray());
                             }
 
                         }
@@ -154,17 +172,18 @@ public class BlockManager : MonoBehaviour
         }
     }
 
-    //3
+    //재배열만 해준다.
     public void Combine(params Block[] blocks)
     {
         int headIndex = 0;                  //맨앖
         int headIndexChangeCount = 1;       //1
         int remainBlocks = blocks.Length;   //7
         int remainBlocksChainLevel = blocks.Length % 3;
-
+        
         for (int index = 0; index < blocks.Length; index++)
         {
-            if(!blocks[index].gameObject.activeInHierarchy)
+
+            if (!blocks[index].gameObject.activeInHierarchy)
             {
                 break;
             }
@@ -176,7 +195,7 @@ public class BlockManager : MonoBehaviour
             if (remainBlocks>=3)
             {
                 blocks[index].chainLevel = 3;
-                blocks[index].gameObject.GetComponent<Image>().color = Color.green;
+                //blocks[index].gameObject.GetComponent<Image>().color = Color.green;
             }
             else
             {
@@ -184,11 +203,10 @@ public class BlockManager : MonoBehaviour
 
                 if(remainBlocksChainLevel == 2)
                 {
-                    blocks[index].gameObject.GetComponent<Image>().color = Color.yellow;
+                   //blocks[index].gameObject.GetComponent<Image>().color = Color.yellow;
                 }
 
             }
-
             //헤더블록 재설정
             if (headIndexChangeCount == 3)
             {
@@ -214,7 +232,6 @@ public class BlockManager : MonoBehaviour
         Block headBlock = block.headBlock;              //사용된 블록의 헤더 블록
         int usingBlockHeadIndex = blockPanel.IndexOf(headBlock);//사용된 블록의 헤더블록의 인덱스
         int usingChain = block.chainLevel;              //사용된 블록의 체인수
-        int nextBlockIndex = usingBlockHeadIndex + usingChain;  //당겨질 블록의 인덱스
 
         block.targetUnit.skillQueue.AddAction(block.targetUnit.skillList[usingChain-1]);
         /*
@@ -240,50 +257,35 @@ public class BlockManager : MonoBehaviour
             blockPanel[index].StartDropDown();
         }
         
-        if (usingBlockHeadIndex!=lastBlockNextIndex)
-        { //내려올곳이 맨앞이면 할 필요가 없다.
-            if (usingBlockHeadIndex != 0)
+        if (usingBlockHeadIndex != 0)
+        {
+            //사용된 블록의 앞에 체인의 합이 3이면 합칠 필요가 없다.
+            if (blockPanel[usingBlockHeadIndex - 1].chainLevel != 3)
             {
-                //앞이 이미 3체인이라면 합칠 필요가 없다.
-                if (blockPanel[usingBlockIndex - 1].chainLevel != 3)
+                //같지 않다면 합칠 필요가 없다.
+                if ((blockPanel[usingBlockHeadIndex - 1].targetUnit == blockPanel[usingBlockHeadIndex].targetUnit) && (blockPanel[usingBlockHeadIndex - 1].skillType == blockPanel[usingBlockHeadIndex].skillType))
                 {
-                    //같지 않다면 합칠 필요가 없다.
-                    if ((blockPanel[usingBlockIndex - 1].targetUnit == blockPanel[usingBlockIndex].targetUnit) & (blockPanel[usingBlockIndex - 1].skillType == blockPanel[usingBlockIndex].skillType))
+                    //사용된 블록 앞에 쌓여있는 블록의 헤더 인덱스
+                    int frontHeadBlockIndex = blockPanel.IndexOf(blockPanel[usingBlockHeadIndex-1].headBlock);
+                    int totalCombineBlockCount = blockPanel[frontHeadBlockIndex].chainLevel+ blockPanel[usingBlockHeadIndex].chainLevel;
+
+
+                    //내려오는 블록중 마지막 블록 찾기
+                    //[0 1 2 3] [4 5]
+                    Debug.Log((usingBlockHeadIndex + blockPanel[usingBlockHeadIndex].chainLevel) + "-"+(blockPanel.Count));
+                    for (int index = usingBlockHeadIndex + blockPanel[usingBlockHeadIndex].chainLevel; index < blockPanel.Count; index++)
                     {
-                        int frontHeadBlockIndex = blockPanel.IndexOf(blockPanel[usingBlockIndex - 1].headBlock);
-                        int lastDropBlockIndex = usingBlockIndex;
-                        int totalCombineBlockCount = blockPanel[frontHeadBlockIndex].chainLevel;
-
-
-                        //내려오는 블록중 마지막 블록 찾기
-                        for (int index = usingBlockIndex; index < blockPanel.Count; index++)
+                        if ((blockPanel[frontHeadBlockIndex].targetUnit != blockPanel[index].targetUnit) || (blockPanel[frontHeadBlockIndex].skillType != blockPanel[index].skillType))
                         {
-                            if ((blockPanel[frontHeadBlockIndex].targetUnit != blockPanel[index].targetUnit) & (blockPanel[frontHeadBlockIndex].skillType != blockPanel[index].skillType))
-                            {
-                                lastDropBlockIndex = index;
-                                break;
-                            }
-                            totalCombineBlockCount++;
+                            break;
                         }
-                        blockPanel[usingBlockIndex].StartTryCombine(blockPanel.GetRange(frontHeadBlockIndex, totalCombineBlockCount).ToArray());
+                        totalCombineBlockCount++;
                     }
+                    Debug.Log(frontHeadBlockIndex + " " +totalCombineBlockCount);
+                    blockPanel[usingBlockHeadIndex].StartTryCombine(blockPanel.GetRange(frontHeadBlockIndex, totalCombineBlockCount).ToArray());
                 }
-
             }
         }
-
-
-
-
-       
-
-
-
-
-
-
-
-
     }
     
 }

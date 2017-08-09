@@ -247,7 +247,7 @@ public partial class Unit : MonoBehaviour
 
         //적과의 사거리
 
-        while (name=="Player")
+        while (true)
         {
             direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
             origin = new Vector2(transform.position.x + (0.301f * direction.x), transform.position.y + 0.1f);
