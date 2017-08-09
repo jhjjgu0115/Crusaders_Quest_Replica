@@ -72,15 +72,7 @@ public class Block : MonoBehaviour
             yield return null;
         }
         transform.position = dropDownTargetTransform.position;
-        yield return null;
         canUse = true;
-        
-
-
-
-
-
-
     }
     public void StartTryCombine(params Block[] blocks)
     {
@@ -90,26 +82,44 @@ public class Block : MonoBehaviour
 
     IEnumerator TryCombine(params Block[] blocks)
     {
-        while(!canUse)
-        {
-            yield return null;
-        }
+        List<Block> blockPanel = BlockManager.Instance.blockPanel;
 
-
-
-
-
-
-
-        BlockManager.Instance.Combine(blocks);
-    }
-    IEnumerator Combine()
-    {
         while (!canUse)
         {
             yield return null;
         }
-        /*나와 앞뒤를 확인한뒤 합치기
-         */
+        BlockManager.Instance.Combine(blocks);
+    }
+
+    public void StartDropCombine()
+    {
+        StartCoroutine(DropDownCombine());
+    }
+    IEnumerator DropDownCombine()
+    {
+        //int lastBlockNextIndex = BlockManager.Instance.lastBlockNextIndex;
+        while (!canUse)
+        {
+            yield return null;
+        }
+        List<Block> blockPanel = BlockManager.Instance.blockPanel;
+        int thisBlockIndex = blockPanel.IndexOf(this);
+        //이 블록이 맨앞 인덱스가 아니며
+        if (thisBlockIndex > 0)
+        {
+            //그 앞의 블록이 있되 3체인 미만이며
+            if (blockPanel[thisBlockIndex - 1].chainLevel < 3)
+            {
+                //동일 블럭이면
+                Debug.Log(blockPanel.IndexOf(blockPanel[thisBlockIndex - 1].headBlock) + " ~ " + (blockPanel[thisBlockIndex - 1].chainLevel + 1));
+
+                if ((blockPanel[thisBlockIndex - 1].targetUnit == targetUnit) && (blockPanel[thisBlockIndex - 1].skillType == skillType))
+                {
+                    BlockManager.Instance.Combine(blockPanel.GetRange(blockPanel.IndexOf(blockPanel[thisBlockIndex - 1].headBlock), blockPanel[thisBlockIndex - 1].chainLevel + 1).ToArray());
+                }
+
+            }
+
+        }
     }
 }

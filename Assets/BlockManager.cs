@@ -48,14 +48,14 @@ public class BlockManager : MonoBehaviour
         playerUnitList = GameManager.Instance.PlayerUnitList;
         StartGenerateBlock();
         dropTable.Add(1);
-        dropTable.Add(1);
         dropTable.Add(0);
-        dropTable.Add(1);
+        dropTable.Add(0);
+        dropTable.Add(0);
 
-        dropTable.Add(1);
-        dropTable.Add(1);
-        dropTable.Add(1);
         dropTable.Add(0);
+        dropTable.Add(1);
+        dropTable.Add(1);
+        dropTable.Add(1);
     }
 
     /*
@@ -120,44 +120,35 @@ public class BlockManager : MonoBehaviour
     {
         while (true)
         {
+            //블록이 가득차지 않았다면 [블록갯수 8이하].
             if (lastBlockNextIndex < 8)
             {
+                //주기를 검사한다. [드랍을 위해서]
                 if (currentGeneratingPeriod < blockGeneratePeriod)
                 {
                     currentGeneratingPeriod += Time.deltaTime;
                 }
                 else
                 {
+                    //쿨탐 초기화하고
                     currentGeneratingPeriod = 0;
-                    Block tempBlock = Pop();
+
+                    //이건 드랍할 유닛 임시 설정. 그냥 랜덤임 나중에 지워야할 테스트 코드
                     Unit randomUnit;
-                    
                     if (dropTable[blockPanel.Count] ==0)
                         randomUnit= GameManager.Instance.PlayerUnitList[0];
                     else
                         randomUnit= GameManager.instance.PlayerUnitList[1];
 
-
+                    //임시 블록을 꺼낸 다음 초기화후 드랍시킨다.
+                    Block tempBlock = Pop();
                     tempBlock.SetBlockData(1, randomUnit, E_SkillType.Normal);
                     tempBlock.DropDownTargetTransform = blockPanelPostionList[lastBlockNextIndex];
                     blockPanel.Add(tempBlock);
                     tempBlock.StartDropDown();
-                    //첫 인덱스가 아니고
-                    if (lastBlockNextIndex!=0)
-                    {
-                        //3체인이 아니며
-                        if(blockPanel[lastBlockNextIndex-1].chainLevel!=3)
-                        {
-                            //동일 블럭이면
-                            if ((blockPanel[lastBlockNextIndex - 1].targetUnit == blockPanel[lastBlockNextIndex].targetUnit) & (blockPanel[lastBlockNextIndex - 1].skillType == blockPanel[lastBlockNextIndex].skillType))
-                            {
-                                Debug.Log(" : ");
-                                tempBlock.StartTryCombine(blockPanel.GetRange(blockPanel.IndexOf(blockPanel[lastBlockNextIndex - 1].headBlock), blockPanel[lastBlockNextIndex - 1].chainLevel + 1).ToArray());
-                            }
+                    tempBlock.StartDropCombine();
 
-                        }
-
-                    }
+                    // 문제점은 블록이 떨어져서 재정렬 해야할 배열이 중간에 바뀌면 이게 문제를 일으킨다.
                     lastBlockNextIndex++;
 
                 }
@@ -272,20 +263,33 @@ public class BlockManager : MonoBehaviour
 
                     //내려오는 블록중 마지막 블록 찾기
                     //[0 1 2 3] [4 5]
-                    Debug.Log((usingBlockHeadIndex + blockPanel[usingBlockHeadIndex].chainLevel) + "-"+(blockPanel.Count));
+                    //Debug.Log((usingBlockHeadIndex + blockPanel[usingBlockHeadIndex].chainLevel) + "-"+(blockPanel.Count));
                     for (int index = usingBlockHeadIndex + blockPanel[usingBlockHeadIndex].chainLevel; index < blockPanel.Count; index++)
                     {
-                        if ((blockPanel[frontHeadBlockIndex].targetUnit != blockPanel[index].targetUnit) || (blockPanel[frontHeadBlockIndex].skillType != blockPanel[index].skillType))
+                        //후열이 드랍중이 아니여야 합칠 수 있음.
+                        if(!blockPanel[index].canUse)
                         {
                             break;
                         }
-                        totalCombineBlockCount++;
+                        else
+                        {
+                            //
+                            if ((blockPanel[usingBlockHeadIndex].targetUnit == blockPanel[index].targetUnit) && (blockPanel[usingBlockHeadIndex].skillType == blockPanel[index].skillType))
+                            {
+                                totalCombineBlockCount++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
                     }
-                    Debug.Log(frontHeadBlockIndex + " " +totalCombineBlockCount);
+                    //Debug.Log(frontHeadBlockIndex + " " +totalCombineBlockCount);
                     blockPanel[usingBlockHeadIndex].StartTryCombine(blockPanel.GetRange(frontHeadBlockIndex, totalCombineBlockCount).ToArray());
                 }
             }
         }
+        
     }
     
 }
