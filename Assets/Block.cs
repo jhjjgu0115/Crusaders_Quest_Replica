@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Block : MonoBehaviour
 {
     public E_SkillType skillType;
-    public List<Block> linkedBlockList = new List<Block>(2);
     public Block headBlock = null;
     public int chainLevel = 0;
     public Unit targetUnit = null;
@@ -43,8 +42,6 @@ public class Block : MonoBehaviour
     }
     private void Start()
     {
-        linkedBlockList.Add(null);
-        linkedBlockList.Add(null);
     }
     private void OnMouseDown()
     {
@@ -56,6 +53,9 @@ public class Block : MonoBehaviour
         //블록 소멸 요청
     }
 
+    /// <summary>
+    /// 블록 드롭 시작.
+    /// </summary>
     public void StartDropDown()
     {
         if (canUse)
@@ -68,7 +68,7 @@ public class Block : MonoBehaviour
         canUse = false;
         while (Vector3.Distance(transform.position, dropDownTargetTransform.transform.position) >= 0.4f)
         {
-            transform.position = Vector3.Lerp(transform.position, dropDownTargetTransform.position, 0.05f);
+            transform.position = Vector3.Lerp(transform.position, dropDownTargetTransform.position, 0.4f);
             yield return null;
         }
         transform.position = dropDownTargetTransform.position;
@@ -97,7 +97,6 @@ public class Block : MonoBehaviour
     }
     IEnumerator DropDownCombine()
     {
-        //int lastBlockNextIndex = BlockManager.Instance.lastBlockNextIndex;
         while (!canUse)
         {
             yield return null;
@@ -110,9 +109,7 @@ public class Block : MonoBehaviour
             //그 앞의 블록이 있되 3체인 미만이며
             if (blockPanel[thisBlockIndex - 1].chainLevel < 3)
             {
-                //동일 블럭이면
-                Debug.Log(blockPanel.IndexOf(blockPanel[thisBlockIndex - 1].headBlock) + " ~ " + (blockPanel[thisBlockIndex - 1].chainLevel + 1));
-
+                //이블럭과 앞블럭의 헤더가 동일 블럭이면
                 if ((blockPanel[thisBlockIndex - 1].targetUnit == targetUnit) && (blockPanel[thisBlockIndex - 1].skillType == skillType))
                 {
                     BlockManager.Instance.Combine(blockPanel.GetRange(blockPanel.IndexOf(blockPanel[thisBlockIndex - 1].headBlock), blockPanel[thisBlockIndex - 1].chainLevel + 1).ToArray());

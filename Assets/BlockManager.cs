@@ -50,12 +50,12 @@ public class BlockManager : MonoBehaviour
         dropTable.Add(1);
         dropTable.Add(0);
         dropTable.Add(0);
-        dropTable.Add(0);
+        dropTable.Add(1);
 
         dropTable.Add(0);
         dropTable.Add(1);
-        dropTable.Add(1);
-        dropTable.Add(1);
+        dropTable.Add(0);
+        dropTable.Add(0);
     }
 
     /*
@@ -135,7 +135,7 @@ public class BlockManager : MonoBehaviour
 
                     //이건 드랍할 유닛 임시 설정. 그냥 랜덤임 나중에 지워야할 테스트 코드
                     Unit randomUnit;
-                    if (dropTable[blockPanel.Count] ==0)
+                    if (dropTable[lastBlockNextIndex]==0)
                         randomUnit= GameManager.Instance.PlayerUnitList[0];
                     else
                         randomUnit= GameManager.instance.PlayerUnitList[1];
@@ -221,7 +221,7 @@ public class BlockManager : MonoBehaviour
         //
         int usingBlockIndex = blockPanel.IndexOf(block);
         Block headBlock = block.headBlock;              //사용된 블록의 헤더 블록
-        int usingBlockHeadIndex = blockPanel.IndexOf(headBlock);//사용된 블록의 헤더블록의 인덱스
+        int usedBlockHeadIndex = blockPanel.IndexOf(headBlock);//사용된 블록의 헤더블록의 인덱스
         int usingChain = block.chainLevel;              //사용된 블록의 체인수
 
         block.targetUnit.skillQueue.AddAction(block.targetUnit.skillList[usingChain-1]);
@@ -230,65 +230,71 @@ public class BlockManager : MonoBehaviour
          */
         //블록 풀에 사용한 블록만큼 반환한다.
         //헤더 블록을 기준으로 체인갯수만큼 반환
-        foreach (Block usingBlock in blockPanel.GetRange(usingBlockHeadIndex,usingChain))
+        foreach (Block usingBlock in blockPanel.GetRange(usedBlockHeadIndex,usingChain))
         {
             Push(usingBlock);
         }
-        blockPanel.RemoveRange(usingBlockHeadIndex, usingChain);
+        blockPanel.RemoveRange(usedBlockHeadIndex, usingChain);
 
         //드랍이 가능한 마지막 인덱스를 체인값만큼 빼서 재설정.
         lastBlockNextIndex -= usingChain;
         //당겨진 블록 위치부터 
 
 
-        int dropDownBlockCount = blockPanel.Count - usingBlockHeadIndex;
-        for (int index = usingBlockHeadIndex; index< usingBlockHeadIndex + dropDownBlockCount; index++)
+        int dropDownBlockCount = blockPanel.Count - usedBlockHeadIndex;
+        for (int index = usedBlockHeadIndex; index< usedBlockHeadIndex + dropDownBlockCount; index++)
         {
             blockPanel[index].DropDownTargetTransform = blockPanelPostionList[index];
             blockPanel[index].StartDropDown();
         }
-        
-        if (usingBlockHeadIndex != 0)
+
+        if(lastBlockNextIndex > usedBlockHeadIndex)
         {
-            //사용된 블록의 앞에 체인의 합이 3이면 합칠 필요가 없다.
-            if (blockPanel[usingBlockHeadIndex - 1].chainLevel != 3)
+            if (usedBlockHeadIndex != 0)
             {
-                //같지 않다면 합칠 필요가 없다.
-                if ((blockPanel[usingBlockHeadIndex - 1].targetUnit == blockPanel[usingBlockHeadIndex].targetUnit) && (blockPanel[usingBlockHeadIndex - 1].skillType == blockPanel[usingBlockHeadIndex].skillType))
+                //사용된 블록의 앞에 체인의 합이 3이면 합칠 필요가 없다.
+                if (blockPanel[usedBlockHeadIndex - 1].chainLevel != 3)
                 {
-                    //사용된 블록 앞에 쌓여있는 블록의 헤더 인덱스
-                    int frontHeadBlockIndex = blockPanel.IndexOf(blockPanel[usingBlockHeadIndex-1].headBlock);
-                    int totalCombineBlockCount = blockPanel[frontHeadBlockIndex].chainLevel+ blockPanel[usingBlockHeadIndex].chainLevel;
-
-
-                    //내려오는 블록중 마지막 블록 찾기
-                    //[0 1 2 3] [4 5]
-                    //Debug.Log((usingBlockHeadIndex + blockPanel[usingBlockHeadIndex].chainLevel) + "-"+(blockPanel.Count));
-                    for (int index = usingBlockHeadIndex + blockPanel[usingBlockHeadIndex].chainLevel; index < blockPanel.Count; index++)
+                    //같지 않다면 합칠 필요가 없다.
+                    if ((blockPanel[usedBlockHeadIndex - 1].targetUnit == blockPanel[usedBlockHeadIndex].targetUnit) && (blockPanel[usedBlockHeadIndex - 1].skillType == blockPanel[usedBlockHeadIndex].skillType))
                     {
-                        //후열이 드랍중이 아니여야 합칠 수 있음.
-                        if(!blockPanel[index].canUse)
+                        //사용된 블록 앞에 쌓여있는 블록의 헤더 인덱스
+                        int frontHeadBlockIndex = blockPanel.IndexOf(blockPanel[usedBlockHeadIndex - 1].headBlock);
+                        int totalCombineBlockCount = blockPanel[frontHeadBlockIndex].chainLevel + blockPanel[usedBlockHeadIndex].chainLevel;
+
+
+                        //내려오는 블록중 마지막 블록 찾기
+                        //[0 1 2 3] [4 5]
+                        //Debug.Log((usingBlockHeadIndex + blockPanel[usingBlockHeadIndex].chainLevel) + "-"+(blockPanel.Count));
+
+                        for (int index = usedBlockHeadIndex + blockPanel[usedBlockHeadIndex].chainLevel; index < blockPanel.Count; index++)
                         {
-                            break;
-                        }
-                        else
-                        {
-                            //
-                            if ((blockPanel[usingBlockHeadIndex].targetUnit == blockPanel[index].targetUnit) && (blockPanel[usingBlockHeadIndex].skillType == blockPanel[index].skillType))
-                            {
-                                totalCombineBlockCount++;
-                            }
-                            else
+                            //후열이 드랍중이 아니여야 합칠 수 있음.
+                            if (!blockPanel[index].canUse)
                             {
                                 break;
                             }
+                            else
+                            {
+                                //
+                                if ((blockPanel[usedBlockHeadIndex].targetUnit == blockPanel[index].targetUnit) && (blockPanel[usedBlockHeadIndex].skillType == blockPanel[index].skillType))
+                                {
+                                    totalCombineBlockCount++;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
                         }
+                        //Debug.Log(frontHeadBlockIndex + " " +totalCombineBlockCount);
+                        blockPanel[usedBlockHeadIndex].StartTryCombine(blockPanel.GetRange(frontHeadBlockIndex, totalCombineBlockCount).ToArray());
                     }
-                    //Debug.Log(frontHeadBlockIndex + " " +totalCombineBlockCount);
-                    blockPanel[usingBlockHeadIndex].StartTryCombine(blockPanel.GetRange(frontHeadBlockIndex, totalCombineBlockCount).ToArray());
                 }
             }
         }
+
+        
         
     }
     
