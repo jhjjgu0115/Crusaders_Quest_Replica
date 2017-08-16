@@ -39,6 +39,40 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //플레이어 유닛 리스트
+    //웨이브 정보
+    //웨이브 세트 리스트<몬스터 세트>
+    //리스트<몬스터> 각각의 몬스터 프리펩 
+    
+
+    //각종 용사 리스트에 대한 쿼리들
+    //------------------------------
+    //용사 쿼리종류
+    //Get 맨앞 용사
+    //Get 리더 용사
+    //Get 살아있는 모든 용사들
+    //Get 죽어있는 모든 용사들
+    //Get 제일 후열의 용사
+    //Get Random 용사
+
+    //몬스터 쿼리 종류
+    //Get 맨앞 몬스터
+    //Get 제일 후열 몬스터
+    //Get 죽어있는 몬스터들
+    //Get 
+
+    
+    //웨이브 관리
+    //----------
+    //웨이브 시작(N)
+    //웨이브 전체 루프관리 
+    //
+
+    
+    //플레이어 승리 모든 웨이브 종료
+    //플레이어 패배 아군 생존 0 일때
+
+
     public List<Unit> playerUnitList = new List<Unit>();
 
     public List<Unit> PlayerUnitList
@@ -54,8 +88,6 @@ public class GameManager : MonoBehaviour
 
 
     //웨이브 정보
-
-
     Unit targetUnit;
     int targetUnitNum=0;
     public Unit leaderHero;
@@ -75,11 +107,6 @@ public class GameManager : MonoBehaviour
         }
         targetUnit = playerUnitList[targetUnitNum];
     }
-
-
-
-
-
     void EnterTheBattle()
     {
         foreach (Unit _hero in playerUnitList)
@@ -91,8 +118,6 @@ public class GameManager : MonoBehaviour
             SetTestHero(_hero);
         }
     }
-
-
     void SetTestHero(Unit _hero)
     {
         foreach (E_StatType _statType in Enum.GetValues(typeof(E_StatType)))
@@ -196,4 +221,11 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
     }
+
+
+
+
+
+
+
 }
