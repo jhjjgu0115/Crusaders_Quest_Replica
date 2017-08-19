@@ -43,7 +43,7 @@ TextureImporter:
     filterMode: 0
     aniso: -1
     mipBias: -1
-    wrapMode: 1
+    wrapMode: -1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -71,22 +71,6 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Standalone
-    maxTextureSize: 2048
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-  - buildTarget: Android
-    maxTextureSize: 2048
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -102,7 +86,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5285714}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_1
       rect:
@@ -115,7 +99,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5285714}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_2
       rect:
@@ -128,7 +112,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_3
       rect:
@@ -141,7 +125,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_4
       rect:
@@ -154,7 +138,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_5
       rect:
@@ -167,7 +151,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_6
       rect:
@@ -180,7 +164,7 @@ TextureImporter:
       pivot: {x: 0.4817073, y: 0.6363636}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_7
       rect:
@@ -193,7 +177,7 @@ TextureImporter:
       pivot: {x: 0.65789473, y: 0.65789473}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_8
       rect:
@@ -206,7 +190,7 @@ TextureImporter:
       pivot: {x: 0.6363636, y: 0.6363636}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_9
       rect:
@@ -219,7 +203,7 @@ TextureImporter:
       pivot: {x: 0.4117647, y: 0.5441176}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_10
       rect:
@@ -232,7 +216,7 @@ TextureImporter:
       pivot: {x: 0.4318182, y: 0.6363636}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_11
       rect:
@@ -245,7 +229,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.65789473}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Uria_12
       rect:
@@ -255,12 +239,12 @@ TextureImporter:
         width: 16
         height: 22
       alignment: 9
-      pivot: {x: 0.50000095, y: 0.5681818}
+      pivot: {x: 0.5, y: 0.5681818}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      tessellationDetail: 0
+      tessellationDetail: -1
     outline: []
   spritePackingTag: 
-  userData: 97960039697273
+  userData: 98510513534698
   assetBundleName: 
   assetBundleVariant: 

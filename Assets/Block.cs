@@ -66,9 +66,9 @@ public class Block : MonoBehaviour
     IEnumerator DropDown()
     {
         canUse = false;
-        while (Vector3.Distance(transform.position, dropDownTargetTransform.transform.position) >= 0.4f)
+        while (Vector3.Distance(transform.position, dropDownTargetTransform.transform.position) >= 0.3f)
         {
-            transform.position = Vector3.Lerp(transform.position, dropDownTargetTransform.position, 0.4f);
+            transform.position = Vector3.Lerp(transform.position, dropDownTargetTransform.position, 0.35f);
             yield return null;
         }
         transform.position = dropDownTargetTransform.position;

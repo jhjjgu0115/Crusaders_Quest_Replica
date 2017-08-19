@@ -47,15 +47,15 @@ public class BlockManager : MonoBehaviour
         InitializeBlockPool();
         playerUnitList = GameManager.Instance.PlayerUnitList;
         StartGenerateBlock();
+        dropTable.Add(0);
         dropTable.Add(1);
         dropTable.Add(0);
         dropTable.Add(0);
-        dropTable.Add(1);
 
-        dropTable.Add(0);
         dropTable.Add(1);
-        dropTable.Add(0);
-        dropTable.Add(0);
+        dropTable.Add(1);
+        dropTable.Add(1);
+        dropTable.Add(1);
     }
 
     /*
@@ -167,10 +167,11 @@ public class BlockManager : MonoBehaviour
     public void Combine(params Block[] blocks)
     {
         int headIndex = 0;                  //맨앖
-        int headIndexChangeCount = 1;       //1
+        int currentChainCount = 1;
         int remainBlocks = blocks.Length;   //7
         int remainBlocksChainLevel = blocks.Length % 3;
-        
+
+
         for (int index = 0; index < blocks.Length; index++)
         {
 
@@ -186,7 +187,7 @@ public class BlockManager : MonoBehaviour
             if (remainBlocks>=3)
             {
                 blocks[index].chainLevel = 3;
-                //blocks[index].gameObject.GetComponent<Image>().color = Color.green;
+        
             }
             else
             {
@@ -194,20 +195,21 @@ public class BlockManager : MonoBehaviour
 
                 if(remainBlocksChainLevel == 2)
                 {
-                   //blocks[index].gameObject.GetComponent<Image>().color = Color.yellow;
+
                 }
 
             }
+
             //헤더블록 재설정
-            if (headIndexChangeCount == 3)
+            if (currentChainCount == 3)
             {
                 headIndex += 3;
-                headIndexChangeCount = 1;
+                currentChainCount = 1;
                 remainBlocks -= 3;
             }
             else
             {
-                headIndexChangeCount++;
+                currentChainCount++;
 
             }
         }
@@ -241,13 +243,10 @@ public class BlockManager : MonoBehaviour
         //당겨진 블록 위치부터 
 
 
-        int dropDownBlockCount = blockPanel.Count - usedBlockHeadIndex;
-        for (int index = usedBlockHeadIndex; index< usedBlockHeadIndex + dropDownBlockCount; index++)
-        {
-            blockPanel[index].DropDownTargetTransform = blockPanelPostionList[index];
-            blockPanel[index].StartDropDown();
-        }
+        
 
+
+        //합쳐질 블록 계산
         if(lastBlockNextIndex > usedBlockHeadIndex)
         {
             if (usedBlockHeadIndex != 0)
@@ -260,11 +259,11 @@ public class BlockManager : MonoBehaviour
                     {
                         //사용된 블록 앞에 쌓여있는 블록의 헤더 인덱스
                         int frontHeadBlockIndex = blockPanel.IndexOf(blockPanel[usedBlockHeadIndex - 1].headBlock);
-                        int totalCombineBlockCount = blockPanel[frontHeadBlockIndex].chainLevel + blockPanel[usedBlockHeadIndex].chainLevel;
+                        int totalCombineBlockCount = blockPanel[frontHeadBlockIndex].chainLevel + blockPanel[usedBlockHeadIndex].chainLevel; //1 + 3 = 4 
 
 
                         //내려오는 블록중 마지막 블록 찾기
-                        //[0 1 2 3] [4 5]
+                        //
                         //Debug.Log((usingBlockHeadIndex + blockPanel[usingBlockHeadIndex].chainLevel) + "-"+(blockPanel.Count));
 
                         for (int index = usedBlockHeadIndex + blockPanel[usedBlockHeadIndex].chainLevel; index < blockPanel.Count; index++)
@@ -293,9 +292,15 @@ public class BlockManager : MonoBehaviour
                 }
             }
         }
+        //드롭다운 시킨다.
+        int dropDownBlockCount = blockPanel.Count - usedBlockHeadIndex;
+        for (int index = usedBlockHeadIndex; index < usedBlockHeadIndex + dropDownBlockCount; index++)
+        {
+            blockPanel[index].DropDownTargetTransform = blockPanelPostionList[index];
+            blockPanel[index].StartDropDown();
+        }
 
-        
-        
+
     }
     
 }
