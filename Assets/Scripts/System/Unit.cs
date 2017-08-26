@@ -5,11 +5,12 @@ using UnityEngine;
 
 public partial class Unit : MonoBehaviour
 {
+    //캐릭터 애니메이터
     Animator animator;
 
+    //캐릭터 정보
     StatManager statManager = new StatManager();
     BuffManager buffManager = new BuffManager();
-
     public StatManager StatManager
     {
         get
@@ -25,6 +26,7 @@ public partial class Unit : MonoBehaviour
         }
     }
 
+    //스킬 시전 대기열
     public ActionQueueManager skillQueue = new ActionQueueManager();
 
 }
@@ -175,52 +177,6 @@ public partial class Unit : MonoBehaviour
             isNormal = value;
         }
     }
-/*
-    void RunningStart()
-    {
-        StartCoroutine(Running());
-    }
-    IEnumerator Running()
-    {
-        yield return null;
-        Unit headEnemy;
-        float enemyDistance=0;
-
-        StatFloat moveSpeed = statManager.CreateOrGetStat(E_StatType.MoveSpeed);
-        StatFloat minRange = statManager.CreateOrGetStat(E_StatType.MinRange);
-        StatFloat maxRange = statManager.CreateOrGetStat(E_StatType.MaxRange);
-
-        while (true)
-        {
-            if(groupTag==E_GroupTag.Player)
-            {
-
-                headEnemy = GameManager.monsterHeadUnit;
-                enemyDistance = headEnemy.transform.position.x - transform.position.x;
-
-                if (enemyDistance> minRange.ModifiedValue)
-                {
-                    //최소 사거리 밖일때
-                    Debug.Log(1);
-                    transform.position= Vector3.Lerp(transform.position, headEnemy.transform.position-new Vector3(minRange.ModifiedValue,0), Time.deltaTime * moveSpeed.ModifiedValue);
-                }
-                else
-                {
-                    //최소 사거리 안일때.
-                }
-            }
-            else
-            {
-
-            }
-
-
-            yield return null;
-        }
-    }
-
-
-        */
     //적과 사정거리
     //사거리 관련
     E_Range enemyRange = E_Range.OutOfRange;
@@ -444,7 +400,7 @@ public partial class Unit : MonoBehaviour
     public List<Skill> baseAttackList = new List<Skill>();
 
 
-
+    //상호작용 목록
     public void GetHit(ref float damage,E_DamageType damageType,float penetrationPower,bool isCritical)
     {
 
@@ -456,8 +412,43 @@ public partial class Unit : MonoBehaviour
 
     public void GetDamage(ref float damage, E_DamageType damageType, float penetrationPower, bool isCritical)
     {
+
+        /*
+         * 오리지널 데미지
+         * 계산된 데미지
+         * 
+         * 피해 응답 처리(ref 오리지널 데미지)
+         * 
+         * 피해량 계산
+         * 1. 피해 응답 처리
+         * 2. 피해 감소 적용
+         * 3. 속성별 방어도 적용
+         * 4. 
+         * 
+         * =계산된 피해량.
+         *
+         * 
+         * 
+         * 피해량 출력(계산된 피해량);
+         * 계산된 데미지가 오리지널보다 15%이상 적다면 비관통
+         * 아니면 관통 출력
+         * 
+         * 
+         * 
+         * 
+         */
+
+
+
+
+
+
+
+
+
+
         //원래 데미지와 비교하여 관통치가 15%차이가 난다면 비관통으로 출력
-        float damageCalculated = damage;
+        float calculatedDamage = damage;
         float penetrationPercent = 0;
         E_FloatingType floatingType = E_FloatingType.NonpenetratingDamage;
 
@@ -471,7 +462,7 @@ public partial class Unit : MonoBehaviour
         {
             penetrationPercent = (100 / (((StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower) * 0.348f) + 100));
         }
-        damageCalculated *= penetrationPercent;
+        calculatedDamage *= penetrationPercent;
         if (penetrationPercent>0.85f)
         {
             floatingType = E_FloatingType.FullPenetrationDamage;
@@ -485,35 +476,8 @@ public partial class Unit : MonoBehaviour
         
 
         float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
-        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= damageCalculated;
-        FloatingNumberManager.FloatingNumber(gameObject, damageCalculated, floatingType);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Debug.Log(name +"_HP Change : "+ currentHP+ " >> " + StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue);
-        // Debug.Log(name+"_GetDamage : " + damage + " >> " + (currentHP - statManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue));
-
-        //StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue =
-        /*
-        float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
-        float defencePoint = StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower;
-
-        currentHP -= damage * (100/ ((defencePoint * 0.348f) + 100));
-        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue = currentHP;
-        */
+        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= calculatedDamage;
+        FloatingNumberManager.FloatingNumber(gameObject, calculatedDamage, floatingType);
     }
 
     public void GetHeal(ref float healAmount)

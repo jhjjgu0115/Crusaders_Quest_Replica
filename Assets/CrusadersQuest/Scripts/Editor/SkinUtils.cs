@@ -4,7 +4,7 @@ using System.Collections;
 using Anima2D;
 using System.Collections.Generic;
 
-namespace CrusadersQuest
+namespace CrusadersQuestReplica
 {
     public static class SkinUtils
     {

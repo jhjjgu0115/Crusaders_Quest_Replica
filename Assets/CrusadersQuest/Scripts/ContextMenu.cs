@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Linq;
 
-namespace CrusadersQuest
+namespace CrusadersQuestReplica
 {
     public class ContextMenu
     {

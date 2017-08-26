@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Anima2D;
 
-namespace CrusadersQuest
+namespace CrusadersQuestReplica
 {
     public static class SpriteMeshUtils
     {

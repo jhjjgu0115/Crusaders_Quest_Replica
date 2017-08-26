@@ -79,13 +79,6 @@ public class Buff : MonoBehaviour
     public int currentRepeatCount;
 
 
-
-
-
-
-
-
-
     /// <summary>
     /// 시간 배율 출처. 버프내에서 발생하는 시간값에 대한 가속 배율의 출처
     /// </summary>
@@ -133,6 +126,9 @@ public class Buff : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// 시간 배율을 즉시 동기화 시킨다.
+    /// </summary>
     void ForcedSyncTimeMultiplier()
     {
         switch (timeMultiplierSource)
@@ -152,10 +148,10 @@ public class Buff : MonoBehaviour
     /// <summary>
     /// 추가 스텟
     /// </summary>
-    public List<additinalStat> additianalStatList = new List<additinalStat>();
+    public List<AdditinalStat> additianalStatList = new List<AdditinalStat>();
 
     [System.Serializable]
-    public class additinalStat
+    public class AdditinalStat
     {
         public E_StatType targetStat;
         public float totalStat;
@@ -248,7 +244,7 @@ public class Buff : MonoBehaviour
     /// </summary>
     public void RefreshBuff()
     {
-        foreach (additinalStat addedstat in additianalStatList)
+        foreach (AdditinalStat addedstat in additianalStatList)
         { 
             target.StatManager.CreateOrGetStat(addedstat.targetStat).ModifiedValue -= addedstat.totalStat;
             addedstat.SetTotalStat(caster, target);
@@ -320,7 +316,7 @@ public class Buff : MonoBehaviour
         ForcedSyncTimeMultiplier();
         AddEventAboutTimeMultiplier();
         //최초 시작시 적용할 효과 발생
-        foreach(additinalStat addedstat in additianalStatList)
+        foreach(AdditinalStat addedstat in additianalStatList)
         {
             addedstat.SetTotalStat(caster,target);
             addedstat.totalStat *= currentStackCount;
@@ -437,7 +433,7 @@ public class Buff : MonoBehaviour
     /// </summary>
     void OnDestroy()
     {
-        foreach (additinalStat addedstat in additianalStatList)
+        foreach (AdditinalStat addedstat in additianalStatList)
         {
             target.StatManager.CreateOrGetStat(addedstat.targetStat).ModifiedValue -= addedstat.totalStat;
         }

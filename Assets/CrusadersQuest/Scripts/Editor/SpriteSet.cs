@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Anima2D;
 
-namespace CrusadersQuest
+namespace CrusadersQuestReplica
 {
     public class SpriteSet : ScriptableObject
     {

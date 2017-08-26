@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-namespace CrusadersQuest
+namespace CrusadersQuestReplica
 {
 #if UNITY_EDITOR
     [ExecuteInEditMode]

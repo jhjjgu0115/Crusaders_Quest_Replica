@@ -47,15 +47,15 @@ public class BlockManager : MonoBehaviour
         InitializeBlockPool();
         playerUnitList = GameManager.Instance.PlayerUnitList;
         StartGenerateBlock();
-        dropTable.Add(0);
-        dropTable.Add(1);
-        dropTable.Add(0);
-        dropTable.Add(0);
+        //dropTable.Add(0);
+        //dropTable.Add(1);
+        //dropTable.Add(0);
+        //dropTable.Add(0);
 
-        dropTable.Add(1);
-        dropTable.Add(1);
-        dropTable.Add(1);
-        dropTable.Add(1);
+        //dropTable.Add(1);
+        //dropTable.Add(1);
+        //dropTable.Add(1);
+        //dropTable.Add(1);
     }
 
     /*
@@ -135,7 +135,7 @@ public class BlockManager : MonoBehaviour
 
                     //이건 드랍할 유닛 임시 설정. 그냥 랜덤임 나중에 지워야할 테스트 코드
                     Unit randomUnit;
-                    if (dropTable[lastBlockNextIndex]==0)
+                    if (Random.value >=0.5f/*dropTable[lastBlockNextIndex]==0*/)
                         randomUnit= GameManager.Instance.PlayerUnitList[0];
                     else
                         randomUnit= GameManager.instance.PlayerUnitList[1];

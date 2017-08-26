@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Anima2D;
 
-namespace CrusadersQuest 
+namespace CrusadersQuestReplica 
 {
 	[InitializeOnLoad][ExecuteInEditMode]
 	public class EditorUpdater

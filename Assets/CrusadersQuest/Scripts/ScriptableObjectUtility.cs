@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace CrusadersQuest
+namespace CrusadersQuestReplica
 {
     public static class ScriptableObjectUtility
     {
