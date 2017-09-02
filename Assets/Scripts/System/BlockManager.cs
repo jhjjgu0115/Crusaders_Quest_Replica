@@ -226,10 +226,15 @@ public class BlockManager : MonoBehaviour
         int usedBlockHeadIndex = blockPanel.IndexOf(headBlock);//사용된 블록의 헤더블록의 인덱스
         int usingChain = block.chainLevel;              //사용된 블록의 체인수
 
+
+        //스킬 시전(스킬 타입, 체인수)
+
+        block.targetUnit.AddSkillQueue(block.skillType, block.chainLevel);
+
+
+
         block.targetUnit.skillQueue.AddAction(block.targetUnit.skillList[usingChain-1]);
-        /*
-         * headBlock.TargetUnit.SkillUse(N체인);
-         */
+
         //블록 풀에 사용한 블록만큼 반환한다.
         //헤더 블록을 기준으로 체인갯수만큼 반환
         foreach (Block usingBlock in blockPanel.GetRange(usedBlockHeadIndex,usingChain))
@@ -240,7 +245,7 @@ public class BlockManager : MonoBehaviour
 
         //드랍이 가능한 마지막 인덱스를 체인값만큼 빼서 재설정.
         lastBlockNextIndex -= usingChain;
-        //당겨진 블록 위치부터 
+       
 
 
         

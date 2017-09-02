@@ -410,8 +410,42 @@ public partial class Unit : MonoBehaviour
         Debug.Log(name + " hit!");
     }
 
+    public delegate void DamageEvent(ref float damage);
+    public DamageEvent OnHitEvent;
+
+
+    /// <summary>
+    /// 피해를 입다.
+    /// </summary>
+    /// <param name="damage">오리지널 데미지량</param>
+    /// <param name="damageType">데미지 타입</param>
+    /// <param name="penetrationPower">공격자의 관통력</param>
+    /// <param name="isCritical">크리티컬 여부</param>
     public void GetDamage(ref float damage, E_DamageType damageType, float penetrationPower, bool isCritical)
     {
+        //방어력이나 버프가 적용될 데미지
+        float calculatedDamage = damage;
+        //
+        float damageReducePercent = 0;
+        /*
+         * 버프로 인한 피해량 계산
+         * 버프값, 데미지 속성,관통력,크리티컬 수치,시전자,
+         */
+
+
+
+
+        OnHitEvent.Invoke(ref damage);
+
+
+        if (penetrationPower >= StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue)
+        {
+            damageReducePercent = 1;
+        }
+        else
+        {
+            damageReducePercent = (100 / (((StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower) * 0.348f) + 100));
+        }
 
         /*
          * 오리지널 데미지
@@ -429,7 +463,7 @@ public partial class Unit : MonoBehaviour
          *
          * 
          * 
-         * 피해량 출력(계산된 피해량);
+         * Function 피해량 출력(계산된 피해량);
          * 계산된 데미지가 오리지널보다 15%이상 적다면 비관통
          * 아니면 관통 출력
          * 
@@ -448,22 +482,11 @@ public partial class Unit : MonoBehaviour
 
 
         //원래 데미지와 비교하여 관통치가 15%차이가 난다면 비관통으로 출력
-        float calculatedDamage = damage;
-        float penetrationPercent = 0;
+
         E_FloatingType floatingType = E_FloatingType.NonpenetratingDamage;
 
-
-        //관통계산 - 85%이상이면 풀관통 이하면 비관통
-        if(penetrationPower>= StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue)
-        {
-            penetrationPercent = 1;
-        }
-        else
-        {
-            penetrationPercent = (100 / (((StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower) * 0.348f) + 100));
-        }
-        calculatedDamage *= penetrationPercent;
-        if (penetrationPercent>0.85f)
+        calculatedDamage *= damageReducePercent;
+        if (damageReducePercent>0.85f)
         {
             floatingType = E_FloatingType.FullPenetrationDamage;
         }
@@ -479,6 +502,7 @@ public partial class Unit : MonoBehaviour
         StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= calculatedDamage;
         FloatingNumberManager.FloatingNumber(gameObject, calculatedDamage, floatingType);
     }
+
 
     public void GetHeal(ref float healAmount)
     {
@@ -699,6 +723,48 @@ public partial class Unit : MonoBehaviour
     }
 
 }
+public partial class Unit : MonoBehaviour
+{
+
+
+    Dictionary<string,Effect> skillDict = new Dictionary<string, Effect>();
+
+    //스킬 시전(스킬 타입, 체인수)
+    public void AddSkillQueue(E_SkillType skillType,int skillChain)
+    {
+        //애니메이션 - string으로만 찾을 수 있다.
+        //애니메이션과 unit의 계층은 같다.
+
+        //블럭을 사용시 전달되는것은 1,2,3 특수 스킬의 총 4가지다.
+
+        //자동으로 발동되는 스킬은 다른 인자를 사용한다.
+
+        //여기서 구분해야할것
+        //일반공격 0
+        //일반 블록 123
+        //특수 스킬 4번
+        //추가 스킬 
+
+
+        //애니메이션 정보는 캐릭터가 갖고있다.
+        //따라서 이름으로 검색이 가능.
+
+        //이름이 등록된 애니메이션이 재생중에
+        //애니메이션에서 효과를 발동시키기 때문에
+        //효과가 호출이 가능해야한다.
+
+        //스킬 구조체
+        //
+
+        //스킬에 대한 정보
+        //스킬 애니메이션
+        //스킬의 효과
+        
+    }
+
+}
+
+
 //디버그
 public partial class Unit : MonoBehaviour
 {

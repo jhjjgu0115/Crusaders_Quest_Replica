@@ -244,6 +244,8 @@ public class Buff : MonoBehaviour
     /// </summary>
     public void RefreshBuff()
     {
+        //현재 체력이 늘어나는거면 빠질때 1은 남기도록 해야한다.
+        //아니면 시스템 설계에 따라서 맞게 바꾸도록 한다.
         foreach (AdditinalStat addedstat in additianalStatList)
         { 
             target.StatManager.CreateOrGetStat(addedstat.targetStat).ModifiedValue -= addedstat.totalStat;
