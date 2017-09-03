@@ -434,8 +434,10 @@ public partial class Unit : MonoBehaviour
 
 
 
-
-        OnHitEvent.Invoke(ref damage);
+        if(OnHitEvent!=null)
+        {
+            OnHitEvent.Invoke(ref damage);
+        }
 
 
         if (penetrationPower >= StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue)
@@ -732,6 +734,23 @@ public partial class Unit : MonoBehaviour
     //스킬 시전(스킬 타입, 체인수)
     public void AddSkillQueue(E_SkillType skillType,int skillChain)
     {
+        //블럭 시전.
+        //블럭 정보를 분석(스킬 타입과 체인수)
+
+        //애니메이션 - 고정명칭으로 찾는다.
+
+        //애니메이션 리스트에 추가.
+
+
+        //애니메이션 실행
+
+        //애니메이션은 각자 갖는 효과 - 기본공격은 기본공격에 들어있는 3개중 하나를 랜덤 실행.
+
+        //블록스킬은 각자 블록스킬에 맞는 이름으로 찾아서 실행.
+
+        //
+
+
         //애니메이션 - string으로만 찾을 수 있다.
         //애니메이션과 unit의 계층은 같다.
 
