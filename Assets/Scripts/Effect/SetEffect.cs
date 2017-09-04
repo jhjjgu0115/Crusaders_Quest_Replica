@@ -4,22 +4,52 @@ using UnityEngine;
 
 public class SetEffect : Effect
 {
-    public List<Effect> effectList = new List<Effect>();
+    public List<Effect> effectSet = new List<Effect>();
 
-    public override void ActivateEffect()
+
+    public override void RefreshAllAmount(Unit caster, Unit target)
     {
-        base.ActivateEffect();
+        foreach (Effect effect in effectSet)
+        {
+            effect.RefreshAllAmount(caster, target);
+        }
+    }
+    public override void RefreshFixedAllAmount()
+    {
+        foreach (Effect effect in effectSet)
+        {
+            effect.RefreshFixedAllAmount();
+        }
+    }
+    public override void RefreshCasterBasedAmount(Unit caster)
+    {
+        foreach (Effect effect in effectSet)
+        {
+            effect.RefreshCasterBasedAmount(caster);
+        }
+    }
+    public override void RefreshTargetBasedAmount(Unit target)
+    {
+        foreach (Effect effect in effectSet)
+        {
+            effect.RefreshTargetBasedAmount(target);
+        }
+    }
+    public override void ActivateEffect(Unit caster, Unit target, float multiplier)
+    {
+        foreach (Effect effect in effectSet)
+        {
+            effect.RefreshTargetBasedAmount(target);
+            effect.ActivateEffect(caster, target);
+        }
     }
     public override void ActivateEffect(Unit caster, Unit target)
     {
-        base.ActivateEffect(caster, target);
-    } 
-    public override void ActivateEffect(Unit caster, Unit target, float multiplier)
-    {
-        base.ActivateEffect(caster, target, multiplier);
+        foreach (Effect effect in effectSet)
+        {
+            effect.RefreshTargetBasedAmount(target);
+            effect.ActivateEffect(caster, target);
+        }
     }
-    public override void ActivateEffect(Unit caster, Unit target, ref float amount, float multiplier)
-    {
-        base.ActivateEffect(caster, target, ref amount, multiplier);
-    }
+
 }

@@ -727,13 +727,29 @@ public partial class Unit : MonoBehaviour
 }
 public partial class Unit : MonoBehaviour
 {
-
-
     Dictionary<string,Effect> skillDict = new Dictionary<string, Effect>();
 
     //스킬 시전(스킬 타입, 체인수)
     public void AddSkillQueue(E_SkillType skillType,int skillChain)
     {
+        switch(skillType)
+        {
+            case E_SkillType.Normal:
+                
+                break;
+            case E_SkillType.Special:
+                break;
+            default:
+                break;
+
+        }
+
+        //체인을 분석해서 String으로 대기열에 등록.
+
+        //애니메이션 실행중 효과발동트리거는 stirng으로 대기열에서 찾는다.
+
+
+
         //블럭 시전.
         //블럭 정보를 분석(스킬 타입과 체인수)
 
