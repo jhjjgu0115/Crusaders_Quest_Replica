@@ -287,33 +287,6 @@ public partial class Unit : MonoBehaviour
                                 //rigid2D.velocity = -direction * moveSpeed.ModifiedValue*0.5f;
                                 rigid2D.AddForce(-direction * moveSpeed.ModifiedValue * 0.5f, ForceMode2D.Force);
                             }
-                            /*
-                            if (enemyRange == E_Range.OutOfRange)
-                            {
-                                if (deltaRange != E_Range.WithInMaxRange)
-                                {
-                                    
-                                    rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
-                                    Debug.Log(name + " 사거리밖>> 사거리안");
-                                }
-                                rigid2D.velocity = direction * moveSpeed.ModifiedValue;
-                                Debug.Log(name + " 전진");
-                                //rigid2D.AddForce(direction * moveSpeed.ModifiedValue, ForceMode2D.Force);
-                                //Debug.Log(rigid2D.velocity);
-                                //transform.Translate(direction*moveSpeed.ModifiedValue*Time.deltaTime);
-                                //전진
-                            }
-                            else
-                            {
-                                if (!(moveSpeed.ModifiedValue == 0))
-                                {
-                                    rigid2D.velocity = -direction * moveSpeed.ModifiedValue*0.5f;
-                                    Debug.Log(name+" 후진"+ rigid2D.velocity);
-                                    // rigid2D.AddForce(-direction * moveSpeed.ModifiedValue * 0.5f, ForceMode2D.Force);
-                                }
-                                //transform.Translate(-direction * Time.deltaTime);
-                                //후진
-                            }*/
 
                         }
                     }
@@ -324,30 +297,7 @@ public partial class Unit : MonoBehaviour
     }
     
     //스킬 자동 시전
-    void ActionQueueCheckingStart()
-    {
-        StartCoroutine(ActionQueueChecking());
-    }
-    IEnumerator ActionQueueChecking()
-    {
-        string currentSkillInfo = string.Empty;
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        while (true)
-        {
-            //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"));
-            if(!animator.GetCurrentAnimatorStateInfo(0).IsName(currentSkillInfo))
-            {
-                if (!skillQueue.IsEmpty)
-                {
-                    rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
-                    currentSkillInfo = skillQueue.DequeueAction().motionName;
-                    animator.Play(currentSkillInfo);
-                }
-            }
-            yield return null;
-
-        }
-    }
+   
 
 
     //기본 공격
@@ -382,7 +332,8 @@ public partial class Unit : MonoBehaviour
                 {
                     currentCoolTime = 0;
                     isAttacking = true;
-                    skillQueue.AddAction(skill);
+                    //평타를 추가하는 곳
+                    actionQueue.Enqueue("Attack1");
                 }
             }
 
@@ -725,90 +676,94 @@ public partial class Unit : MonoBehaviour
     }
 
 }
+//기본 행동
 public partial class Unit : MonoBehaviour
 {
-    Dictionary<string,Effect> skillDict = new Dictionary<string, Effect>();
+    //생성
+    //부활
+    //사망
+    
+    //대기
+    //전진
+    //후진
 
-    //스킬 시전(스킬 타입, 체인수)
-    public void AddSkillQueue(E_SkillType skillType,int skillChain)
+    //기본 공격
+
+    //기절
+}
+    //행동 대기열
+    public partial class Unit : MonoBehaviour
+{
+    Queue<string> actionQueue = new Queue<string>();
+    bool IsActionQueueEmpty
     {
-        switch(skillType)
+        get
+        {
+            return (actionQueue.Count == 0);
+        }
+    }
+    //행동 큐 상시 체크
+    void ActionQueueCheckingStart()
+    {
+        StartCoroutine(ActingChecking());
+    }
+    IEnumerator ActingChecking()
+    {
+        string currentSkillInfo = string.Empty;
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        while (true)
+        {
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName(currentSkillInfo))
+            {
+                if (!IsActionQueueEmpty)
+                {
+                    rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
+                    currentSkillInfo = actionQueue.Dequeue();
+                    animator.Play(currentSkillInfo);
+                }
+            }
+            yield return null;
+        }
+    }
+
+
+   
+
+}
+//상호작용
+public partial class Unit : MonoBehaviour
+{
+
+}
+//스킬과 효과
+public partial class Unit:MonoBehaviour
+{
+    Dictionary<string, Effect> effectDict = new Dictionary<string, Effect>();
+
+    /// <summary>
+    /// 행동 대기열에 스킬을 추가한다.
+    /// </summary>
+    /// <param name="skillType">스킬의 종류</param>
+    /// <param name="skillChain">스킬의 체인수</param>
+    public void AddSkillQueue(E_SkillType skillType, int skillChain)
+    {
+        switch (skillType)
         {
             case E_SkillType.Normal:
-                
+                actionQueue.Enqueue("BlockSkill" + skillChain.ToString());
                 break;
             case E_SkillType.Special:
+                actionQueue.Enqueue("SpecialSkill" + skillChain.ToString());
                 break;
-            default:
+            default://이후에 추가되는 스킬 타입에 대해 추가할것
                 break;
 
         }
-
-        //체인을 분석해서 String으로 대기열에 등록.
-
-        //애니메이션 실행중 효과발동트리거는 stirng으로 대기열에서 찾는다.
-
-
-
-        //블럭 시전.
-        //블럭 정보를 분석(스킬 타입과 체인수)
-
-        //애니메이션 - 고정명칭으로 찾는다.
-
-        //애니메이션 리스트에 추가.
-
-
-        //애니메이션 실행
-
-        //애니메이션은 각자 갖는 효과 - 기본공격은 기본공격에 들어있는 3개중 하나를 랜덤 실행.
-
-        //블록스킬은 각자 블록스킬에 맞는 이름으로 찾아서 실행.
-
-        //
-
-
-        //애니메이션 - string으로만 찾을 수 있다.
-        //애니메이션과 unit의 계층은 같다.
-
-        //블럭을 사용시 전달되는것은 1,2,3 특수 스킬의 총 4가지다.
-
-        //자동으로 발동되는 스킬은 다른 인자를 사용한다.
-
-        //여기서 구분해야할것
-        //일반공격 0
-        //일반 블록 123
-        //특수 스킬 4번
-        //추가 스킬 
-
-
-        //애니메이션 정보는 캐릭터가 갖고있다.
-        //따라서 이름으로 검색이 가능.
-
-        //이름이 등록된 애니메이션이 재생중에
-        //애니메이션에서 효과를 발동시키기 때문에
-        //효과가 호출이 가능해야한다.
-
-        //스킬 구조체
-        //
-
-        //스킬에 대한 정보
-        //스킬 애니메이션
-        //스킬의 효과
-        
     }
-
 }
-
-
 //디버그
 public partial class Unit : MonoBehaviour
 {
-    public void TestSkillAdd(string skillName)
-    {
-        Skill skill = new Skill();
-        skill.motionName = skillName;
-        skillQueue.AddAction(skill);
-    }
     public void ShowAllStat()
     {
         foreach (E_StatType _statType in Enum.GetValues(typeof(E_StatType)))

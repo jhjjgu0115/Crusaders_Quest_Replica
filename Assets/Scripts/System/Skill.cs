@@ -5,7 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class Skill:MonoBehaviour
 {
-    public string name;
     public string motionName;
     public List<Effect> effectList = new List<Effect>();
 

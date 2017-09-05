@@ -230,11 +230,6 @@ public class BlockManager : MonoBehaviour
         //스킬 시전(스킬 타입, 체인수)
 
         block.targetUnit.AddSkillQueue(block.skillType, block.chainLevel);
-
-
-
-        block.targetUnit.skillQueue.AddAction(block.targetUnit.skillList[usingChain-1]);
-
         //블록 풀에 사용한 블록만큼 반환한다.
         //헤더 블록을 기준으로 체인갯수만큼 반환
         foreach (Block usingBlock in blockPanel.GetRange(usedBlockHeadIndex,usingChain))

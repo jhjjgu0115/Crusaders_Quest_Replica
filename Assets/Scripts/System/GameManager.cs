@@ -92,11 +92,6 @@ public class GameManager : MonoBehaviour
     int targetUnitNum=0;
     public Unit leaderHero;
 
-
-    public void UseChainBlock(int skillNum)
-    {
-        targetUnit.skillQueue.AddAction(targetUnit.skillList[skillNum]);
-    }
     public void ChangeSkillTarget()
     {
         //2명일때
