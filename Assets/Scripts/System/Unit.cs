@@ -661,35 +661,92 @@ public partial class Unit : MonoBehaviour
 
 
 
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
-    private void Start()
-    {
-        RangeSearchStart();
-        RunningStart();
-        IsNormal = true;
-        inBattle = true;
-        ActionQueueCheckingStart();
-        BaseAttackCoolDownStart();
-    }
-
+ 
 }
 //기본 행동
 public partial class Unit : MonoBehaviour
 {
-    //생성
-    //부활
-    //사망
-    
-    //대기
-    //전진
-    //후진
+    void StartBattle()
+    {
 
-    //기본 공격
+    }
+    void InBatte()
+    {
+
+    }
+    void EndBattle()
+    {
+
+    }
+
+    void OnCreate()
+    {
+
+    }
+    void OnReBirth()
+    {
+
+    }
+    void OnDeath()
+    {
+
+    }
+    
+    void OnWait()
+    {
+
+    }
+    void OnFoward()
+    {
+
+    }
+    void OnBackWard()
+    {
+
+    }
+
+    //기본공격
+    void StartBaseAttack()
+    {
+
+    }
+    void OnBaseAttack()
+    {
+
+    }
+    void EndBaseAttack()
+    {
+
+    }
 
     //기절
+    void StartGroggy()
+    {
+
+    }
+    void OnGroggy()
+    {
+
+    }
+    void EndGroggy()
+    {
+
+    }
+
+    //속박
+    void StartRestriction()
+    {
+
+    }
+    void OnRestriction()
+    {
+
+    }
+    void EndRestriction()
+    {
+
+    }
+   
 }
     //행동 대기열
     public partial class Unit : MonoBehaviour
@@ -761,6 +818,26 @@ public partial class Unit:MonoBehaviour
         }
     }
 }
+
+//시작 제어
+public partial class Unit:MonoBehaviour
+{
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+    private void Start()
+    {
+        RangeSearchStart();
+        RunningStart();
+        IsNormal = true;
+        inBattle = true;
+        ActionQueueCheckingStart();
+        BaseAttackCoolDownStart();
+    }
+
+}
+
 //디버그
 public partial class Unit : MonoBehaviour
 {
@@ -771,4 +848,5 @@ public partial class Unit : MonoBehaviour
             Debug.Log(statManager.Get_Stat(_statType).StatName + "/" + statManager.Get_Stat(_statType).StatType + "/" + statManager.Get_Stat(_statType).ModifiedValue);
         }
     }
+    
 }
