@@ -1,8 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public partial class Projectile : MonoBehaviour
+{
+    //최대 관통 제한[-1이면 무제한 관통][0이면 적중시 터짐]
+    //유지시간
+    //반복 주기
+    //반복 횟수
+    
 
-public class Projectile : MonoBehaviour
+    //리스트
+    //생성 효과
+    //주기 효과
+    //주기 만료 효과
+    //소멸 효과
+
+    //관통시 적용 효과
+    //관통 횟수 만료시 효과
+
+}
+    public partial class Projectile : MonoBehaviour
 {
     public int penetrationCount = 0;//0이하는 무제한 관통
     int currentCount = 0;
@@ -115,12 +132,5 @@ public class Projectile : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
-
-
-
-
-
-
 
 }
