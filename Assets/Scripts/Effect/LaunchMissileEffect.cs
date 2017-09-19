@@ -43,63 +43,19 @@ public class LaunchMissileEffect : Effect
 
     public override void RefreshAllAmount(Unit caster, Unit target)
     {
-        foreach (Effect effect in projectile.explosionEffectList)
-        {
-            effect.RefreshAllAmount(caster, target);
-        }
-        /*foreach (Effect effect in projectile.destroyEffectList)
-        {
-            effect.RefreshAllAmount(caster, target);
-        }*/
-        foreach (Effect effect in projectile.impactEffectList)
-        {
-            effect.RefreshAllAmount(caster, target);
-        }
+
     }
     public override void RefreshFixedAllAmount()
     {
-        foreach (Effect effect in projectile.explosionEffectList)
-        {
-            effect.RefreshFixedAllAmount();
-        }
-        /*foreach (Effect effect in projectile.destroyEffectList)
-        {
-            effect.RefreshFixedAllAmount();
-        }*/
-        foreach (Effect effect in projectile.impactEffectList)
-        {
-            effect.RefreshFixedAllAmount();
-        }
+       
     }
     public override void RefreshCasterBasedAmount(Unit caster)
     {
-        foreach (Effect effect in projectile.explosionEffectList)
-        {
-            effect.RefreshCasterBasedAmount(caster);
-        }
-        /*foreach (Effect effect in projectile.destroyEffectList)
-        {
-            effect.RefreshCasterBasedAmount(caster);
-        }*/
-        foreach (Effect effect in projectile.impactEffectList)
-        {
-            effect.RefreshCasterBasedAmount(caster);
-        }
+       
     }
     public override void RefreshTargetBasedAmount(Unit target)
     {
-        foreach (Effect effect in projectile.explosionEffectList)
-        {
-            effect.RefreshTargetBasedAmount(target);
-        }
-        /*foreach (Effect effect in projectile.destroyEffectList)
-        {
-            effect.RefreshTargetBasedAmount(target);
-        }*/
-        foreach (Effect effect in projectile.impactEffectList)
-        {
-            effect.RefreshTargetBasedAmount(target);
-        }
+      
     }
 
     public override void ActivateEffect()
@@ -125,9 +81,6 @@ public class LaunchMissileEffect : Effect
     {
         this.caster = caster;
         StartCoroutine(Launch());
-
-        //instanceProjectile.Initialize(caster, target, multiplier);
-        //instanceProjectile.FlyingStart();
     }
 
     IEnumerator Launch()
@@ -172,7 +125,8 @@ public class LaunchMissileEffect : Effect
             instanceProjectile.GetComponent<Rigidbody2D>().velocity = launchVelocity;
         }
         instanceProjectile.Initialize(caster);
-        instanceProjectile.FlyStart();
+        instanceProjectile.OnCreat();
+        instanceProjectile.FlyingStart();
     }
 
     public override bool ConditionCheck()

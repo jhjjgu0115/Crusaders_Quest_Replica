@@ -454,6 +454,7 @@ public partial class Unit : MonoBehaviour
         float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
         StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= calculatedDamage;
         FloatingNumberManager.FloatingNumber(gameObject, calculatedDamage, floatingType);
+        Debug.Log(damage);
     }
 
 
@@ -747,8 +748,17 @@ public partial class Unit : MonoBehaviour
 
     }
 
+    public void StartCollision(Projectile projectile)
+    {
+        Debug.Log(name + " Start Collision");
+        projectile.OnPenetration();
+    }
+    public void EndCollision(Projectile projectile)
+    {
+        Debug.Log(name + " End Collision");
+    }
 
-   
+
 }
     //행동 대기열
     public partial class Unit : MonoBehaviour

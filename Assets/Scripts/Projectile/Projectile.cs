@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 public partial class Projectile : MonoBehaviour
 {
-    Unit caster;
-    Unit target;
+    public Unit caster;
+    public Unit target;
 
     //-1은 무제한.
-    public int maxPenetrationCount=0;   //최대 관통 횟수
+    public int maxPenetrationCount=0;   //최대 관통 횟수.0이면 착탄즉시 터짐
     int currentPenetrationCount = 0;    //현재 관통 횟수
 
     /// <summary>
@@ -25,25 +25,24 @@ public partial class Projectile : MonoBehaviour
     /// </summary>
     public int repeatCount;         //반복 횟수
     int currentRepeatCount;         //현재 횟수
-    
 
-    List<Effect> createEffectList = new List<Effect>();
-    List<Effect> periodEffectList = new List<Effect>();
-    List<Effect> durationEndEffectList = new List<Effect>();
-    List<Effect> penetrationEffectList = new List<Effect>();
-    List<Effect> destroyEffectList = new List<Effect>();
+    public Model penetrationVFXModel;
+    public Model destroyModel;
+
+
+    public List<Effect> createEffectList = new List<Effect>();
+    public List<Effect> periodEffectList = new List<Effect>();
+    public List<Effect> durationEndEffectList = new List<Effect>();
+    public List<Effect> penetrationEffectList = new List<Effect>();
+    public List<Effect> destroyEffectList = new List<Effect>();
 }
 public partial class Projectile : MonoBehaviour
 {
+    public void Initialize(Unit _caster)
+    {
+        caster = _caster;
+    }
 
-    /*
-     * 
-     * 충돌시
-     * 
-     * 관통효과 적용
-     * 
-     */
-     
     public void OnCreat()
     {
         RefreshEffectCasterBasedOnly(createEffectList);
@@ -60,7 +59,6 @@ public partial class Projectile : MonoBehaviour
     }
     IEnumerator OnFlying()
     {
-        //탑제된 모든 효과 새로고침.[대상 제외]
         currentReiterationPeriod = 0;
         currentRepeatCount = 0;
         if (durationTime >= 0)    //일정 시간동안 지속
@@ -68,6 +66,7 @@ public partial class Projectile : MonoBehaviour
             currentRemainTime = durationTime;
             while (true)
             {
+
                 //지속시간이 존재할때.
                 if (currentRemainTime >= 0)
                 {
@@ -100,6 +99,7 @@ public partial class Projectile : MonoBehaviour
                 }
                 else//지속시간이 만료되었을때.
                 {
+                    Debug.Log(1);
                     break;
                 }
 
@@ -145,6 +145,7 @@ public partial class Projectile : MonoBehaviour
             //마지막 효과 발동
             PeriodEffectActivate();
         }
+
         Destroy(gameObject);
         yield return null;
     }
@@ -157,63 +158,53 @@ public partial class Projectile : MonoBehaviour
     }
     public void OnPenetration()
     {
-        if (currentPenetrationCount < maxPenetrationCount)
-        {
-            RefreshEffectTargetBasedOnly(penetrationEffectList);
-            penetrationEffectActivate();
-            currentPenetrationCount++;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        Unit target = other.GetComponent<Unit>();
-
-        //충돌 대상에게 충돌시 효과 호출.
-        //호출을 마치고나면 여기의 충돌 효과를 호출하게 함.
-        //충돌처리 완료후 효과를 재호출.//만약 반사에 걸리면 이부분이 문제가능 
-
-
-
-        if (currentCount < penetrationCount - 1)
+        //충돌 횟수 무제한.
+        if(maxPenetrationCount==-1)
         {
             if (penetrationVFXModel)
             {
                 Instantiate(penetrationVFXModel).transform.position = transform.position;
             }
-
-            foreach (Effect effect in penetrationEffectList)
-            {
-                effect.RefreshTargetBasedAmount(target);
-                effect.ActivateEffect(caster, target);
-            }
-            currentCount++;
+            RefreshEffectTargetBasedOnly(penetrationEffectList);
+            penetrationEffectActivate();
+            target.EndCollision(this);
+            currentPenetrationCount++;
         }
         else
         {
-            if (currentCount < penetrationCount)
+            if (currentPenetrationCount < maxPenetrationCount)
+            {
+                if (penetrationVFXModel)
+                {
+                    Instantiate(penetrationVFXModel).transform.position = transform.position;
+                }
+                RefreshEffectTargetBasedOnly(penetrationEffectList);
+                penetrationEffectActivate();
+                target.EndCollision(this);
+                currentPenetrationCount++;
+            }
+            else
             {
                 if (destroyModel)
                 {
                     Instantiate(destroyModel).transform.position = transform.position;
                 }
                 GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-                foreach (Effect effect in destroyEffectList)
-                {
-                    effect.RefreshTargetBasedAmount(target);
-                    effect.ActivateEffect(caster, target);
-                }
-                currentCount++;
-                StartCoroutine(DelayDestory());
+                RefreshEffectTargetBasedOnly(destroyEffectList);
+                DestroyEffectActivate();
+                target.EndCollision(this);
+                Destroy(gameObject);
             }
-
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        target = other.GetComponent<Unit>();
+        target.StartCollision(this);
+    }
+
+
 
 
     void ActivateAllEffectInList(List<Effect> effectList)
@@ -269,63 +260,4 @@ public partial class Projectile : MonoBehaviour
 }
 public partial class Projectile : MonoBehaviour
 {
-    public int penetrationCount = 0;//0이하는 무제한 관통
-    int currentCount = 0;
-    public float limitRange = 0;
-
-    Vector3 launchPosition;
-
-
-    public List<Effect> explosionEffectList = new List<Effect>();
-    public List<Effect> impactEffectList = new List<Effect>();
-    public Model explosionModel;
-    public Model penetrationVFXModel;
-    public Model destroyModel;
-
-    private void Start()
-    {
-        launchPosition = transform.position;
-    }
-    
-    public void Initialize(Unit _caster)
-    {
-        caster = _caster;
-        launchPosition = transform.position;
-    }
-
-    public void FlyStart()
-    {
-        currentCount = 0;
-        StartCoroutine(Flying());
-    }
-    IEnumerator Flying()
-    {
-        
-
-        float currentDistance = 0;
-        while(true)
-        {
-            if(currentDistance < limitRange)
-            {
-                currentDistance = (transform.position - launchPosition).magnitude;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-
-            yield return null;
-        }
-
-    }
-
-    
-    IEnumerator DelayDestory()
-    {
-        yield return null;
-        yield return null;
-        Destroy(gameObject);
-    }
-
-
 }
