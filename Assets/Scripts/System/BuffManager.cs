@@ -67,10 +67,10 @@ public class BuffManager
         idCount++;
 
         idDictionary.Add(tempBuff.id, tempBuff);
-
+        
         if (!nameDictionary.ContainsKey(tempBuff.name))
         {
-            nameDictionary.Add(buff.name, new List<Buff>());
+            nameDictionary.Add(tempBuff.name, new List<Buff>());
         }
         nameDictionary[tempBuff.name].Add(tempBuff);
 

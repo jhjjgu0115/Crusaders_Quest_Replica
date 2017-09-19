@@ -6,6 +6,7 @@ public partial class Projectile : MonoBehaviour
     public Unit caster;
     public Unit target;
 
+
     //-1은 무제한.
     public int maxPenetrationCount=0;   //최대 관통 횟수.0이면 착탄즉시 터짐
     int currentPenetrationCount = 0;    //현재 관통 횟수
@@ -23,11 +24,8 @@ public partial class Projectile : MonoBehaviour
     /// <summary>
     /// 반복 횟수. -1이면 제한 없음
     /// </summary>
-    public int repeatCount;         //반복 횟수
+    public int maxRepeatCount;         //반복 횟수
     int currentRepeatCount;         //현재 횟수
-
-    public Model penetrationVFXModel;
-    public Model destroyModel;
 
 
     public List<Effect> createEffectList = new List<Effect>();
@@ -66,7 +64,6 @@ public partial class Projectile : MonoBehaviour
             currentRemainTime = durationTime;
             while (true)
             {
-
                 //지속시간이 존재할때.
                 if (currentRemainTime >= 0)
                 {
@@ -79,12 +76,12 @@ public partial class Projectile : MonoBehaviour
                     }
                     else//주기가 가득참
                     {
-                        if (repeatCount == -1)//무제한 발생
+                        if (maxRepeatCount == -1)//무제한 발생
                         {
                             //효과 발생
                             PeriodEffectActivate();
                         }
-                        else if (currentRepeatCount < repeatCount - 1)//반복 횟수 제한
+                        else if (currentRepeatCount < maxRepeatCount)//반복 횟수 제한
                         {
                             //효과발생
                             PeriodEffectActivate();
@@ -99,7 +96,6 @@ public partial class Projectile : MonoBehaviour
                 }
                 else//지속시간이 만료되었을때.
                 {
-                    Debug.Log(1);
                     break;
                 }
 
@@ -114,7 +110,6 @@ public partial class Projectile : MonoBehaviour
         {
             while (true)
             {
-
                 //주기 계산
                 if (currentReiterationPeriod < reiterationPeriod)//주기가 차지 않으면 채운다.
                 {
@@ -122,12 +117,12 @@ public partial class Projectile : MonoBehaviour
                 }
                 else//주기가 가득참
                 {
-                    if (repeatCount == -1)//무제한 발생
+                    if (maxRepeatCount == -1)//무제한 발생
                     {
                         //효과 발생
                         PeriodEffectActivate();
                     }
-                    else if (currentRepeatCount < repeatCount - 1)//반복 횟수 제한
+                    else if (currentRepeatCount < maxRepeatCount)//반복 횟수 제한
                     {
                         //효과발생
                         PeriodEffectActivate();
@@ -161,9 +156,13 @@ public partial class Projectile : MonoBehaviour
         //충돌 횟수 무제한.
         if(maxPenetrationCount==-1)
         {
-            if (penetrationVFXModel)
+           
+            foreach (Effect effect in penetrationEffectList)
             {
-                Instantiate(penetrationVFXModel).transform.position = transform.position;
+                Effect penetrationEffectObject = Instantiate(effect);
+                penetrationEffectObject.transform.position = transform.position;
+                penetrationEffectObject.Caster = caster;
+                penetrationEffectObject.Target = target;
             }
             RefreshEffectTargetBasedOnly(penetrationEffectList);
             penetrationEffectActivate();
@@ -174,9 +173,12 @@ public partial class Projectile : MonoBehaviour
         {
             if (currentPenetrationCount < maxPenetrationCount)
             {
-                if (penetrationVFXModel)
+                foreach (Effect effect in penetrationEffectList)
                 {
-                    Instantiate(penetrationVFXModel).transform.position = transform.position;
+                    Effect penetrationEffectObject = Instantiate(effect);
+                    penetrationEffectObject.transform.position = transform.position;
+                    penetrationEffectObject.Caster = caster;
+                    penetrationEffectObject.Target = target;
                 }
                 RefreshEffectTargetBasedOnly(penetrationEffectList);
                 penetrationEffectActivate();
@@ -185,13 +187,15 @@ public partial class Projectile : MonoBehaviour
             }
             else
             {
-                if (destroyModel)
+                foreach(Effect effect in destroyEffectList)
                 {
-                    Instantiate(destroyModel).transform.position = transform.position;
+                    Effect destroyEffectObject = Instantiate(effect);
+                    destroyEffectObject.transform.position = transform.position;
+                    destroyEffectObject.Caster = caster;
+                    destroyEffectObject.Target = target;
                 }
                 GetComponent<Rigidbody2D>().velocity = Vector3.zero;
                 RefreshEffectTargetBasedOnly(destroyEffectList);
-                DestroyEffectActivate();
                 target.EndCollision(this);
                 Destroy(gameObject);
             }
@@ -235,7 +239,14 @@ public partial class Projectile : MonoBehaviour
     {
         ActivateAllEffectInList(penetrationEffectList);
     }
-    
+
+    void RefreshEffectAll(List<Effect> effectList)
+    {
+        for (int index = 0; index < effectList.Count; index++)
+        {
+            effectList[index].RefreshAllAmount(caster, target);
+        }
+    }
     void RefreshEffectCasterBasedOnly(List<Effect> effectList)
     {
         for (int index = 0; index < effectList.Count; index++)
@@ -250,14 +261,12 @@ public partial class Projectile : MonoBehaviour
             effectList[index].RefreshTargetBasedAmount(target);
         }
     }
-    void RefreshEffectAll(List<Effect> effectList)
-    {
-        for (int index = 0; index < effectList.Count; index++)
-        {
-            effectList[index].RefreshAllAmount(caster, target);
-        }
-    }
+
 }
 public partial class Projectile : MonoBehaviour
 {
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
 }
