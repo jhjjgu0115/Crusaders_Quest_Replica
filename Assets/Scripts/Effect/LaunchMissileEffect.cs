@@ -4,6 +4,30 @@ using UnityEngine;
 
 public class LaunchMissileEffect : Effect
 {
+    /*
+     * 미사일 발사각도
+     * 발사 속도
+     * 
+     * 발사 위치
+     * 발사 위치에 대한 추가 오프셋
+     * 발사 위치 X값 월드 좌표 고정여부
+     * 발사 위치 Y값 월드 좌표 고정여부
+     * 
+     * 발사체
+     * 발사 횟수
+     * 발사 주기
+     * 
+     * 조건 확인
+     */
+
+
+
+
+
+
+
+
+
     public Vector3 launchAngle;
     public Vector3 launchVelocity;
     public GameObject launchPosition;
@@ -23,10 +47,10 @@ public class LaunchMissileEffect : Effect
         {
             effect.RefreshAllAmount(caster, target);
         }
-        foreach (Effect effect in projectile.destroyEffectList)
+        /*foreach (Effect effect in projectile.destroyEffectList)
         {
             effect.RefreshAllAmount(caster, target);
-        }
+        }*/
         foreach (Effect effect in projectile.impactEffectList)
         {
             effect.RefreshAllAmount(caster, target);
@@ -38,10 +62,10 @@ public class LaunchMissileEffect : Effect
         {
             effect.RefreshFixedAllAmount();
         }
-        foreach (Effect effect in projectile.destroyEffectList)
+        /*foreach (Effect effect in projectile.destroyEffectList)
         {
             effect.RefreshFixedAllAmount();
-        }
+        }*/
         foreach (Effect effect in projectile.impactEffectList)
         {
             effect.RefreshFixedAllAmount();
@@ -53,10 +77,10 @@ public class LaunchMissileEffect : Effect
         {
             effect.RefreshCasterBasedAmount(caster);
         }
-        foreach (Effect effect in projectile.destroyEffectList)
+        /*foreach (Effect effect in projectile.destroyEffectList)
         {
             effect.RefreshCasterBasedAmount(caster);
-        }
+        }*/
         foreach (Effect effect in projectile.impactEffectList)
         {
             effect.RefreshCasterBasedAmount(caster);
@@ -68,33 +92,15 @@ public class LaunchMissileEffect : Effect
         {
             effect.RefreshTargetBasedAmount(target);
         }
-        foreach (Effect effect in projectile.destroyEffectList)
+        /*foreach (Effect effect in projectile.destroyEffectList)
         {
             effect.RefreshTargetBasedAmount(target);
-        }
+        }*/
         foreach (Effect effect in projectile.impactEffectList)
         {
             effect.RefreshTargetBasedAmount(target);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public override void ActivateEffect()
     {

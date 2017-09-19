@@ -7,7 +7,6 @@ using System.Collections.Generic;
 public class Buff : MonoBehaviour
 {
     public string id;
-    public string name;
 
     /// <summary>
     /// 시전자
@@ -32,9 +31,9 @@ public class Buff : MonoBehaviour
             case E_ApplyTargetFilter.Caster:
                 target = caster;
                 break;
-            case E_ApplyTargetFilter.Target:
+            /*case E_ApplyTargetFilter.Target:
                 target = target;
-                break;
+                break;*/
             default:
                 target = target;
                 break;
@@ -442,21 +441,6 @@ public class Buff : MonoBehaviour
         DestroyEffectActivate();
         RemoveEventAboutTimeMultiplier();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /*
 
