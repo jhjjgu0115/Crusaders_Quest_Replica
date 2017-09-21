@@ -33,21 +33,27 @@ public partial class Projectile : MonoBehaviour
     public List<Effect> durationEndEffectList = new List<Effect>();
     public List<Effect> penetrationEffectList = new List<Effect>();
     public List<Effect> destroyEffectList = new List<Effect>();
+    public List<Effect> ectEffectList = new List<Effect>();
 }
 public partial class Projectile : MonoBehaviour
 {
     public void Initialize(Unit _caster)
     {
         caster = _caster;
-    }
-
-    public void OnCreat()
-    {
+        foreach(Effect effect in ectEffectList)
+        {
+            effect.Caster = caster;
+        }
         RefreshEffectCasterBasedOnly(createEffectList);
         RefreshEffectCasterBasedOnly(periodEffectList);
         RefreshEffectCasterBasedOnly(durationEndEffectList);
         RefreshEffectCasterBasedOnly(penetrationEffectList);
         RefreshEffectCasterBasedOnly(destroyEffectList);
+        RefreshEffectCasterBasedOnly(ectEffectList);
+    }
+
+    public void OnCreat()
+    {
         //모든 효과 시전자 기반 갱신.
         CreatEffectActivate();
     }

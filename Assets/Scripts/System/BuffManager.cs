@@ -61,25 +61,25 @@ public class BuffManager
     Buff Create(Buff buff, Unit caster, Unit target)
     {
         Buff tempBuff = MonoBehaviour.Instantiate(buff);
+        tempBuff.name = buff.name;
         tempBuff.caster = caster;
         tempBuff.target = target;
         tempBuff.id = tempBuff.name + "_" + tempBuff.caster.ToString() + "_" + idCount;
         idCount++;
 
         idDictionary.Add(tempBuff.id, tempBuff);
-        
+
         if (!nameDictionary.ContainsKey(tempBuff.name))
         {
             nameDictionary.Add(tempBuff.name, new List<Buff>());
         }
         nameDictionary[tempBuff.name].Add(tempBuff);
-
         if (!orderDictionary.ContainsKey(tempBuff.buffOrder))
         {
             orderDictionary.Add(tempBuff.buffOrder,new List<Buff>());
         }
         orderDictionary[tempBuff.buffOrder].Add(tempBuff);
-
+        
         return tempBuff;
     }
 
@@ -88,7 +88,7 @@ public class BuffManager
         Buff tempBuff = null;
         if (nameDictionary.ContainsKey(buff.name))//해당 버프가 걸린적이 있는가?
         {   //걸린적이 있어 버프[이름]컨테이너는 있다.
-            if(nameDictionary[buff.name].Count==0)//해당 이름의 버프가 있는가?
+            if (nameDictionary[buff.name].Count==0)//해당 이름의 버프가 있는가?
             {   //없다.
                 tempBuff = Create(buff, caster, target);
                 tempBuff.Activate();
@@ -105,7 +105,7 @@ public class BuffManager
                         //시전자 구분을 해야한다면
                         foreach (Buff _buff in nameDictionary[buff.name])
                         {
-                            if (_buff.caster == buff.caster)//순회하며 해당 캐스터가 있는지 확인하고
+                            if (_buff.caster == caster)//순회하며 해당 캐스터가 있는지 확인하고
                             {
                                 tempBuff = Overlap(_buff, caster, target, buff.currentStackCount);
                                 //있다면 해당 버프에다가 중첩
@@ -156,7 +156,10 @@ public class BuffManager
     }
     Buff Overlap(Buff buff, Unit caster, Unit target,int stack)
     {
-        buff.currentStackCount += stack;
+        if(buff.maxStackCount>buff.currentStackCount)
+        {
+            buff.currentStackCount += stack;
+        }
         Refresh(buff);
         return buff;
     }

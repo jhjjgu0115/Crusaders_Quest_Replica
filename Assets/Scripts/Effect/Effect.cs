@@ -13,13 +13,17 @@ public partial class Effect : MonoBehaviour
 {
     public Effect()
     {
-        this.caster = null;
-        this.target = null;
+        caster = null;
+        target = null;
     }
     public Effect(Unit caster,Unit target)
     {
         this.caster = caster;
         this.target = target;
+    }
+    public Effect(Unit caster)
+    {
+        this.caster = caster;
     }
 
     public Unit Caster
@@ -87,6 +91,21 @@ public partial class Effect : MonoBehaviour
         }
         return true;*/
         return true;
+    }
+
+    void CasterSet(List<Effect> effectList)
+    {
+        for (int index = 0; index < effectList.Count; index++)
+        {
+            effectList[index].caster = caster;
+        }
+    }
+    void TargetSet(List<Effect> effectList)
+    {
+        for (int index = 0; index < effectList.Count; index++)
+        {
+            effectList[index].target = target;
+        }
     }
 
 }

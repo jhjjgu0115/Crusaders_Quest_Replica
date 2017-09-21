@@ -13,8 +13,6 @@ public class SearchAreaEffect : Effect
     //뒤에서부터, 앞에서부터,랜덤
     //
 
-
-
     public int maximumCount = 0;
     public List<Effect> enterEffectList = new List<Effect>();
     int currentCount = 0;
