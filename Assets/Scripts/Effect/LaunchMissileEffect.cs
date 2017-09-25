@@ -20,7 +20,30 @@ public class LaunchMissileEffect : Effect
      * 조건 확인
      */
 
+    public override Unit Caster
+    {
+        get
+        {
+            return caster;
+        }
 
+        set
+        {
+            caster = value;
+        }
+    }
+    public override Unit Target
+    {
+        get
+        {
+            return target;
+        }
+
+        set
+        {
+            target = value;
+        }
+    }
 
 
 

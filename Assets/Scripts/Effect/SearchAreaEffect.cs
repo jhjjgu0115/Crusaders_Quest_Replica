@@ -4,11 +4,40 @@ using UnityEngine;
  
 public class SearchAreaEffect : Effect
 {
+    public override Unit Caster
+    {
+        get
+        {
+            return caster;
+        }
+
+        set
+        {
+            caster = value;
+            CasterSet(enterEffectList);
+        }
+    }
+
+    public override Unit Target
+    {
+        get
+        {
+            return target;
+        }
+
+        set
+        {
+            target = value;
+            TargetSet(enterEffectList);
+        }
+    }
+
+
     //원일때 탐색 각도
     //각도
     //최대 포착
     //최소 포착
-    
+
     //서칭 옵션
     //뒤에서부터, 앞에서부터,랜덤
     //

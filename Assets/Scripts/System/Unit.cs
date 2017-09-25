@@ -666,6 +666,8 @@ public partial class Unit : MonoBehaviour
 //기본 행동
 public partial class Unit : MonoBehaviour
 {
+    //전투 시작
+    //전투중?=true
     void StartBattle()
     {
 
@@ -687,25 +689,41 @@ public partial class Unit : MonoBehaviour
     {
 
     }
+    //사망하면
+    //중단 리스트
+    //행동 중단.
+    //상호작용 X[부활 제외]
+    //이동,대기 불가
+    //자동 공격 중단
+    //기절해제
+    //버프소멸[소멸가능한것만]
+    //속박해제
     void OnDeath()
     {
 
     }
     
+
+    //전투중=true면 움직이기 시작.
+    //전투중=false면 대기중.
     void OnWait()
     {
 
     }
+    //대상이 최소 사거리 밖이면 전진
     void OnFoward()
     {
 
     }
+    //대상이 최소 사거리 내면 후진
     void OnBackWard()
     {
 
     }
 
-    //기본공격
+    //전투중=true면 공격 가능
+    //최대 사거리 내면 공격 시작.
+    //행위 대기열이 없으면 쿨다운 시작.
     void StartBaseAttack()
     {
 

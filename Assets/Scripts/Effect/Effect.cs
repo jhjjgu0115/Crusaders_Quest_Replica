@@ -26,7 +26,7 @@ public partial class Effect : MonoBehaviour
         this.caster = caster;
     }
 
-    public Unit Caster
+    public virtual Unit Caster
     {
         get
         {
@@ -37,7 +37,7 @@ public partial class Effect : MonoBehaviour
             caster = value;
         }
     }
-    public Unit Target
+    public virtual Unit Target
     {
         get
         {
@@ -93,18 +93,18 @@ public partial class Effect : MonoBehaviour
         return true;
     }
 
-    void CasterSet(List<Effect> effectList)
+    protected void CasterSet(List<Effect> effectList)
     {
         for (int index = 0; index < effectList.Count; index++)
         {
-            effectList[index].caster = caster;
+            effectList[index].Caster = caster;
         }
     }
-    void TargetSet(List<Effect> effectList)
+    protected void TargetSet(List<Effect> effectList)
     {
         for (int index = 0; index < effectList.Count; index++)
         {
-            effectList[index].target = target;
+            effectList[index].Target = target;
         }
     }
 

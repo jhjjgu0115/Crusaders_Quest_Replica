@@ -3,9 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 public partial class Projectile : MonoBehaviour
 {
-    public Unit caster;
-    public Unit target;
+    Unit caster;
+    Unit target;
 
+    public Unit Caster
+    {
+        get
+        {
+            return caster;
+        }
+        set
+        {
+            caster = value;
+            CasterSet(createEffectList);
+            CasterSet(periodEffectList);
+            CasterSet(durationEndEffectList);
+            CasterSet(penetrationEffectList);
+            CasterSet(destroyEffectList);
+            CasterSet(ectEffectList);
+        }
+    }
+    public Unit Target
+    {
+        get
+        {
+            return target;
+        }
+        set
+        {
+            target = value;
+            TargetSet(createEffectList);
+            TargetSet(periodEffectList);
+            TargetSet(durationEndEffectList);
+            TargetSet(penetrationEffectList);
+            TargetSet(destroyEffectList);
+            TargetSet(ectEffectList);
+        }
+    }
 
     //-1은 무제한.
     public int maxPenetrationCount=0;   //최대 관통 횟수.0이면 착탄즉시 터짐
@@ -39,11 +73,7 @@ public partial class Projectile : MonoBehaviour
 {
     public void Initialize(Unit _caster)
     {
-        caster = _caster;
-        foreach(Effect effect in ectEffectList)
-        {
-            effect.Caster = caster;
-        }
+        Caster = _caster;
         RefreshEffectCasterBasedOnly(createEffectList);
         RefreshEffectCasterBasedOnly(periodEffectList);
         RefreshEffectCasterBasedOnly(durationEndEffectList);
@@ -183,8 +213,6 @@ public partial class Projectile : MonoBehaviour
                 {
                     Effect penetrationEffectObject = Instantiate(effect);
                     penetrationEffectObject.transform.position = transform.position;
-                    penetrationEffectObject.Caster = caster;
-                    penetrationEffectObject.Target = target;
                 }
                 RefreshEffectTargetBasedOnly(penetrationEffectList);
                 penetrationEffectActivate();
@@ -210,8 +238,8 @@ public partial class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        target = other.GetComponent<Unit>();
-        target.StartCollision(this);
+        Target = other.GetComponent<Unit>();
+        Target.StartCollision(this);
     }
 
 
@@ -271,8 +299,23 @@ public partial class Projectile : MonoBehaviour
 }
 public partial class Projectile : MonoBehaviour
 {
+    void CasterSet(List<Effect> effectList)
+    {
+        for (int index = 0; index < effectList.Count; index++)
+        {
+            effectList[index].Caster = caster;
+        }
+    }
+    void TargetSet(List<Effect> effectList)
+    {
+        for (int index = 0; index < effectList.Count; index++)
+        {
+            effectList[index].Target = target;
+        }
+    }
     public void DestroySelf()
     {
         Destroy(gameObject);
     }
 }
+
