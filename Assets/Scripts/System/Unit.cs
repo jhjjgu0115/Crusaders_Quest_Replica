@@ -1,7 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using System;
 using UnityEngine;
+
+public delegate void EventListenerCasterOnly(Unit caster);
+public delegate void EventListenerBoth(Unit caster, Unit target);
+public delegate void EventListenerBothWithAmount(Unit caster, Unit target, ref float amount);
+
 
 public partial class Unit : MonoBehaviour
 {
@@ -70,7 +76,6 @@ public partial class Unit : MonoBehaviour
      * 사망 시작 이벤트 발생
      * 사망 애니메이션 종료시 이벤트 발생
      */
-    bool isDead;
     public bool IsDead
     {
         get
@@ -119,7 +124,6 @@ public partial class Unit : MonoBehaviour
 
 
     //기절 관련
-    bool isGroggy;
     public bool IsGroggy
     {
         get
@@ -666,29 +670,45 @@ public partial class Unit : MonoBehaviour
 //기본 행동
 public partial class Unit : MonoBehaviour
 {
-    //전투 시작
-    //전투중?=true
-    void StartBattle()
-    {
+    //절대 다른 클래스 인자를 직접 제어하지 말것.
 
-    }
-    void InBatte()
-    {
+    bool isInbattle;
+    bool isDead;
+    bool isActing;
+    bool isGroggy;
+    bool isRestriction;
 
-    }
-    void EndBattle()
-    {
 
-    }
-
+    List<Effect> createEffect = new List<Effect>();
     void OnCreate()
     {
+        foreach(Effect effect in createEffect)
+        {
+            effect.RefreshCasterBasedAmount(this);
+            effect.ActivateEffect(this);
+        }
 
+        //달리기 시작.
+        //기본 공격 시작.
+        //행동 대기열재생시작
+        //각 상태 정상화
+        //
     }
+
+    List<Effect> reBirthEffect = new List<Effect>();
     void OnReBirth()
     {
-
+        foreach (Effect effect in reBirthEffect)
+        {
+            effect.RefreshCasterBasedAmount(this);
+            effect.ActivateEffect(this);
+        }
+        //달리기 시작.
+        //기본 공격 시작.
+        //행동 대기열재생시작
+        //상태 정상화
     }
+
     //사망하면
     //중단 리스트
     //행동 중단.
@@ -698,11 +718,21 @@ public partial class Unit : MonoBehaviour
     //기절해제
     //버프소멸[소멸가능한것만]
     //속박해제
+    List<Effect> deathEffect = new List<Effect>();
+    EventListenerCasterOnly deathEventListener;
     void OnDeath()
     {
-
+        foreach (Effect effect in reBirthEffect)
+        {
+            effect.RefreshCasterBasedAmount(this);
+            effect.ActivateEffect(this);
+        }
+        //스킬 대기열 자동시전 중단.
+        //이동 중단.
+        //사거리 탐지 중단
+        //상호작용 중단
+        //버프 해제
     }
-    
 
     //전투중=true면 움직이기 시작.
     //전투중=false면 대기중.
@@ -724,15 +754,28 @@ public partial class Unit : MonoBehaviour
     //전투중=true면 공격 가능
     //최대 사거리 내면 공격 시작.
     //행위 대기열이 없으면 쿨다운 시작.
-    void StartBaseAttack()
+    void StartAttack()
     {
 
     }
-    void OnBaseAttack()
+    void OnAttack()
     {
 
     }
-    void EndBaseAttack()
+    void StopAttacking()
+    {
+
+    }
+
+    void StartRangeSearch()
+    {
+
+    }
+    void OnRangeSearch()
+    {
+
+    }
+    void StopRangeSearch()
     {
 
     }

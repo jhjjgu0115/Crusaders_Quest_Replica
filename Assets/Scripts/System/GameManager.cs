@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour
         _hero.StatManager.CreateOrGetStat(E_StatType.ScaleMultiplier).ModifiedValue = 1;
         _hero.GetComponent<Animator>().SetBool("inBattle",true);
     }
-
+    
     // Use this for initialization
     void Start()
     {
@@ -186,8 +186,6 @@ public class GameManager : MonoBehaviour
         leaderHero = playerUnitList[0];
         targetUnit = leaderHero;
     }
-
-
     void CheckingHeadUnitStart()
     {
         StartCoroutine(CheckingHeadUnit());
