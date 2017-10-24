@@ -76,7 +76,7 @@ public partial class Unit : MonoBehaviour
      * 사망 시작 이벤트 발생
      * 사망 애니메이션 종료시 이벤트 발생
      */
-    public bool IsDead
+    public bool IsAlive
     {
         get
         {
@@ -91,7 +91,7 @@ public partial class Unit : MonoBehaviour
     public void DeadStart()
     {
         isGroggy = false;
-        IsDead = true;
+        IsAlive = true;
         //모든 버프를 해제한다.
         //이 용사와 관계된 모든걸 해제한다.
         //사망 애니메이션 시작.
@@ -117,7 +117,7 @@ public partial class Unit : MonoBehaviour
     /// </summary>
     public void Rebirth()
     {
-        IsDead = false;
+        IsAlive = false;
         //사망과 반대겠지?
     }
     public List<Effect> RebirthEffect = new List<Effect>();
@@ -687,8 +687,17 @@ public partial class Unit : MonoBehaviour
             effect.RefreshCasterBasedAmount(this);
             effect.ActivateEffect(this);
         }
+        //AI 재생
+        IsGroggy = false;
+        isActing = false;
+        isRestriction = false;
+        IsAlive = false;
+        isInbattle = true;
 
-        //달리기 시작.
+        RunningStart();
+        RangeSearchStart();
+        BaseAttackCoolDownStart();
+        ActionQueueCheckingStart();
         //기본 공격 시작.
         //행동 대기열재생시작
         //각 상태 정상화
@@ -703,6 +712,18 @@ public partial class Unit : MonoBehaviour
             effect.RefreshCasterBasedAmount(this);
             effect.ActivateEffect(this);
         }
+
+        IsGroggy = false;
+        isActing = false;
+        isRestriction = false;
+        IsAlive = false;
+        isInbattle = true;
+
+        RunningStart();
+        RangeSearchStart();
+        BaseAttackCoolDownStart();
+        actionQueue.Clear();
+        ActionQueueCheckingStart();
         //달리기 시작.
         //기본 공격 시작.
         //행동 대기열재생시작

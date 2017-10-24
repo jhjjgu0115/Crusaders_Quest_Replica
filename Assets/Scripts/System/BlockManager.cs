@@ -47,15 +47,6 @@ public class BlockManager : MonoBehaviour
         InitializeBlockPool();
         playerUnitList = GameManager.Instance.PlayerUnitList;
         StartGenerateBlock();
-        //dropTable.Add(0);
-        //dropTable.Add(1);
-        //dropTable.Add(0);
-        //dropTable.Add(0);
-
-        //dropTable.Add(1);
-        //dropTable.Add(1);
-        //dropTable.Add(1);
-        //dropTable.Add(1);
     }
 
     /*
