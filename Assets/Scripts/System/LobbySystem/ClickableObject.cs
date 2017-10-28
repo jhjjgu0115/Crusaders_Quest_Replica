@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ClickableObject : MonoBehaviour {
-    SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
 
     private void OnMouseDown()
     {
