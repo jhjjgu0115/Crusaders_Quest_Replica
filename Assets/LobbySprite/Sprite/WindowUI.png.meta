@@ -1,12 +1,12 @@
 fileFormatVersion: 2
 guid: c9792317298fbfe409335f43b222d0db
-timeCreated: 1509109168
+timeCreated: 1509363253
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: CharacterSelected1
     21300002: CharacterBackGround1
-    21300004: HeroSelectWindowTilte
+    21300004: Title1
     21300006: CharacterBackGround2
     21300008: CharacterBackGround3
     21300010: CharacterSelected3
@@ -25,7 +25,7 @@ TextureImporter:
     21300036: LegendHero1
     21300038: Tab1
     21300040: CharacterBackGround4
-    21300042: WindowUI_0
+    21300042: Tab2
     21300044: BackGround1
     21300046: BackGround2
     21300048: WindowBackGround3
@@ -37,6 +37,31 @@ TextureImporter:
     21300060: TitleMitddle
     21300062: Title2
     21300064: CharacterBackGround5
+    21300066: Title3
+    21300068: LeaderSeletionButton
+    21300070: LeaderFlag1
+    21300072: LeaderFlag2
+    21300074: LeaderSelectHand
+    21300076: IconBack1
+    21300078: WorriorIcon
+    21300080: PaladinIcon
+    21300082: ArcherIcon
+    21300084: PriestIcon
+    21300086: WizardIcon
+    21300088: HunterIcon
+    21300090: SkillIconBack2
+    21300092: SkillIconBack1
+    21300094: WindowUI_1
+    21300096: Tab3
+    21300098: StartButton1
+    21300100: StartButton2
+    21300102: Button3
+    21300104: CircleGlow1
+    21300106: UIMask2
+    21300108: SelectionButtonPressed
+    21300110: UIMask1
+    21300112: CharacterSelection5
+    21300114: CharacterBackGround6
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -137,7 +162,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: HeroSelectWindowTilte
+      name: Title1
       rect:
         serializedVersion: 2
         x: 426
@@ -146,7 +171,7 @@ TextureImporter:
         height: 21
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 7, y: 7, z: 7, w: 7}
+      border: {x: 7, y: 9, z: 7, w: 7}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
@@ -358,7 +383,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: WindowUI_0
+      name: Tab2
       rect:
         serializedVersion: 2
         x: 1
@@ -522,8 +547,333 @@ TextureImporter:
         width: 21
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 8, y: 12, z: 10, w: 8}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Title3
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 647
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 8, z: 7, w: 7}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LeaderSeletionButton
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 961
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 3, z: 3, w: 2}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LeaderFlag1
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 979
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LeaderFlag2
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 885
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LeaderSelectHand
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 586
+        width: 19
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: IconBack1
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 938
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 2, z: 2, w: 2}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: WorriorIcon
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 915
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PaladinIcon
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 918
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ArcherIcon
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 909
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PriestIcon
+      rect:
+        serializedVersion: 2
+        x: 395
+        y: 724
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: WizardIcon
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 799
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HunterIcon
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 914
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SkillIconBack2
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 924
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SkillIconBack1
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 972
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: WindowUI_1
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 698
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tab3
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 638
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 3, z: 3, w: 2}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: StartButton1
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 894
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 5, z: 5, w: 3}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: StartButton2
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 906
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 3, y: 5, z: 5, w: 3}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Button3
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 906
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 3, y: 5, z: 5, w: 3}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CircleGlow1
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 601
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UIMask2
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 954
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 0, z: 2, w: 2}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SelectionButtonPressed
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 941
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 4, z: 4, w: 2}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UIMask1
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 920
+        width: 7
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 3, y: 0, z: 3, w: 3}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CharacterSelection5
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 641
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 3, y: 16, z: 5, w: 3}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CharacterBackGround6
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 606
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 3, y: 16, z: 5, w: 3}
       outline: []
       tessellationDetail: 0
     outline: []
