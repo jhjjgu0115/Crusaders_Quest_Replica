@@ -117,7 +117,6 @@ public partial class GameStartManager : MonoBehaviour
     public void RemoveHero(HeroInfo heroInfo,HeroButton heroButton)
     {
         SelectionInfo removeHeroInfo = selectionInfoList.Find(info => info.heroButton == heroButton);
-        Debug.Log(removeHeroInfo.heroButton.name);
         selectionInfoList.Remove(removeHeroInfo);
         removeHeroInfo.heroButton.Canceled();
         if(selectionInfoList.Count>0)
@@ -180,7 +179,7 @@ public partial class GameStartManager : MonoBehaviour
         {
             instance = this;
         }
-        sprites = Resources.LoadAll<Sprite>("LobbySprites/AllHero");
+        sprites = Resources.LoadAll<Sprite>("LobbySystem/Sprites/AllHero");
 
         /*이구간이 XML에서 데이터 읽어와 캐릭터를 그리드에 뿌린다.*/
         AddCharacter("레온", E_HeroClass.Worrior);
