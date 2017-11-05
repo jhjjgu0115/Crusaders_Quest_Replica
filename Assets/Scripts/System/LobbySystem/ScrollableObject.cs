@@ -60,7 +60,7 @@ public class ScrollableObject : MonoBehaviour
             if (canClick)
             {
                 forcusingCoroutine=StartCoroutine(Forcusing());
-                Debug.Log(name + clickCancelCount + " Clicked!");
+                //Debug.Log(name + clickCancelCount + " Clicked!");
             }
         }
 
@@ -78,8 +78,17 @@ public class ScrollableObject : MonoBehaviour
         while(true)
         {
             CameraController.instance.transform.position = Vector3.Lerp(CameraController.instance.transform.position,new Vector3(transform.position.x ,CameraController.instance.transform.position.y,CameraController.instance.transform.position.z), 0.1f);
-
-            if(CameraController.instance.transform.position.x - transform.position.x < 0.01f && CameraController.instance.transform.position.x - transform.position.x > -0.01f)
+            if (CameraController.instance.transform.position.x < minX)
+            {
+                CameraController.instance.transform.position = new Vector3(minX, CameraController.instance.transform.position.y, CameraController.instance.transform.position.z);
+                break;
+            }
+            if (CameraController.instance.transform.position.x > maxX)
+            {
+                CameraController.instance.transform.position = new Vector3(maxX, CameraController.instance.transform.position.y, CameraController.instance.transform.position.z);
+                break;
+            }
+            if (CameraController.instance.transform.position.x - transform.position.x < 0.01f && CameraController.instance.transform.position.x - transform.position.x > -0.01f)
             {
                 break;
             }

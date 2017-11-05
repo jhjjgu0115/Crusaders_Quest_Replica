@@ -152,3 +152,13 @@ public enum E_SkillType
     Normal,
     Special
 }
+
+public enum E_HeroClass
+{
+    Worrior = 5,
+    Paladin = 5,
+    Priest = 4,
+    Archer =3,
+    Hunter = 2,
+    Wizard = 1
+}
