@@ -41,7 +41,7 @@ public class SelectionSlot : MonoBehaviour
         {
             if(heroInfo.name!= string.Empty)
             {
-                instance.RemoveHero(instance.selectionInfoList[indexOfThisSlot].heroInfo);
+                instance.RemoveHero(instance.selectionInfoList[indexOfThisSlot].heroInfo, instance.selectionInfoList[indexOfThisSlot].heroButton);
             }
             //이 슬롯의 용사를 제거
         }
@@ -79,7 +79,7 @@ public class SelectionSlot : MonoBehaviour
         heroPortrait.color = new Color32(0, 0, 0, 0);
         SetLeader(false);
     }
-    public void RemoveHero()
+    /*public void RemoveHero()
     {
         heroPortrait.sprite=null;
         heroInfo.name = string.Empty;
@@ -87,10 +87,11 @@ public class SelectionSlot : MonoBehaviour
         SetLeader(false);
         if(heroButton)
         {
+            Debug.Log(2);
             heroButton.Canceled();
             heroButton = null;
         }
-    }
+    }*/
 
     void Start()
     {

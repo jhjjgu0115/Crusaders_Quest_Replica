@@ -52,7 +52,7 @@ public class HeroButton : MonoBehaviour
         {
             isSelected = false;
             backGroundImage.sprite = noneSelectButtonImage;
-            GameStartManager.Instance.RemoveHero(heroInfo);
+            GameStartManager.Instance.RemoveHero(heroInfo,this);
         }
     }
     public void Canceled()
