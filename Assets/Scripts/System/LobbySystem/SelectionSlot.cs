@@ -13,18 +13,13 @@ public class SelectionSlot : MonoBehaviour
     public Sprite selectedImage;
 
     public Image heroPortrait;
+    public Image classIcon;
+    public Image classIconBack;
+
 
     public HeroButton heroButton = null;
 
 
-    public void SetLeaderThis()
-    {
-        int index = GameStartManager.Instance.selectionSlotList.IndexOf(this);
-        if (GameStartManager.Instance.isSelectLeaderMode)
-        {
-
-        }
-    }
     public void ClickEvent()
     {
         GameStartManager instance = GameStartManager.Instance;
@@ -63,36 +58,22 @@ public class SelectionSlot : MonoBehaviour
         this.heroInfo = heroInfo;
         //리소스에서 해당 아이디의 용사 얼굴을 찾아옴.
         heroPortrait.color = new Color32(255, 255, 255, 255);
-        for(int index=0;index<GameStartManager.Instance.HeroSpriteList.Length;index++)
-        {
-            if(GameStartManager.Instance.HeroSpriteList[index].name==(heroInfo.name+ "F"))
-            {
-                heroPortrait.sprite = GameStartManager.Instance.HeroSpriteList[index];
-                break;
-            }
-        }
+        classIcon.color = new Color32(255, 255, 255, 255);
+        classIconBack.color = new Color32(0, 0, 0, 150);
+        heroPortrait.sprite = GameStartManager.Instance.PortraitDict[heroInfo.name+"F"];
+        classIcon.sprite = GameStartManager.Instance.ClassIconDict[heroInfo.heroClass];
     }
     public void Clear()
     {
+        heroInfo.name = string.Empty;
+        SetLeader(false);
         heroPortrait.sprite = null;
-        heroInfo.name = string.Empty;
         heroPortrait.color = new Color32(0, 0, 0, 0);
-        SetLeader(false);
-    }
-    /*public void RemoveHero()
-    {
-        heroPortrait.sprite=null;
-        heroInfo.name = string.Empty;
-        heroPortrait.color = new Color32(0, 0, 0, 0);
-        SetLeader(false);
-        if(heroButton)
-        {
-            Debug.Log(2);
-            heroButton.Canceled();
-            heroButton = null;
-        }
-    }*/
+        classIcon.sprite = null;
+        classIcon.color = new Color32(0, 0, 0, 0);
+        classIconBack.color = new Color32(0, 0, 0, 0);
 
+    }
     void Start()
     {
         heroInfo.name = string.Empty;

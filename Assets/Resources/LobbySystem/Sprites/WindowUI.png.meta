@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c9792317298fbfe409335f43b222d0db
-timeCreated: 1509363253
+timeCreated: 1509901889
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -43,12 +43,12 @@ TextureImporter:
     21300072: LeaderFlag2
     21300074: LeaderSelectHand
     21300076: IconBack1
-    21300078: WorriorIcon
-    21300080: PaladinIcon
-    21300082: ArcherIcon
-    21300084: PriestIcon
-    21300086: WizardIcon
-    21300088: HunterIcon
+    21300078: IconWorrior
+    21300080: IconPaladin
+    21300082: IconArcher
+    21300084: IconPriest
+    21300086: IconWizard
+    21300088: IconHunter
     21300090: SkillIconBack2
     21300092: SkillIconBack1
     21300094: WindowUI_1
@@ -62,6 +62,7 @@ TextureImporter:
     21300110: UIMask1
     21300112: CharacterSelection5
     21300114: CharacterBackGround6
+    21300116: ClassIconBack
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -630,7 +631,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: WorriorIcon
+      name: IconWorrior
       rect:
         serializedVersion: 2
         x: 360
@@ -643,7 +644,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: PaladinIcon
+      name: IconPaladin
       rect:
         serializedVersion: 2
         x: 342
@@ -656,7 +657,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ArcherIcon
+      name: IconArcher
       rect:
         serializedVersion: 2
         x: 351
@@ -669,7 +670,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: PriestIcon
+      name: IconPriest
       rect:
         serializedVersion: 2
         x: 395
@@ -682,7 +683,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: WizardIcon
+      name: IconWizard
       rect:
         serializedVersion: 2
         x: 462
@@ -695,7 +696,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: HunterIcon
+      name: IconHunter
       rect:
         serializedVersion: 2
         x: 181
@@ -872,8 +873,21 @@ TextureImporter:
         width: 21
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 3, y: 16, z: 5, w: 3}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ClassIconBack
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 944
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     outline: []

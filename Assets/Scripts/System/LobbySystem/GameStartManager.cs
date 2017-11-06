@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,13 +22,25 @@ public partial class GameStartManager : MonoBehaviour
 public partial class GameStartManager : MonoBehaviour
 {
     Sprite[] sprites;
-    public Sprite[] HeroSpriteList
+    Dictionary<string, Sprite> portraitDict = new Dictionary<string, Sprite>();
+    Dictionary<E_HeroClass, Sprite> classIconDict = new Dictionary<E_HeroClass, Sprite>();
+    public Dictionary<E_HeroClass, Sprite> ClassIconDict
     {
         get
         {
-            return sprites;
+            return classIconDict;
         }
     }
+    public Dictionary<string, Sprite> PortraitDict
+    {
+        get
+        {
+            return portraitDict;
+        }
+    }
+    List<Sprite> CharacterSpriteList = new List<Sprite>();
+    public List<Sprite> classIconList = new List<Sprite>();
+
 }
 public partial class GameStartManager : MonoBehaviour
 {
@@ -37,7 +49,7 @@ public partial class GameStartManager : MonoBehaviour
 {
     public HeroButton heroButtonPrefab;
     public GridLayoutGroup gridLayout;
-    HeroButton AddCharacter(string id, E_HeroClass heroClass)
+    HeroButton AddCharacterButton(string id, E_HeroClass heroClass)
     {
         HeroButton temp = Instantiate(heroButtonPrefab);
         temp.name = count.ToString();
@@ -45,11 +57,12 @@ public partial class GameStartManager : MonoBehaviour
         temp.transform.SetParent(gridLayout.transform);
         temp.heroInfo.name = id;
         temp.heroInfo.heroClass = heroClass;
-        for (int index = 0; index < HeroSpriteList.Length; index++)
+        for (int index = 0; index < CharacterSpriteList.Count; index++)
         {
-            if (HeroSpriteList[index].name == (id))
+            if (CharacterSpriteList[index].name == (id))
             {
-                temp.heroImage.sprite = GameStartManager.Instance.HeroSpriteList[index];
+                temp.heroImage.sprite = CharacterSpriteList[index];
+                temp.classIcon.sprite = classIconDict[heroClass];
                 break;
             }
         }
@@ -180,62 +193,78 @@ public partial class GameStartManager : MonoBehaviour
             instance = this;
         }
         sprites = Resources.LoadAll<Sprite>("LobbySystem/Sprites/AllHero");
+        List<Sprite> tempSpriteList = new List<Sprite>(sprites);
+        foreach(Sprite sprite in tempSpriteList.FindAll(temp => temp.name[temp.name.Length - 1] == 'F'))
+        {
+            portraitDict.Add(sprite.name, sprite);
+        }
+        CharacterSpriteList = new List<Sprite>(tempSpriteList.FindAll(temp => temp.name[temp.name.Length - 1] != 'F'));
+
+        tempSpriteList = new List<Sprite>(Resources.LoadAll<Sprite>("LobbySystem/Sprites/WindowUI"));
+        tempSpriteList = tempSpriteList.FindAll(s => s.name.Substring(0, 4) == "Icon");
+        classIconDict.Add(E_HeroClass.Wizard, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Wizard.ToString()));
+        classIconDict.Add(E_HeroClass.Hunter, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Hunter.ToString()));
+        classIconDict.Add(E_HeroClass.Archer, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Archer.ToString()));
+        classIconDict.Add(E_HeroClass.Priest, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Priest.ToString()));
+        classIconDict.Add(E_HeroClass.Paladin, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Paladin.ToString()));
+        classIconDict.Add(E_HeroClass.Worrior, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Worrior.ToString()));
+
 
         /*이구간이 XML에서 데이터 읽어와 캐릭터를 그리드에 뿌린다.*/
-        AddCharacter("레온", E_HeroClass.Worrior);
-        AddCharacter("이사벨", E_HeroClass.Worrior);
-        AddCharacter("빅토리아", E_HeroClass.Worrior);
-        AddCharacter("잔다르크", E_HeroClass.Worrior);
-        AddCharacter("크림힐트", E_HeroClass.Paladin);
-        AddCharacter("라히마", E_HeroClass.Archer);
-        AddCharacter("아칸", E_HeroClass.Wizard);
-        AddCharacter("바이퍼", E_HeroClass.Hunter);
-        AddCharacter("멜리사", E_HeroClass.Priest);
-        AddCharacter("레온", E_HeroClass.Worrior);
-        AddCharacter("이사벨", E_HeroClass.Worrior);
-        AddCharacter("빅토리아", E_HeroClass.Worrior);
-        AddCharacter("잔다르크", E_HeroClass.Worrior);
-        AddCharacter("크림힐트", E_HeroClass.Paladin);
-        AddCharacter("라히마", E_HeroClass.Archer);
-        AddCharacter("아칸", E_HeroClass.Wizard);
-        AddCharacter("바이퍼", E_HeroClass.Hunter);
-        AddCharacter("멜리사", E_HeroClass.Priest);
-        AddCharacter("레온", E_HeroClass.Worrior);
-        AddCharacter("이사벨", E_HeroClass.Worrior);
-        AddCharacter("빅토리아", E_HeroClass.Worrior);
-        AddCharacter("잔다르크", E_HeroClass.Worrior);
-        AddCharacter("크림힐트", E_HeroClass.Paladin);
-        AddCharacter("라히마", E_HeroClass.Archer);
-        AddCharacter("아칸", E_HeroClass.Wizard);
-        AddCharacter("바이퍼", E_HeroClass.Hunter);
-        AddCharacter("멜리사", E_HeroClass.Priest);
-        AddCharacter("레온", E_HeroClass.Worrior);
-        AddCharacter("이사벨", E_HeroClass.Worrior);
-        AddCharacter("빅토리아", E_HeroClass.Worrior);
-        AddCharacter("잔다르크", E_HeroClass.Worrior);
-        AddCharacter("크림힐트", E_HeroClass.Paladin);
-        AddCharacter("라히마", E_HeroClass.Archer);
-        AddCharacter("아칸", E_HeroClass.Wizard);
-        AddCharacter("바이퍼", E_HeroClass.Hunter);
-        AddCharacter("멜리사", E_HeroClass.Priest);
-        AddCharacter("레온", E_HeroClass.Worrior);
-        AddCharacter("이사벨", E_HeroClass.Worrior);
-        AddCharacter("빅토리아", E_HeroClass.Worrior);
-        AddCharacter("잔다르크", E_HeroClass.Worrior);
-        AddCharacter("크림힐트", E_HeroClass.Paladin);
-        AddCharacter("라히마", E_HeroClass.Archer);
-        AddCharacter("아칸", E_HeroClass.Wizard);
-        AddCharacter("바이퍼", E_HeroClass.Hunter);
-        AddCharacter("멜리사", E_HeroClass.Priest);
-        AddCharacter("레온", E_HeroClass.Worrior);
-        AddCharacter("이사벨", E_HeroClass.Worrior);
-        AddCharacter("빅토리아", E_HeroClass.Worrior);
-        AddCharacter("잔다르크", E_HeroClass.Worrior);
-        AddCharacter("크림힐트", E_HeroClass.Paladin);
-        AddCharacter("라히마", E_HeroClass.Archer);
-        AddCharacter("아칸", E_HeroClass.Wizard);
-        AddCharacter("바이퍼", E_HeroClass.Hunter);
-        AddCharacter("멜리사", E_HeroClass.Priest);
+        AddCharacterButton("레온", E_HeroClass.Worrior);
+        AddCharacterButton("이사벨", E_HeroClass.Worrior);
+        AddCharacterButton("빅토리아", E_HeroClass.Worrior);
+        AddCharacterButton("잔다르크", E_HeroClass.Worrior);
+        AddCharacterButton("크림힐트", E_HeroClass.Paladin);
+        AddCharacterButton("라히마", E_HeroClass.Archer);
+        AddCharacterButton("아칸", E_HeroClass.Wizard);
+        AddCharacterButton("바이퍼", E_HeroClass.Hunter);
+        AddCharacterButton("멜리사", E_HeroClass.Priest);
+        AddCharacterButton("레온", E_HeroClass.Worrior);
+        AddCharacterButton("이사벨", E_HeroClass.Worrior);
+        AddCharacterButton("빅토리아", E_HeroClass.Worrior);
+        AddCharacterButton("잔다르크", E_HeroClass.Worrior);
+        AddCharacterButton("크림힐트", E_HeroClass.Paladin);
+        AddCharacterButton("라히마", E_HeroClass.Archer);
+        AddCharacterButton("아칸", E_HeroClass.Wizard);
+        AddCharacterButton("바이퍼", E_HeroClass.Hunter);
+        AddCharacterButton("멜리사", E_HeroClass.Priest);
+        AddCharacterButton("레온", E_HeroClass.Worrior);
+        AddCharacterButton("이사벨", E_HeroClass.Worrior);
+        AddCharacterButton("빅토리아", E_HeroClass.Worrior);
+        AddCharacterButton("잔다르크", E_HeroClass.Worrior);
+        AddCharacterButton("크림힐트", E_HeroClass.Paladin);
+        AddCharacterButton("라히마", E_HeroClass.Archer);
+        AddCharacterButton("아칸", E_HeroClass.Wizard);
+        AddCharacterButton("바이퍼", E_HeroClass.Hunter);
+        AddCharacterButton("멜리사", E_HeroClass.Priest);
+        AddCharacterButton("레온", E_HeroClass.Worrior);
+        AddCharacterButton("이사벨", E_HeroClass.Worrior);
+        AddCharacterButton("빅토리아", E_HeroClass.Worrior);
+        AddCharacterButton("잔다르크", E_HeroClass.Worrior);
+        AddCharacterButton("크림힐트", E_HeroClass.Paladin);
+        AddCharacterButton("라히마", E_HeroClass.Archer);
+        AddCharacterButton("아칸", E_HeroClass.Wizard);
+        AddCharacterButton("바이퍼", E_HeroClass.Hunter);
+        AddCharacterButton("멜리사", E_HeroClass.Priest);
+        AddCharacterButton("레온", E_HeroClass.Worrior);
+        AddCharacterButton("이사벨", E_HeroClass.Worrior);
+        AddCharacterButton("빅토리아", E_HeroClass.Worrior);
+        AddCharacterButton("잔다르크", E_HeroClass.Worrior);
+        AddCharacterButton("크림힐트", E_HeroClass.Paladin);
+        AddCharacterButton("라히마", E_HeroClass.Archer);
+        AddCharacterButton("아칸", E_HeroClass.Wizard);
+        AddCharacterButton("바이퍼", E_HeroClass.Hunter);
+        AddCharacterButton("멜리사", E_HeroClass.Priest);
+        AddCharacterButton("레온", E_HeroClass.Worrior);
+        AddCharacterButton("이사벨", E_HeroClass.Worrior);
+        AddCharacterButton("빅토리아", E_HeroClass.Worrior);
+        AddCharacterButton("잔다르크", E_HeroClass.Worrior);
+        AddCharacterButton("크림힐트", E_HeroClass.Paladin);
+        AddCharacterButton("라히마", E_HeroClass.Archer);
+        AddCharacterButton("아칸", E_HeroClass.Wizard);
+        AddCharacterButton("바이퍼", E_HeroClass.Hunter);
+        AddCharacterButton("멜리사", E_HeroClass.Priest);
 
 
 

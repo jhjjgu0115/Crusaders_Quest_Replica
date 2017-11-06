@@ -155,7 +155,7 @@ public enum E_SkillType
 
 public enum E_HeroClass
 {
-    Worrior = 5,
+    Worrior = 6,
     Paladin = 5,
     Priest = 4,
     Archer =3,

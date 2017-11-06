@@ -8,7 +8,6 @@ public class HeroButton : MonoBehaviour
 {
     public HeroInfo heroInfo;
 
-
     public Image heroImage;
     public RectTransform heroImageRect;
 
@@ -18,8 +17,8 @@ public class HeroButton : MonoBehaviour
 
     bool isSelected = false;
 
+    public Image classIcon;
 
-    // Use this for initialization
     void Start ()
     {
         transform.localScale = new Vector3(1, 1, 1);

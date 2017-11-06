@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ScrollableObject : MonoBehaviour
 {
+    public GameObject canvas;
+
     public float minX=-7.7f;
     public float maxX=2.4f;
     public float dragSpeed=1;
@@ -20,56 +22,65 @@ public class ScrollableObject : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        float x = Input.GetAxis("Mouse X");
-        clickCancelCount += x;
-        velocity = x;
-        CameraController.instance.transform.position += new Vector3(x* dragSpeed, 0, 0);
-        if(clickCancelCount> clickCancelDistance || clickCancelCount<-clickCancelDistance)
+        if (!canvas.activeInHierarchy)
         {
-            canClick = false;
+            float x = Input.GetAxis("Mouse X");
+            clickCancelCount += x;
+            velocity = x;
+            CameraController.instance.transform.position += new Vector3(x * dragSpeed, 0, 0);
+            if (clickCancelCount > clickCancelDistance || clickCancelCount < -clickCancelDistance)
+            {
+                canClick = false;
+            }
         }
-        
     }
     private void OnMouseDown()
     {
-        ClickableObject clickableObject = GetComponent<ClickableObject>();
-        if (clickableObject != null)
+        if(!canvas.activeInHierarchy)
         {
-            clickableObject.spriteRenderer.color = new Color32(150, 150, 150, 255);
-            canClick = true;
-            clickCancelCount = 0;
-        }
+            ClickableObject clickableObject = GetComponent<ClickableObject>();
+            if (clickableObject != null)
+            {
+                clickableObject.spriteRenderer.color = new Color32(150, 150, 150, 255);
+                canClick = true;
+                clickCancelCount = 0;
+            }
 
-        if (scrollCoroutine!=null)
-        {
-            coroutineObject.StopCoroutine(scrollCoroutine);
+            if (scrollCoroutine != null)
+            {
+                coroutineObject.StopCoroutine(scrollCoroutine);
+            }
+            if (forcusingCoroutine != null)
+            {
+                coroutineObject.StopCoroutine(forcusingCoroutine);
+            }
         }
-        if(forcusingCoroutine!=null)
-        {
-            coroutineObject.StopCoroutine(forcusingCoroutine);
-        }
+        
 
     }
 
     private void OnMouseUp()
     {
-        ClickableObject clickableObject = GetComponent<ClickableObject>();
-        if (clickableObject != null)
+        if (!canvas.activeInHierarchy)
         {
-            clickableObject.spriteRenderer.color = new Color32(255, 255, 255, 255);
-            if (canClick)
+            ClickableObject clickableObject = GetComponent<ClickableObject>();
+            if (clickableObject != null)
             {
-                forcusingCoroutine=StartCoroutine(Forcusing());
-                //Debug.Log(name + clickCancelCount + " Clicked!");
+                clickableObject.spriteRenderer.color = new Color32(255, 255, 255, 255);
+                if (canClick)
+                {
+                    forcusingCoroutine = StartCoroutine(Forcusing());
+                    //Debug.Log(name + clickCancelCount + " Clicked!");
+                }
             }
-        }
 
-        if (scrollCoroutine != null)
-        {
-            coroutineObject.StopCoroutine(scrollCoroutine);
-        }
-        coroutineObject = this;
-        scrollCoroutine = StartCoroutine(SmoothMoving());
+            if (scrollCoroutine != null)
+            {
+                coroutineObject.StopCoroutine(scrollCoroutine);
+            }
+            coroutineObject = this;
+            scrollCoroutine = StartCoroutine(SmoothMoving());
+        }  
     }
     
 
