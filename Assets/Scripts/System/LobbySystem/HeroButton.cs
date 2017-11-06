@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class HeroButton : MonoBehaviour
 {
-    public HeroInfo heroInfo;
+    public HeroInfo heroInfo=new HeroInfo();
 
     public Image heroImage;
     public RectTransform heroImageRect;
@@ -58,5 +58,9 @@ public class HeroButton : MonoBehaviour
     {
         isSelected = false;
         backGroundImage.sprite = noneSelectButtonImage;
+    }
+    private void Update()
+    {
+        name = heroInfo.name;
     }
 }

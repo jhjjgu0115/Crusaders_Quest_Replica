@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HeroDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <list>
+    <HeroInfo>
+      <name>레온</name>
+      <heroClass>Worrior</heroClass>
+    </HeroInfo>
+    <HeroInfo>
+      <name>이사벨</name>
+      <heroClass>Worrior</heroClass>
+    </HeroInfo>
+    <HeroInfo>
+      <name>빅토리아</name>
+      <heroClass>Worrior</heroClass>
+    </HeroInfo>
+    <HeroInfo>
+      <name>잔다르크</name>
+      <heroClass>Worrior</heroClass>
+    </HeroInfo>
+    <HeroInfo>
+      <name>크림힐트</name>
+      <heroClass>Paladin</heroClass>
+    </HeroInfo>
+    <HeroInfo>
+      <name>라히마</name>
+      <heroClass>Archer</heroClass>
+    </HeroInfo>
+    <HeroInfo>
+      <name>아칸</name>
+      <heroClass>Wizard</heroClass>
+    </HeroInfo>
+    <HeroInfo>
+      <name>바이퍼</name>
+      <heroClass>Hunter</heroClass>
+    </HeroInfo>
+    <HeroInfo>
+      <name>멜리사</name>
+      <heroClass>Priest</heroClass>
+    </HeroInfo>
+  </list>
+</HeroDatabase>

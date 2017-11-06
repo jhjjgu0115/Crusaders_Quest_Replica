@@ -6,7 +6,7 @@ using UnityEngine;
 public class SelectionSlot : MonoBehaviour
 {
     public string heroName;
-    public HeroInfo heroInfo;
+    public HeroInfo heroInfo = new HeroInfo();
 
     public Image outLineImage;
     public Sprite noneSelectedImage;
@@ -65,7 +65,7 @@ public class SelectionSlot : MonoBehaviour
     }
     public void Clear()
     {
-        heroInfo.name = string.Empty;
+        heroInfo = null;
         SetLeader(false);
         heroPortrait.sprite = null;
         heroPortrait.color = new Color32(0, 0, 0, 0);
@@ -80,6 +80,9 @@ public class SelectionSlot : MonoBehaviour
     }
     private void Update()
     {
+        if(heroInfo!=null)
+        {
             heroName = heroInfo.name;
+        }
     }
 }
