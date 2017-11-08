@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c9792317298fbfe409335f43b222d0db
-timeCreated: 1509901889
+timeCreated: 1510081825
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -43,7 +43,7 @@ TextureImporter:
     21300072: LeaderFlag2
     21300074: LeaderSelectHand
     21300076: IconBack1
-    21300078: IconWorrior
+    21300078: IconWarrior
     21300080: IconPaladin
     21300082: IconArcher
     21300084: IconPriest
@@ -631,7 +631,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: IconWorrior
+      name: IconWarrior
       rect:
         serializedVersion: 2
         x: 360
@@ -886,7 +886,7 @@ TextureImporter:
         width: 7
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

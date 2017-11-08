@@ -53,7 +53,7 @@ public partial class GameStartManager : MonoBehaviour
 
     public void SaveHeroesDatabase()
     {
-        StreamWriter streamWriter = new StreamWriter(new FileStream(Application.dataPath + "/Resources/XML/Hero_Data.xml", FileMode.Open), System.Text.Encoding.UTF8);
+        StreamWriter streamWriter = new StreamWriter(new FileStream(Application.dataPath + "/Resources/XML/Hero_Data.xml", FileMode.Create), System.Text.Encoding.UTF8);
         XmlSerializer serializer = new XmlSerializer(typeof(HeroDatabase));
         XmlSerializer xmlSerializer = new XmlSerializer(heroDatabase.GetType());
 
@@ -230,13 +230,15 @@ public partial class GameStartManager : MonoBehaviour
         classIconDict.Add(E_HeroClass.Archer, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Archer.ToString()));
         classIconDict.Add(E_HeroClass.Priest, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Priest.ToString()));
         classIconDict.Add(E_HeroClass.Paladin, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Paladin.ToString()));
-        classIconDict.Add(E_HeroClass.Worrior, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Worrior.ToString()));
+        classIconDict.Add(E_HeroClass.Warrior, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Warrior.ToString()));
 
         LoadHeroesDatabase();
-
         foreach (HeroInfo heroInfo in heroDatabase.list)
         {
-            AddCharacterButton(heroInfo);
+            if(heroInfo.canUse)
+            {
+                AddCharacterButton(heroInfo);
+            }
         }
         SetGridLayoutFit();
         //SaveHeroesDatabase();
