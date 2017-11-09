@@ -46,10 +46,10 @@ public partial class GameStartManager : MonoBehaviour
     List<Sprite> CharacterSpriteList = new List<Sprite>();
 
 }
-[System.Serializable]
 public partial class GameStartManager : MonoBehaviour
 {
     public HeroDatabase heroDatabase = new HeroDatabase();
+    public List<HeroButton> buttonList = new List<HeroButton>();
 
     public void SaveHeroesDatabase()
     {
@@ -60,7 +60,6 @@ public partial class GameStartManager : MonoBehaviour
         xmlSerializer.Serialize(streamWriter, heroDatabase);
         streamWriter.Close();
     }
-
     public void LoadHeroesDatabase()
     {
         XmlSerializer serializer = new XmlSerializer(typeof(HeroDatabase));
@@ -76,6 +75,7 @@ public partial class GameStartManager : MonoBehaviour
     HeroButton AddCharacterButton(HeroInfo heroInfo)
     {
         HeroButton temp = Instantiate(heroButtonPrefab);
+        buttonList.Add(temp);
         temp.name = count.ToString();
         count++;
         temp.transform.SetParent(gridLayout.transform);
@@ -103,11 +103,8 @@ public partial class GameStartManager : MonoBehaviour
     int count = 0;
     public List<SelectionInfo> selectionInfoList = new List<SelectionInfo>(3);
     public List<SelectionSlot> selectionSlotList = new List<SelectionSlot>();
-
     public bool isSelectLeaderMode = false;
-
     public GameObject leaderSelectionModeHighlight;
-
 
     public void SetLeader(int leaderIndex)
     {
@@ -204,8 +201,6 @@ public partial class GameStartManager : MonoBehaviour
         isSelectLeaderMode = false;
         leaderSelectionModeHighlight.SetActive(false);
     }
-
-
 }
 public partial class GameStartManager : MonoBehaviour
 {
@@ -242,10 +237,45 @@ public partial class GameStartManager : MonoBehaviour
         }
         SetGridLayoutFit();
         //SaveHeroesDatabase();
+
+
+        foreach(ClassButton button in classList)
+        {
+            button.IsSelected(false);
+        }
+        selectedClass = classList[0];
+        selectedClass.IsSelected(true);
     }
 }
 
 public partial class GameStartManager : MonoBehaviour
 {
-   
+    public List<ClassButton> classList = new List<ClassButton>();
+    ClassButton selectedClass;
+    public void ClassSet(ClassButton classButton)
+    {
+        selectedClass.IsSelected(false);
+        selectedClass = classButton;
+        selectedClass.IsSelected(true);
+
+        foreach(HeroButton heroButton in buttonList)
+        {
+            if(selectedClass.classInfo == E_HeroClass.None)
+            {
+                heroButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                if(heroButton.heroInfo.heroClass==classButton.classInfo)
+                {
+                    heroButton.gameObject.SetActive(true);
+                }
+                else
+                {
+                    heroButton.gameObject.SetActive(false);
+                }
+            }
+        }
+        SetGridLayoutFit();
+    }
 }

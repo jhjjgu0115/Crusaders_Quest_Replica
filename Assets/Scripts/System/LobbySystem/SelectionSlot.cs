@@ -9,8 +9,6 @@ public class SelectionSlot : MonoBehaviour
     public HeroInfo heroInfo = new HeroInfo();
 
     public Image outLineImage;
-    public Sprite noneSelectedImage;
-    public Sprite selectedImage;
 
     public Image heroPortrait;
     public Image classIcon;
@@ -46,11 +44,11 @@ public class SelectionSlot : MonoBehaviour
     {
         if(isLeader)
         {
-            outLineImage.sprite = selectedImage;
+            outLineImage.color = new Color32(255, 255, 255, 255);
         }
         else
         {
-            outLineImage.sprite = noneSelectedImage;
+            outLineImage.color = new Color32(255, 255, 255, 0);
         }
     }
     public void SetHero(HeroInfo heroInfo)

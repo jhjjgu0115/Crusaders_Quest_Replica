@@ -160,5 +160,6 @@ public enum E_HeroClass
     Priest = 4,
     Archer =3,
     Hunter = 2,
-    Wizard = 1
+    Wizard = 1,
+    None = 0
 }
