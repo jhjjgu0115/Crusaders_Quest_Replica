@@ -24,7 +24,7 @@ public class SelectionSlot : MonoBehaviour
         int indexOfThisSlot = GameStartManager.Instance.selectionSlotList.IndexOf(this);
         if(GameStartManager.Instance.isSelectLeaderMode)
         {
-            if (heroInfo.name != string.Empty)
+            if (heroInfo!=null)
             {
                 instance.SetLeader(indexOfThisSlot);
                 instance.SelectLeaderModeEnd();

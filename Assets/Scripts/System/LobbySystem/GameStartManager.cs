@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 
 public class SelectionInfo
@@ -105,6 +106,7 @@ public partial class GameStartManager : MonoBehaviour
     public List<SelectionSlot> selectionSlotList = new List<SelectionSlot>();
     public bool isSelectLeaderMode = false;
     public GameObject leaderSelectionModeHighlight;
+    public Button startButton;
 
     public void SetLeader(int leaderIndex)
     {
@@ -178,6 +180,14 @@ public partial class GameStartManager : MonoBehaviour
                 selectionSlotList[index].Clear();
             }
         }
+        if(selectionInfoList.Count>=3)
+        {
+            startButton.interactable = true;
+        }
+        else
+        {
+            startButton.interactable = false;
+        }
 
     }
    
@@ -247,7 +257,6 @@ public partial class GameStartManager : MonoBehaviour
         selectedClass.IsSelected(true);
     }
 }
-
 public partial class GameStartManager : MonoBehaviour
 {
     public List<ClassButton> classList = new List<ClassButton>();
@@ -279,3 +288,12 @@ public partial class GameStartManager : MonoBehaviour
         SetGridLayoutFit();
     }
 }
+public partial class GameStartManager : MonoBehaviour
+{
+    public void StartGame()
+    {
+        StageManager.selectedHeroList = selectionInfoList;
+        SceneManager.LoadScene("Stage");
+    }
+}
+
