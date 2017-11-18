@@ -288,11 +288,13 @@ public partial class GameStartManager : MonoBehaviour
         SetGridLayoutFit();
     }
 }
+//게임 시작 버튼
 public partial class GameStartManager : MonoBehaviour
 {
     public void StartGame()
     {
         StageManager.selectedHeroList = selectionInfoList;
+        StageManager.StageName = "Winter";
         SceneManager.LoadScene("Stage");
     }
 }

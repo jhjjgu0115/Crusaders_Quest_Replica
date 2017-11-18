@@ -17,9 +17,7 @@ public class BlockGroundGenerater : MonoBehaviour {
         for(int index=0;index<blockCount;index++)
         {
             Transform tempTransform = Instantiate(blockPrefeb).transform;
-            Debug.Log(tempTransform.position+"1");
             tempTransform.parent = transform;
-            Debug.Log(offset + "2");
             tempTransform.localPosition = offset;
             offset.x += blockDistance;
         }
