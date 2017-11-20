@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
 //전역 데이터
 public partial class StageManager : MonoBehaviour
 {
@@ -25,7 +28,7 @@ public partial class StageManager : MonoBehaviour
     public static List<SelectionInfo> selectedHeroList = new List<SelectionInfo>(3);
     public static string StageName="Winter";
 }
-//캐릭터 정보
+//캐릭터
 public partial class StageManager : MonoBehaviour
 { 
     List<Unit> playableCharacterList = new List<Unit>();
@@ -76,13 +79,19 @@ public partial class StageManager : MonoBehaviour
 
     void LoadCharacterData()
     {
-
+        XmlDocument xmlDoc = new XmlDocument();
+        xmlDoc.Load("Assets/Resources/XML/Status_Data.xml");
+        foreach (XmlNode node in xmlDoc.DocumentElement)
+        {
+            Debug.Log(node["class"].InnerText);
+        }
     }
 
 }
-//스테이지 이동 제한
+//스테이지
 public partial class StageManager : MonoBehaviour
 {
+    //스테이지 이동 제한
     public GameObject stageLimit;
     void StartLimitSync()
     {
@@ -99,6 +108,8 @@ public partial class StageManager : MonoBehaviour
             yield return null;
         }
     }
+
+
 }
 public partial class StageManager : MonoBehaviour
 {
@@ -142,7 +153,7 @@ public partial class StageManager : MonoBehaviour
         }
 
         //StartLimitSync();
-
+        LoadCharacterData();
 
     }
 }
