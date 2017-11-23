@@ -42,11 +42,6 @@ public partial class BackGroundManager : MonoBehaviour
     float lastCameraX;
 
 
-
-
-
-
-
     public List<SpriteRenderer> groundList = new List<SpriteRenderer>();
 
     public SpriteRenderer groundObject;

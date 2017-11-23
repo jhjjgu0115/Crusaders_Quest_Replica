@@ -36,7 +36,7 @@ public enum E_StatType
     DamageReduceRate = 257,
 
     //흡혈율
-    BloodSuckingRate,
+    BloodSuckingRate=9,
 
     //명중률
     MaxAccuracy,
@@ -58,10 +58,10 @@ public enum E_StatType
     CurrentAttackSpeed,
 
     //관통력
-    PhysicalPenetration=258,
-    MagicalPenetration=259,
+    PhysicalPenetration=268,
+    MagicalPenetration=269,
     //이동속도
-    MoveSpeed,
+    MoveSpeed=22,
     //넉백 저항
     KnockbackResistance,
     //시간 가속율
@@ -155,11 +155,13 @@ public enum E_SkillType
 
 public enum E_HeroClass
 {
-    Warrior = 6,
-    Paladin = 5,
-    Priest = 4,
-    Archer =3,
-    Hunter = 2,
-    Wizard = 1,
-    None = 0
+
+    None,
+    Wizard,
+    Hunter,
+    Archer,
+    Priest,
+    Paladin,
+    Warrior,
+    Monster
 }

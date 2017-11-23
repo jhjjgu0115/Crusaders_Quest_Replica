@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 //전역 데이터
 public partial class StageManager : MonoBehaviour
-{
+{ 
     static StageManager instance;
     public static StageManager Instance
     {
@@ -31,10 +32,10 @@ public partial class StageManager : MonoBehaviour
 //캐릭터
 public partial class StageManager : MonoBehaviour
 { 
-    List<Unit> playableCharacterList = new List<Unit>();
+    List<TestUnit> playableCharacterList = new List<TestUnit>();
 
-    List<Unit> playableAliveCharacterList = new List<Unit>();
-    public List<Unit> PlayableAliveCharacterList
+    List<TestUnit> playableAliveCharacterList = new List<TestUnit>();
+    public List<TestUnit> PlayableAliveCharacterList
     {
         get
         {
@@ -42,8 +43,8 @@ public partial class StageManager : MonoBehaviour
         }
     }
 
-    Unit foremostPlayableCharacter;
-    public Unit ForemostPlayableCharacter
+    TestUnit foremostPlayableCharacter;
+    public TestUnit ForemostPlayableCharacter
     {
         get
         {
@@ -57,10 +58,8 @@ public partial class StageManager : MonoBehaviour
             return foremostPlayableCharacter;
         }
     }
-
-
-    Unit leader;
-    public Unit Leader
+    TestUnit leader;
+    public TestUnit Leader
     {
         get
         {
@@ -76,43 +75,56 @@ public partial class StageManager : MonoBehaviour
             //playableAliveCharacterList[index];
         }
     }
-
-    void LoadCharacterData()
-    {
-        XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.Load("Assets/Resources/XML/Status_Data.xml");
-        foreach (XmlNode node in xmlDoc.DocumentElement)
-        {
-            Debug.Log(node["class"].InnerText);
-        }
-    }
-
 }
 //스테이지
 public partial class StageManager : MonoBehaviour
 {
+    public Transform[] partyPosition;
+
     //스테이지 이동 제한
     public GameObject stageLimit;
-    void StartLimitSync()
-    {
-        StartCoroutine(LimitSync());
-    }
-    IEnumerator LimitSync()
-    {
-        while (true)
-        {
-            if (stageLimit.transform.position.x < foremostPlayableCharacter.transform.position.x)
-            {
-                stageLimit.transform.position = new Vector3(foremostPlayableCharacter.transform.position.x, 0, 0);
-            }
-            yield return null;
-        }
-    }
+    //웨이브 로드 될때 캐릭터를 기준으로 이동시킨다.
+
+
 
 
 }
+//스테이지 외적 요소
 public partial class StageManager : MonoBehaviour
 {
+    void LoadCharacterData()
+    {
+        if(selectedHeroList.Count==0)
+        {
+            Debug.Log("선택된 용사 리스트가 비어잇습니다.");
+        }
+        else
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load("Assets/Resources/XML/Ingame_Data.xml");
+            foreach (SelectionInfo selectedHero in selectedHeroList)
+            {
+                foreach (XmlNode node in xmlDoc.DocumentElement)
+                {
+                    if (node["name"].InnerText == selectedHero.heroInfo.name)
+                    {
+                        TestUnit testUnit = Instantiate<TestUnit>(Resources.Load<TestUnit>("Hero/Test/" + node["name"].InnerText));
+                        playableAliveCharacterList.Add(testUnit);
+
+                        foreach (E_StatType stat in Enum.GetValues(typeof(E_StatType)))
+                        {
+                            testUnit.StatManager.CreateOrGetStat(stat).BaseValue = float.Parse(node[stat.ToString()].InnerText);
+                        }
+                        testUnit.heroClass = (E_HeroClass)Enum.Parse(typeof(E_HeroClass), node["class"].InnerText);
+                        testUnit.id = node["id"].InnerText;
+                        testUnit.heroName = node["name"].InnerText;
+                        testUnit.level = int.Parse(node["level"].InnerText);
+                    }
+                }
+            }
+        }
+        
+    }
 
 }
 public partial class StageManager : MonoBehaviour
@@ -151,9 +163,17 @@ public partial class StageManager : MonoBehaviour
         {
             instance = this;
         }
+        selectedHeroList.Add(new SelectionInfo());
+        selectedHeroList[0].heroInfo.name = "뮤";
 
         //StartLimitSync();
         LoadCharacterData();
+        foreach(TestUnit unit in playableAliveCharacterList)
+        {
+            //unit.DebugLog();
+        }
+        //디버깅
+
 
     }
 }
