@@ -35,7 +35,6 @@ public class Buff : MonoBehaviour
                 target = target;
                 break;*/
             default:
-                target = target;
                 break;
         }
         transform.SetParent(target.transform);

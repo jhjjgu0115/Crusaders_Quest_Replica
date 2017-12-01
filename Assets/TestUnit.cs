@@ -34,25 +34,136 @@ public partial class TestUnit : MonoBehaviour
 //상태
 public partial class TestUnit : MonoBehaviour
 {
-    public bool isInBattle = false;
-    public bool isAlive = false;
-    public bool isGroggy = false;
-    public bool isEntangle = false;
-    public bool canInteraction = false;
+    
+}
+//행동제어
+public partial class TestUnit : MonoBehaviour
+{
+    Vector3 direction;
+    public Transform targetPosition;
+    void MovePosition(Vector3 targetPosition)
+    {
+        if (direction.x >= 0)
+        {
+            if (targetPosition.x > transform.position.x)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime);
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime * 0.5f);
+            }
+        }
+        else
+        {
+            if (targetPosition.x < transform.position.x)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime);
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime * 0.5f);
+            }
+        }
+    }
+    Coroutine runningCoroutine;
+    IEnumerator Moving()
+    {
+        while (true)
+        {
+            if (CanMove)
+            {
+                if (targetPosition)
+                {
+                    MovePosition(new Vector3(targetPosition.position.x, transform.position.y));
+                }
+            }
+            yield return new WaitForFixedUpdate();
+        }
+    }
+    bool canMove;
+    public bool CanMove
+    {
+        get
+        {
+            return canMove;
+        }
+        set
+        {
+            canMove = value;
+        }
+    }
+    public void StartMove()
+    {
+        runningCoroutine = StartCoroutine(Moving());
+    }
+    public void StopMove()
+    {
+        StopCoroutine(runningCoroutine);
+    }
 
-    //전투진입
-    //사망
-    //부활
-    //기절시작
-    //기절종료
-    //이동불가시작
-    //이동불가종료
+
+
+
+    public void StartRunning()
+    {
+        runningCoroutine = StartCoroutine(Moving());
+    }
+    public void StopRunning()
+    {
+        StopCoroutine(runningCoroutine);
+    }
+    
+}
+//스킬 관련
+public partial class TestUnit : MonoBehaviour
+{
+    Dictionary<string, Skill> skillDict = new Dictionary<string, Skill>();
+    IEnumerator BaseAttackCoolDown()
+    {
+        while(true)
+        {
+            yield return null;
+        }
+    }
+}
+//유니티 기본 메서드
+public partial class TestUnit : MonoBehaviour
+{
+    private void Start()
+    {
+        direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
+        StartCoroutine(Moving());
+
+        statManager.CreateOrGetStat(E_StatType.CurrentHealth).AddEvent(HealthCheck);
+    }
+    IEnumerator TestEnumerator()
+    {
+        while(true)
+        {
+            float a = 1000;
+            GetNormalDamage(ref a, E_DamageType.Physics, 550);
+            yield return new WaitForSeconds(3);
+        }
+    }
+
+    private void Update()
+    {
+        
+    }
+
 }
 public partial class TestUnit : MonoBehaviour
 {
-    //행동 대기열
-    //사정거리탐지
-    //
+    public void DebugLog()
+    {
+        Debug.Log("--------" + name + "--------");
+        foreach (E_StatType stat in Enum.GetValues(typeof(E_StatType)))
+        {
+            Debug.Log(statManager.Get_Stat(stat).StatName + " : " + statManager.Get_Stat(stat).BaseValue);
+        }
+    }
+    
 }
 public partial class TestUnit : MonoBehaviour
 {
@@ -78,27 +189,101 @@ public partial class TestUnit : MonoBehaviour
      * 적중 이벤트
      * 
      */
-}
-public partial class TestUnit : MonoBehaviour
-{
-}
-public partial class TestUnit : MonoBehaviour
-{
-}
-public partial class TestUnit : MonoBehaviour
-{
-}
-public partial class TestUnit : MonoBehaviour
-{
-}
-public partial class TestUnit : MonoBehaviour
-{
-    public void DebugLog()
+    public delegate void DamageEvent(ref float damage);
+    public DamageEvent OnHitEvent;
+
+
+
+    public void GetNormalDamage(ref float damage, E_DamageType damageType, float penetrationPower)
     {
-        Debug.Log("--------" + name + "--------");
-        foreach (E_StatType stat in Enum.GetValues(typeof(E_StatType)))
+        float resultDamage = damage;
+        float damageReducePercent = 0;
+        E_FloatingType floatingType = E_FloatingType.NonpenetratingDamage;
+
+        if (penetrationPower >= StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue)
         {
-            Debug.Log(statManager.Get_Stat(stat).StatName + " : " + statManager.Get_Stat(stat).BaseValue);
+            damageReducePercent = 1;//1이면 풀관통
+            floatingType = E_FloatingType.FullPenetrationDamage;
+        }
+        else
+        {
+            damageReducePercent = (100 / (((StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower) * 0.348f) + 100));
+            if (damageReducePercent > 0.85f)
+            {
+                floatingType = E_FloatingType.FullPenetrationDamage;
+            }
+        }
+        if (OnHitEvent != null)
+        {
+            OnHitEvent.Invoke(ref resultDamage);
+        }
+
+        resultDamage *= (damageReducePercent * (1 - StatManager.CreateOrGetStat(E_StatType.DamageReduceRate).ModifiedValue));
+        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= resultDamage;
+        FloatingNumberManager.FloatingNumber(gameObject, resultDamage, floatingType);
+    }
+    public void GetCriticalDamage(ref float damage, E_DamageType damageType, float penetrationPower)
+    {
+        float resultDamage = damage;
+        float damageReducePercent = 0;
+        if (penetrationPower >= StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue)
+        {
+            damageReducePercent = 1;//1이면 풀관통
+        }
+        else
+        {
+            damageReducePercent = (100 / (((StatManager.CreateOrGetStat((E_StatType)damageType).ModifiedValue - penetrationPower) * 0.348f) + 100));
+        }
+        resultDamage *= damageReducePercent;
+        resultDamage *= (1 - StatManager.CreateOrGetStat(E_StatType.DamageReduceRate).ModifiedValue);
+        StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= resultDamage;
+        FloatingNumberManager.FloatingNumber(gameObject, resultDamage, E_FloatingType.CriticalDamage);
+    }
+
+    public void GetHeal()
+    {
+
+    }
+
+    public bool Evade()
+    {
+        return true;
+    }
+    public bool OnHit()
+    {
+        return true;
+    }
+
+    public void SkillUse()
+    {
+
+    }
+
+}
+public partial class TestUnit : MonoBehaviour
+{
+}
+public partial class TestUnit : MonoBehaviour
+{
+}
+//이벤트
+public partial class TestUnit : MonoBehaviour
+{
+    public delegate void UnitEvent(TestUnit unit);
+    public event UnitEvent DeadEvent;
+    void HealthCheck(float health)
+    {
+        if (health<=0)
+        {
+            Dead();
+        }
+    }
+
+    void Dead()
+    {
+        if (DeadEvent != null)
+        {
+            DeadEvent(this);
         }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
+using UnityEngine.SceneManagement;
 //전역 데이터
 public partial class StageManager : MonoBehaviour
 { 
@@ -31,31 +32,45 @@ public partial class StageManager : MonoBehaviour
 }
 //캐릭터
 public partial class StageManager : MonoBehaviour
-{ 
-    List<TestUnit> playableCharacterList = new List<TestUnit>();
-
-    List<TestUnit> playableAliveCharacterList = new List<TestUnit>();
-    public List<TestUnit> PlayableAliveCharacterList
+{
+    ExtendedList<TestUnit> totalHeroList = new ExtendedList<TestUnit>();
+    public ExtendedList<TestUnit> TotalHeroList
     {
         get
         {
-            return playableAliveCharacterList;
+            return totalHeroList;
         }
     }
-
-    TestUnit foremostPlayableCharacter;
-    public TestUnit ForemostPlayableCharacter
+    ExtendedList<TestUnit> aliveHeroList = new ExtendedList<TestUnit>();
+    public ExtendedList<TestUnit> AliveHeroList
     {
         get
         {
-            for(int index =0; index<playableAliveCharacterList.Count; index++)
+            return aliveHeroList;
+        }
+    }
+    ExtendedList<TestUnit> deadHeroList = new ExtendedList<TestUnit>();
+    public ExtendedList<TestUnit> DeadHeroList
+    {
+        get
+        {
+            return deadHeroList;
+        }
+    }
+    
+    TestUnit foremostHero;
+    public TestUnit ForemostHero
+    {
+        get
+        {
+            for(int index =0; index< aliveHeroList.Count; index++)
             {
-                if(playableAliveCharacterList[index].transform.position.x>foremostPlayableCharacter.transform.position.x)
+                if(aliveHeroList[index].transform.position.x>foremostHero.transform.position.x)
                 {
-                    foremostPlayableCharacter = playableAliveCharacterList[index];
+                    foremostHero = aliveHeroList[index];
                 }
             }
-            return foremostPlayableCharacter;
+            return foremostHero;
         }
     }
     TestUnit leader;
@@ -66,17 +81,46 @@ public partial class StageManager : MonoBehaviour
             return leader;
         }
     }
-    public void FindLeaderEvent()
+
+    public void HeroDead(TestUnit deadUnit)
     {
-        for(int index=0;index<playableAliveCharacterList.Count;index++)
+
+    }
+    public void HeroReBirth(TestUnit deadUnit)
+    {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void Victory(int count)
+    {
+        if (count == 0)
         {
-            //리더인지 확인후 해당 대상에게 이벤트 등록.
-            //그리고 사망자는 이벤트 삭제.
-            //playableAliveCharacterList[index];
+            Debug.Log("Victory");
         }
     }
+    public void Defeat(int count)
+    {
+        if(count ==0)
+        {
+            Debug.Log("Defeat");
+        }
+    }
+
 }
-//스테이지
+//스테이지 제어
 public partial class StageManager : MonoBehaviour
 {
     public Transform[] partyPosition;
@@ -109,11 +153,11 @@ public partial class StageManager : MonoBehaviour
                     if (node["name"].InnerText == selectedHero.heroInfo.name)
                     {
                         TestUnit testUnit = Instantiate<TestUnit>(Resources.Load<TestUnit>("Hero/Test/" + node["name"].InnerText));
-                        playableAliveCharacterList.Add(testUnit);
+                        aliveHeroList.Add(testUnit);
 
                         foreach (E_StatType stat in Enum.GetValues(typeof(E_StatType)))
                         {
-                            testUnit.StatManager.CreateOrGetStat(stat).BaseValue = float.Parse(node[stat.ToString()].InnerText);
+                            testUnit.StatManager.AddStat(stat, new StatFloat(stat, stat.ToString(), float.Parse(node[stat.ToString()].InnerText)));
                         }
                         testUnit.heroClass = (E_HeroClass)Enum.Parse(typeof(E_HeroClass), node["class"].InnerText);
                         testUnit.id = node["id"].InnerText;
@@ -125,11 +169,12 @@ public partial class StageManager : MonoBehaviour
         }
         
     }
-
 }
 public partial class StageManager : MonoBehaviour
-{
-
+{   
+    
+    //웨이브가 모두 종료되면 승리
+    //생존 파티원 = 0 이면 패배
 }
 public partial class StageManager : MonoBehaviour
 {
@@ -141,34 +186,17 @@ public partial class StageManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        /*
-         * 던전 생성.
-         * 던전 이미지 배치[던전명을 기준으로]
-         * 
-         * 플레이어 캐릭터 배치
-         * 플레이어 캐릭터 데이터 입력
-         * 리더 설정
-         * 블록 시스템 매니저 초기화
-         * 블록 시스템 매니저에 플레이어 캐릭터 연결
-         * 
-         * 웨이브 리스트 초기화
-         * 웨이브 리스트를 기준으로 몬스터 데이터 입력
-         * 웨이브 리스트에 몬스터 삽입
-         * 
-         * 스테이지 이벤트 시스템 시작
-         * 스테이지 시작
-         * 
-         */
         if (!instance)
         {
             instance = this;
         }
-        selectedHeroList.Add(new SelectionInfo());
-        selectedHeroList[0].heroInfo.name = "뮤";
+        aliveHeroList.CountListener += Defeat;
+        //웨이브가 만료되면 승리
 
+        
         //StartLimitSync();
         LoadCharacterData();
-        foreach(TestUnit unit in playableAliveCharacterList)
+        foreach(TestUnit unit in aliveHeroList)
         {
             //unit.DebugLog();
         }

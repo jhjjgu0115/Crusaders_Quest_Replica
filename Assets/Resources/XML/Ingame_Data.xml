@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<HeroDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<IngameDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<HeroInfo>
 		<id>leon6</id>
 		<name>레온</name>
@@ -21,6 +21,7 @@
 		<CurrentSpecialPoint>0</CurrentSpecialPoint>
 		<PhysicalDefense>1132.9</PhysicalDefense>
 		<MagicalDefense>165.7</MagicalDefense>
+		<TrueTypeDefense>1</TrueTypeDefense>
 		<DamageReduceRate>0</DamageReduceRate>
 		<BloodSuckingRate>0</BloodSuckingRate>
 		<MaxAccuracy>200</MaxAccuracy>
@@ -37,7 +38,7 @@
 		<CurrentAttackSpeed>1</CurrentAttackSpeed>
 		<PhysicalPenetration>0</PhysicalPenetration>
 		<MagicalPenetration>0</MagicalPenetration>
-		<MoveSpeed>100</MoveSpeed>
+		<MoveSpeed>2</MoveSpeed>
 		<KnockbackResistance>50</KnockbackResistance>
 		<TimeAccelerationRate>1</TimeAccelerationRate>
 		<MotionAccelerationRate>1</MotionAccelerationRate>
@@ -64,6 +65,7 @@
 		<CurrentSpecialPoint>0</CurrentSpecialPoint>
 		<PhysicalDefense>564.6</PhysicalDefense>
 		<MagicalDefense>464.6</MagicalDefense>
+		<TrueTypeDefense>1</TrueTypeDefense>
 		<DamageReduceRate>0</DamageReduceRate>
 		<BloodSuckingRate>0</BloodSuckingRate>
 		<MaxAccuracy>200</MaxAccuracy>
@@ -72,15 +74,15 @@
 		<MaxEvasionRate>75</MaxEvasionRate>
 		<MinEvasionRate>0</MinEvasionRate>
 		<CurrentEvasionRate>15</CurrentEvasionRate>
-		<MaxRange>3</MaxRange>
-		<MinRange>0</MinRange>
+		<MaxRange>5</MaxRange>
+		<MinRange>3</MinRange>
 		<CurrentRange>0</CurrentRange>
 		<MaxAttackSpeed>2</MaxAttackSpeed>
 		<MinAttackSpeed>0.5</MinAttackSpeed>
 		<CurrentAttackSpeed>1</CurrentAttackSpeed>
 		<PhysicalPenetration>0</PhysicalPenetration>
 		<MagicalPenetration>0</MagicalPenetration>
-		<MoveSpeed>100</MoveSpeed>
+		<MoveSpeed>2</MoveSpeed>
 		<KnockbackResistance>0</KnockbackResistance>
 		<TimeAccelerationRate>1</TimeAccelerationRate>
 		<MotionAccelerationRate>1</MotionAccelerationRate>
@@ -107,6 +109,7 @@
 		<CurrentSpecialPoint>0</CurrentSpecialPoint>
 		<PhysicalDefense>347.7</PhysicalDefense>
 		<MagicalDefense>347.7</MagicalDefense>
+		<TrueTypeDefense>1</TrueTypeDefense>
 		<DamageReduceRate>0</DamageReduceRate>
 		<BloodSuckingRate>0</BloodSuckingRate>
 		<MaxAccuracy>200</MaxAccuracy>
@@ -116,17 +119,17 @@
 		<MinEvasionRate>0</MinEvasionRate>
 		<CurrentEvasionRate>14</CurrentEvasionRate>
 		<MaxRange>5</MaxRange>
-		<MinRange>0</MinRange>
+		<MinRange>3</MinRange>
 		<CurrentRange>0</CurrentRange>
 		<MaxAttackSpeed>2</MaxAttackSpeed>
 		<MinAttackSpeed>0.5</MinAttackSpeed>
 		<CurrentAttackSpeed>1</CurrentAttackSpeed>
 		<PhysicalPenetration>0</PhysicalPenetration>
 		<MagicalPenetration>0</MagicalPenetration>
-		<MoveSpeed>0</MoveSpeed>
+		<MoveSpeed>2</MoveSpeed>
 		<KnockbackResistance>0</KnockbackResistance>
 		<TimeAccelerationRate>1</TimeAccelerationRate>
 		<MotionAccelerationRate>1</MotionAccelerationRate>
 		<ScaleMultiplier>1</ScaleMultiplier>
 	</HeroInfo>
-</HeroDatabase>
+</IngameDatabase>

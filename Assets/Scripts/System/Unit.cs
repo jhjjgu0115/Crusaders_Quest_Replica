@@ -206,10 +206,10 @@ public partial class Unit : MonoBehaviour
         RaycastHit2D hit;
 
         //적과의 사거리
-
+        direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
         while (true)
         {
-            direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
+            
             origin = new Vector2(transform.position.x + (0.301f * direction.x), transform.position.y + 0.1f);
             //나중에 위해서 메모를 하는건데
             //여기를 Transfrom으로 아예 저장을 해서 쉽게 처리가 가능할거같다. 한번 생각해봐라.
@@ -428,15 +428,6 @@ public partial class Unit : MonoBehaviour
          * 
          * 
          */
-
-
-
-
-
-
-
-
-
 
         //원래 데미지와 비교하여 관통치가 15%차이가 난다면 비관통으로 출력
 

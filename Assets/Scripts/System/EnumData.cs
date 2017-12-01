@@ -1,4 +1,14 @@
-﻿public enum E_motion
+﻿public enum E_ActingStatus
+{
+    Idle,
+    Running,
+    BaseAttack,
+    Groggy,
+    Entangle,
+    Dead,
+    Skill
+}
+public enum E_motion
 {
     Normal=0,
     Laugh = 1,
@@ -31,9 +41,10 @@ public enum E_StatType
 
     //방어 속성
     PhysicalDefense = 255,
-    MagicalDefense = 256,
+    MagicalDefense,
+    TrueTypeDefense,
     //피해감소
-    DamageReduceRate = 257,
+    DamageReduceRate,
 
     //흡혈율
     BloodSuckingRate=9,
@@ -59,7 +70,7 @@ public enum E_StatType
 
     //관통력
     PhysicalPenetration=268,
-    MagicalPenetration=269,
+    MagicalPenetration,
     //이동속도
     MoveSpeed=22,
     //넉백 저항
@@ -104,10 +115,10 @@ public enum E_ApplyTargetFilter
 
 public enum E_DamageType
 {
-    None,
-    Physics=255,
-    Magical= 256,
-    TrueType = 257
+    None= 254,
+    Physics,
+    Magical,
+    TrueType
 }
 public enum E_FloatingType
 {
