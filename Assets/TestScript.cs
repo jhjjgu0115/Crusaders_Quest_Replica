@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TestScript : MonoBehaviour {
+    public TestDestroy gameobject;
 
-    delegate void testdelegate();
-    event testdelegate EventDel1;
+    public delegate void testdelegate();
+    public event testdelegate EventDel1;
     event testdelegate EventDel2;
     testdelegate Del;
 	// Use this for initialization
@@ -33,7 +34,12 @@ public class TestScript : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
+        if(EventDel1!=null)
+        {
+            EventDel1();
+        }
 		
 	}
 }

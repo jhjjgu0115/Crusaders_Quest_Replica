@@ -82,13 +82,15 @@ public partial class StageManager : MonoBehaviour
         }
     }
 
-    public void HeroDead(TestUnit deadUnit)
+    void HeroDead(TestUnit deadUnit)
     {
-
+        aliveHeroList.Remove(deadUnit);
+        DeadHeroList.Add(deadUnit);
     }
-    public void HeroReBirth(TestUnit deadUnit)
+    void HeroReBirth(TestUnit aliveHero)
     {
-
+        DeadHeroList.Remove(aliveHero);
+        aliveHeroList.Add(aliveHero);
     }
 
 
@@ -113,12 +115,33 @@ public partial class StageManager : MonoBehaviour
     }
     public void Defeat(int count)
     {
-        if(count ==0)
+        if(count >=3)
         {
-            Debug.Log("Defeat");
+            StartCoroutine(DefeatCount());
         }
     }
+    IEnumerator DefeatCount()
+    {
+        float countDown = 3;
+        while(true)
+        {
+            if(countDown>0)
+            {
+                if(aliveHeroList.Count>0)
+                {
+                    yield break;
+                }
+                countDown -= Time.deltaTime;
+            }
+            else
+            {
+                Debug.Log("Defeat");
+                yield break;
+            }
+            yield return null;
+        }
 
+    }
 }
 //스테이지 제어
 public partial class StageManager : MonoBehaviour
@@ -136,7 +159,7 @@ public partial class StageManager : MonoBehaviour
 //스테이지 외적 요소
 public partial class StageManager : MonoBehaviour
 {
-    void LoadCharacterData()
+    void LoadPlayerData()
     {
         if(selectedHeroList.Count==0)
         {
@@ -190,13 +213,16 @@ public partial class StageManager : MonoBehaviour
         {
             instance = this;
         }
-        aliveHeroList.CountListener += Defeat;
-        //웨이브가 만료되면 승리
+        LoadPlayerData();
+        deadHeroList.CountListener += Defeat;
+        foreach(TestUnit unit in totalHeroList)
+        {
+            aliveHeroList.Add(unit);
+            unit.DeadEvent += HeroDead;
+        }
 
-        
-        //StartLimitSync();
-        LoadCharacterData();
-        foreach(TestUnit unit in aliveHeroList)
+
+        foreach (TestUnit unit in aliveHeroList)
         {
             //unit.DebugLog();
         }
