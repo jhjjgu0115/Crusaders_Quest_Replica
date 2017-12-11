@@ -213,6 +213,8 @@ public partial class StageManager : MonoBehaviour
         {
             instance = this;
         }
+        selectedHeroList.Add(new SelectionInfo());
+        selectedHeroList[0].heroInfo.name = "뮤";
         LoadPlayerData();
         deadHeroList.CountListener += Defeat;
         foreach(TestUnit unit in totalHeroList)

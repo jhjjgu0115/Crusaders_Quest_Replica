@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System;
 public partial class TestUnit : MonoBehaviour
 {
@@ -31,10 +32,65 @@ public partial class TestUnit : MonoBehaviour
 
     //스킬 리스트 아니면 스킬사전
 }
-//상태
+//이벤트
 public partial class TestUnit : MonoBehaviour
 {
-    
+    [System.Serializable]
+    public class TestUnitEvent : UnityEvent<TestUnit>
+    {
+
+    }
+    public TestUnitEvent birthEvent;
+    public void testmethod1(TestUnit a)
+    {
+        Debug.Log(a.name + "테스트메서드1");
+    }
+    public void testmethod2()
+    {
+        Debug.Log("테스트메서드2");
+    }
+    //생성시
+    //사망시
+    //부활시
+
+    //이동시
+    //이동불가시
+
+    //기절시
+    //기절해제시
+
+    //시전 불가시
+
+
+    //이로운 효과 받을시
+    //해로운 효과 받을시
+
+    //공격시
+    //적중시
+    //적중실패시
+    //피해를 입힐 때 마다
+    //스킬을 쓸 때 마다
+
+    //투사체 충돌 이벤트
+
+    //피격시
+    //피해를 입을 때 마다
+
+    //회피 실패시
+    //회피시
+
+    //회복받음
+    //회복할 때마다
+
+    //아무 블록 시전시
+    //일반 블록 시전시
+    //특수 블록 시전시
+
+    //N블록 시전 이벤트
+
+    //아무 체인 반응
+    //N체인 반응
+
 }
 //행동제어
 public partial class TestUnit : MonoBehaviour
@@ -137,6 +193,7 @@ public partial class TestUnit : MonoBehaviour
 
         statManager.CreateOrGetStat(E_StatType.CurrentHealth).AddEvent(HealthCheck);
     }
+
     IEnumerator TestEnumerator()
     {
         while(true)
@@ -149,7 +206,11 @@ public partial class TestUnit : MonoBehaviour
 
     private void Update()
     {
-        
+        //TSET
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            
+        }
     }
 
 }

@@ -13,7 +13,7 @@ public class ExtendedList<T> : List<T>
 
     public new void Add(T item)
     {
-        Add(item);
+        base.Add(item);
         if (CountListener != null)
         {
             CountListener(Count);
@@ -25,7 +25,7 @@ public class ExtendedList<T> : List<T>
     }
     public new void Remove(T item)
     {
-        Remove(item);
+        base.Remove(item);
         if (CountListener != null)
         {
             CountListener(Count);
