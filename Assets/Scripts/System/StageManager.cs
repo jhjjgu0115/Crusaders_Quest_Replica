@@ -217,11 +217,6 @@ public partial class StageManager : MonoBehaviour
         selectedHeroList[0].heroInfo.name = "뮤";
         LoadPlayerData();
         deadHeroList.CountListener += Defeat;
-        foreach(TestUnit unit in totalHeroList)
-        {
-            aliveHeroList.Add(unit);
-            unit.DeadEvent += HeroDead;
-        }
 
 
         foreach (TestUnit unit in aliveHeroList)

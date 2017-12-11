@@ -35,41 +35,105 @@ public partial class TestUnit : MonoBehaviour
 //이벤트
 public partial class TestUnit : MonoBehaviour
 {
-    [System.Serializable]
-    public class TestUnitEvent : UnityEvent<TestUnit>
-    {
-
-    }
-    public TestUnitEvent birthEvent;
-    public void testmethod1(TestUnit a)
-    {
-        Debug.Log(a.name + "테스트메서드1");
-    }
-    public void testmethod2()
-    {
-        Debug.Log("테스트메서드2");
-    }
+    public delegate void NormalEvent();
+    public delegate void UnitFloatEvent(TestUnit unit, float amount);
+    public delegate void UnitUnitEvent(TestUnit unit1, TestUnit unit2);
+    public delegate void UnitBuffEvent(TestUnit unit, Buff buff);
+    public delegate void UnitUnitDamageEvent(TestUnit unit1, TestUnit unit2,Damage damage);
+    public delegate void UnitEvent(TestUnit unit);
     //생성시
     //사망시
     //부활시
+    public event UnitEvent BirthEvent;
+    public void OnBirth()
+    {
+        BirthEvent(this);
+    }
+    public event UnitEvent DeadEvent;
+    public void OnDeath()
+    {
+        DeadEvent(this);
+    }
+    public event UnitEvent Rebirth;
+    public void OnRebirth()
+    {
+        Rebirth(this);
+    }
 
-    //이동시
-    //이동불가시
+    public event UnitFloatEvent MoveEvent;
+    public void OnMove(float moveDistance)
+    {
+        MoveEvent(this, moveDistance);
+    }
+    public event UnitEvent EntangleEvent;
+    public void OnEntangle()
+    {
+        EntangleEvent(this);
+    }
+    public event UnitEvent EntangleEndEvent;
+    public void OnEntangleEnd()
+    {
+        EntangleEndEvent(this);
+    }
+    public event UnitEvent GroggyEvent;
+    public void OnGroggy()
+    {
+        GroggyEvent(this);
+    }
+    public event UnitEvent GoggyEndEvent;
+    public void OnGrggyEnd()
+    {
+        GoggyEndEvent(this);
+    }
+    public event UnitEvent SilenceEvent;
+    public void OnSilence()
+    {
+        SilenceEvent(this);
+    }
+    public event UnitEvent SilenceEndEvent;
+    public void OnSilenceEnd()
+    {
+        SilenceEndEvent(this);
+    }
 
-    //기절시
-    //기절해제시
+    public event UnitBuffEvent GetBuffEvent;
+    public void OnBuff(Buff buff)
+    {
+        GetBuffEvent(this, buff);
+    }
+    public event UnitBuffEvent GetDebuffEvent;
+    public void OnDebuff(Buff buff)
+    {
+        GetDebuffEvent(this, buff);
+    }
 
-    //시전 불가시
+    public event UnitEvent AttackEvent;
+    public void OnAttack()
+    {
+        AttackEvent(this);
+    }
+    public event UnitUnitEvent HitEvent;
+    public void OnHit(TestUnit unit)
+    {
+        HitEvent(this, unit);
+    }
+    public event UnitEvent HitFailEvent;
+    public void OnMiss()
+    {
+        HitFailEvent(this);
+    }
 
-
-    //이로운 효과 받을시
-    //해로운 효과 받을시
-
-    //공격시
-    //적중시
-    //적중실패시
-    //피해를 입힐 때 마다
-    //스킬을 쓸 때 마다
+    public event UnitUnitDamageEvent DamageEvent;
+    public void OnDamage(TestUnit unit,Damage damage)
+    {
+        DamageEvent(this, unit, damage);
+    }
+    
+    public event UnitEvent CastingEvent;
+    public void OnCast()
+    {
+        CastingEvent(this);
+    }
 
     //투사체 충돌 이벤트
 
@@ -190,8 +254,6 @@ public partial class TestUnit : MonoBehaviour
     {
         direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
         StartCoroutine(Moving());
-
-        statManager.CreateOrGetStat(E_StatType.CurrentHealth).AddEvent(HealthCheck);
     }
 
     IEnumerator TestEnumerator()
@@ -250,8 +312,7 @@ public partial class TestUnit : MonoBehaviour
      * 적중 이벤트
      * 
      */
-    public delegate void DamageEvent(ref float damage);
-    public DamageEvent OnHitEvent;
+  
 
 
 
@@ -274,10 +335,10 @@ public partial class TestUnit : MonoBehaviour
                 floatingType = E_FloatingType.FullPenetrationDamage;
             }
         }
-        if (OnHitEvent != null)
-        {
-            OnHitEvent.Invoke(ref resultDamage);
-        }
+        //if (onhitevent != null)
+        //{
+        //    onhitevent.invoke(ref resultdamage);
+        //}
 
         resultDamage *= (damageReducePercent * (1 - StatManager.CreateOrGetStat(E_StatType.DamageReduceRate).ModifiedValue));
         StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= resultDamage;
@@ -327,24 +388,7 @@ public partial class TestUnit : MonoBehaviour
 public partial class TestUnit : MonoBehaviour
 {
 }
-//이벤트
 public partial class TestUnit : MonoBehaviour
 {
-    public delegate void UnitEvent(TestUnit unit);
-    public event UnitEvent DeadEvent;
-    void HealthCheck(float health)
-    {
-        if (health<=0)
-        {
-            Dead();
-        }
-    }
 
-    void Dead()
-    {
-        if (DeadEvent != null)
-        {
-            DeadEvent(this);
-        }
-    }
 }
