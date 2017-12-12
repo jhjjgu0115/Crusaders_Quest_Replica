@@ -75,11 +75,10 @@ public partial class GameStartManager : MonoBehaviour
     public GridLayoutGroup gridLayout;
     HeroButton AddCharacterButton(HeroInfo heroInfo)
     {
-        HeroButton temp = Instantiate(heroButtonPrefab);
+        HeroButton temp = Instantiate(heroButtonPrefab,gridLayout.transform);
         buttonList.Add(temp);
         temp.name = count.ToString();
         count++;
-        temp.transform.SetParent(gridLayout.transform);
         temp.heroInfo = heroInfo;
         for (int index = 0; index < CharacterSpriteList.Count; index++)
         {
