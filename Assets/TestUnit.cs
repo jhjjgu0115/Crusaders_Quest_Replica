@@ -36,14 +36,21 @@ public partial class TestUnit : MonoBehaviour
 public partial class TestUnit : MonoBehaviour
 {
     public delegate void NormalEvent();
+
+    public delegate void UnitEvent(TestUnit unit);
     public delegate void UnitFloatEvent(TestUnit unit, float amount);
     public delegate void UnitUnitEvent(TestUnit unit1, TestUnit unit2);
+
+    public delegate void UnitEffectEvent(TestUnit unit, Effect effect);
     public delegate void UnitBuffEvent(TestUnit unit, Buff buff);
-    public delegate void UnitUnitDamageEvent(TestUnit unit1, TestUnit unit2,Damage damage);
-    public delegate void UnitEvent(TestUnit unit);
-    //생성시
-    //사망시
-    //부활시
+
+    public delegate void UnitHealEvent(TestUnit unit1, Heal damage);
+    public delegate void UnitDamageEvent(TestUnit unit1,Damage damage);
+
+    public delegate void UnitProjectileEvent(TestUnit unit, Projectile projectile);
+
+    public delegate void UnitBlockEvent(TestUnit unit, Block block);
+
     public event UnitEvent BirthEvent;
     public void OnBirth()
     {
@@ -113,7 +120,6 @@ public partial class TestUnit : MonoBehaviour
         CastingEvent(this);
     }
 
-
     public event UnitEvent AttackEvent;
     public void OnAttack()
     {
@@ -129,34 +135,104 @@ public partial class TestUnit : MonoBehaviour
     {
         HitFailEvent(this);
     }
-    public event UnitUnitDamageEvent DamageEvent;
-    public void OnDamage(TestUnit unit,Damage damage)
+    public event UnitDamageEvent DamageEvent;
+    public void OnDamage(Damage damage)
     {
-        DamageEvent(this, unit, damage);
+        DamageEvent(this, damage);
     }
-    
-    //투사체 충돌 이벤트
-    //충돌체,충돌한 사람
 
+    public event UnitProjectileEvent ProjectileCollisionEvent;
+    public void OnCollisionProjectile(Projectile projectile)
+    {
+        ProjectileCollisionEvent(this, projectile);
+    }
 
-    //피격시
-    //피해를 입을 때 마다
+    public event UnitDamageEvent GetHitEvent;
+    public void OnHitted(Effect effect)
+    {
+        //피격시 나타나는 효과들 재정리 할것.
+        //이외 회피효과들도.
+    }
+    public event UnitDamageEvent GetDamageEvent;
+    public void OnDamaged(Damage damage)
+    {
+        GetDamageEvent(this, damage);
+    }
 
-    //회피 실패시
-    //회피시
+    public event UnitEffectEvent EvadeEvent;
+    public void OnEvade(Effect effect)
+    {
+        EvadeEvent(this, effect);
+    }
+    public event UnitEffectEvent EvadeFailEvent;
+    public void OnEvadeFail(Effect effect)
+    {
+        EvadeFailEvent(this, effect);
+    }
 
-    //회복받음
-    //회복할 때마다
+    public event UnitHealEvent HealedEvent;
+    public void OnHealedEvent(Heal heal)
+    {
+        HealedEvent(this, heal);
+    }
+    public event UnitHealEvent HealEvent;
+    public void OnHealEvent(Heal heal)
+    {
+        HealedEvent(this, heal);
+    }
 
-    //아무 블록 시전시
-    //일반 블록 시전시
-    //특수 블록 시전시
+    public event UnitBlockEvent UseAnyBlockEvent;
+    public void OnUseAnyBlock(Block block)
+    {
+        UseAnyBlockEvent(this, block);
+    }
+    public event UnitBlockEvent UseNormalBlockEvent;
+    public void OnUseNormalBlock(Block block)
+    {
+        UseNormalBlockEvent(this, block);
+    }
+    public event UnitBlockEvent UseSpecialBlockEvent;
+    public void OnUseSpecialBlock(Block block)
+    {
+        UseSpecialBlockEvent(this, block);
+    }
 
-    //N블록 시전 이벤트
+    public event UnitBlockEvent Use1BlockEvent;
+    public void OnUse1Block(Block block)
+    {
+        Use1BlockEvent(this, block);
+    }
+    public event UnitBlockEvent Use2BlockEvent;
+    public void OnUse2Block(Block block)
+    {
+        Use2BlockEvent(this, block);
+    }
+    public event UnitBlockEvent Use3BlockEvent;
+    public void OnUse3Block(Block block)
+    {
+        Use3BlockEvent(this, block);
+    }
 
-    //아무 체인 반응
-    //N체인 반응
-
+    public event UnitBlockEvent ReactAnyBlockEvent;
+    public void OnReactAnyBLock(Block block)
+    {
+        ReactAnyBlockEvent(this, block);
+    }
+    public event UnitBlockEvent React1BlockEvent;
+    public void OnReact1BLock(Block block)
+    {
+        React1BlockEvent(this, block);
+    }
+    public event UnitBlockEvent React2BlockEvent;
+    public void OnReact2BLock(Block block)
+    {
+        React2BlockEvent(this, block);
+    }
+    public event UnitBlockEvent React3BlockEvent;
+    public void OnReact3BLock(Block block)
+    {
+        React3BlockEvent(this, block);
+    }
 }
 //행동제어
 public partial class TestUnit : MonoBehaviour
