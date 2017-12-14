@@ -59,12 +59,12 @@ public partial class TestUnit : MonoBehaviour
     {
         Rebirth(this);
     }
-
     public event UnitFloatEvent MoveEvent;
     public void OnMove(float moveDistance)
     {
         MoveEvent(this, moveDistance);
     }
+
     public event UnitEvent EntangleEvent;
     public void OnEntangle()
     {
@@ -107,6 +107,13 @@ public partial class TestUnit : MonoBehaviour
         GetDebuffEvent(this, buff);
     }
 
+    public event UnitEvent CastingEvent;
+    public void OnCast()
+    {
+        CastingEvent(this);
+    }
+
+
     public event UnitEvent AttackEvent;
     public void OnAttack()
     {
@@ -122,20 +129,15 @@ public partial class TestUnit : MonoBehaviour
     {
         HitFailEvent(this);
     }
-
     public event UnitUnitDamageEvent DamageEvent;
     public void OnDamage(TestUnit unit,Damage damage)
     {
         DamageEvent(this, unit, damage);
     }
     
-    public event UnitEvent CastingEvent;
-    public void OnCast()
-    {
-        CastingEvent(this);
-    }
-
     //투사체 충돌 이벤트
+    //충돌체,충돌한 사람
+
 
     //피격시
     //피해를 입을 때 마다
