@@ -1,12 +1,8 @@
-﻿public enum E_ActingStatus
+﻿public enum E_AbnormalStatus
 {
-    Idle,
-    Running,
-    BaseAttack,
-    Groggy,
-    Entangle,
-    Dead,
-    Skill
+    Entangle = 12,
+    Groggy = 8,
+    Dead =15
 }
 public enum E_motion
 {

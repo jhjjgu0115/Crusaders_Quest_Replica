@@ -32,6 +32,40 @@ public partial class TestUnit : MonoBehaviour
 
     //스킬 리스트 아니면 스킬사전
 }
+public partial class TestUnit : MonoBehaviour
+{
+    int currentStatus = 0;
+    bool CanMove
+    {
+        get
+        {
+            return 0 == (currentStatus & 12);
+        }
+    }
+    bool CanAct
+    {
+        get
+        {
+            return 0 == (currentStatus & 4);
+        }
+    }
+    bool CanInteract
+    {
+        get
+        {
+            return 0 == (currentStatus & 2);
+        }
+    }
+    
+    void AddStatus(E_AbnormalStatus abnormalStatus)
+    {
+        currentStatus |= (int)abnormalStatus;
+    }
+    void RemoveStatus(E_AbnormalStatus abnormalStatus)
+    {
+        currentStatus &= ~(int)abnormalStatus;
+    }
+}
 //이벤트
 public partial class TestUnit : MonoBehaviour
 {
@@ -40,30 +74,39 @@ public partial class TestUnit : MonoBehaviour
     public delegate void UnitEvent(TestUnit unit);
     public delegate void UnitFloatEvent(TestUnit unit, float amount);
     public delegate void UnitUnitEvent(TestUnit unit1, TestUnit unit2);
-
     public delegate void UnitEffectEvent(TestUnit unit, Effect effect);
     public delegate void UnitBuffEvent(TestUnit unit, Buff buff);
-
     public delegate void UnitHealEvent(TestUnit unit1, Heal damage);
     public delegate void UnitDamageEvent(TestUnit unit1,Damage damage);
-
     public delegate void UnitProjectileEvent(TestUnit unit, Projectile projectile);
-
     public delegate void UnitBlockEvent(TestUnit unit, Block block);
 
     public event UnitEvent BirthEvent;
     public void OnBirth()
     {
+        //초기화
         BirthEvent(this);
     }
     public event UnitEvent DeadEvent;
     public void OnDeath()
     {
+        /*
+         * 사망에 이르는 피해에 대해서는 데미지 쪽에서 처리.
+         * 피해량이 사망에 이르게 한다면 데미지를 따로 조작한다.
+         * 사망시 즉시 부활개념은 아래 부활 이벤트로 제어
+         */
+        //상호작용 중단.[부활 제외]
+        //모든 상태이상 제거
+        //모든 디버프 제거
+        //모든 버프 제거[가능한것만]
+        //즉시 사망 애니메이션 실행
         DeadEvent(this);
     }
     public event UnitEvent Rebirth;
     public void OnRebirth()
     {
+        //특정 체력값을 기준으로 부활시킨다. 먼저 체력이 회복되어야 사망 이벤트가 발생되지 않으니 체력먼저 복구하도록 조정
+        //상호작용 재시작
         Rebirth(this);
     }
     public event UnitFloatEvent MoveEvent;
@@ -91,16 +134,6 @@ public partial class TestUnit : MonoBehaviour
     public void OnGrggyEnd()
     {
         GoggyEndEvent(this);
-    }
-    public event UnitEvent SilenceEvent;
-    public void OnSilence()
-    {
-        SilenceEvent(this);
-    }
-    public event UnitEvent SilenceEndEvent;
-    public void OnSilenceEnd()
-    {
-        SilenceEndEvent(this);
     }
 
     public event UnitBuffEvent GetBuffEvent;
@@ -237,6 +270,7 @@ public partial class TestUnit : MonoBehaviour
 //행동제어
 public partial class TestUnit : MonoBehaviour
 {
+    //지점으로 이동
     Vector3 direction;
     public Transform targetPosition;
     void MovePosition(Vector3 targetPosition)
@@ -264,133 +298,35 @@ public partial class TestUnit : MonoBehaviour
             }
         }
     }
-    Coroutine runningCoroutine;
-    IEnumerator Moving()
-    {
-        while (true)
-        {
-            if (CanMove)
-            {
-                if (targetPosition)
-                {
-                    MovePosition(new Vector3(targetPosition.position.x, transform.position.y));
-                }
-            }
-            yield return new WaitForFixedUpdate();
-        }
-    }
-    bool canMove;
-    public bool CanMove
-    {
-        get
-        {
-            return canMove;
-        }
-        set
-        {
-            canMove = value;
-        }
-    }
-    public void StartMove()
-    {
-        runningCoroutine = StartCoroutine(Moving());
-    }
-    public void StopMove()
-    {
-        StopCoroutine(runningCoroutine);
-    }
 
+    public void GetDamage()
+    {
 
+    }
+    public void GetHit()
+    {
 
+    }
+    public void GetHeal()
+    {
 
-    public void StartRunning()
-    {
-        runningCoroutine = StartCoroutine(Moving());
     }
-    public void StopRunning()
+    public void GetBuff()
     {
-        StopCoroutine(runningCoroutine);
-    }
-    
-}
-//스킬 관련
-public partial class TestUnit : MonoBehaviour
-{
-    Dictionary<string, Skill> skillDict = new Dictionary<string, Skill>();
-    IEnumerator BaseAttackCoolDown()
-    {
-        while(true)
-        {
-            yield return null;
-        }
-    }
-}
-//유니티 기본 메서드
-public partial class TestUnit : MonoBehaviour
-{
-    private void Start()
-    {
-        direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
-        StartCoroutine(Moving());
-    }
 
-    IEnumerator TestEnumerator()
-    {
-        while(true)
-        {
-            float a = 1000;
-            GetNormalDamage(ref a, E_DamageType.Physics, 550);
-            yield return new WaitForSeconds(3);
-        }
     }
+    public void CastSkill(string SkillName)
+    {
 
-    private void Update()
-    {
-        //TSET
-        if(Input.GetKeyDown(KeyCode.X))
-        {
-            
-        }
     }
+    public void Pull()
+    {
 
-}
-public partial class TestUnit : MonoBehaviour
-{
-    public void DebugLog()
-    {
-        Debug.Log("--------" + name + "--------");
-        foreach (E_StatType stat in Enum.GetValues(typeof(E_StatType)))
-        {
-            Debug.Log(statManager.Get_Stat(stat).StatName + " : " + statManager.Get_Stat(stat).BaseValue);
-        }
     }
-    
-}
-public partial class TestUnit : MonoBehaviour
-{
-    /*
-     * 피해를 받음
-     * 피해 처리
-     * 피해 이벤트
-     * 
-     * 회복을 받음
-     * 회복 처리
-     * 회복 이벤트
-     * 
-     * 스킬을 시전함
-     * 스킬 이벤트
-     * 스킬 처리
-     * 
-     * 회피함
-     * 회피처리
-     * 회피이벤트
-     * 
-     * 공격이 적중함
-     * 적중 처리
-     * 적중 이벤트
-     * 
-     */
-  
+    public void Push()
+    {
+
+    }
 
 
 
@@ -440,24 +376,74 @@ public partial class TestUnit : MonoBehaviour
         FloatingNumberManager.FloatingNumber(gameObject, resultDamage, E_FloatingType.CriticalDamage);
     }
 
-    public void GetHeal()
-    {
 
+}
+//스킬 관련
+public partial class TestUnit : MonoBehaviour
+{
+    Dictionary<string, Skill> skillDict = new Dictionary<string, Skill>();
+    IEnumerator BaseAttackCoolDown()
+    {
+        while(true)
+        {
+            yield return null;
+        }
+    }
+}
+//유니티 기본 메서드
+public partial class TestUnit : MonoBehaviour
+{
+    private void Start()
+    {
+        direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
     }
 
-    public bool Evade()
+    private void Update()
     {
-        return true;
-    }
-    public bool OnHit()
-    {
-        return true;
+        //TSET
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Debug.Log(~4);
+        }
     }
 
-    public void SkillUse()
+}
+public partial class TestUnit : MonoBehaviour
+{
+    public void DebugLog()
     {
-
+        Debug.Log("--------" + name + "--------");
+        foreach (E_StatType stat in Enum.GetValues(typeof(E_StatType)))
+        {
+            Debug.Log(statManager.Get_Stat(stat).StatName + " : " + statManager.Get_Stat(stat).BaseValue);
+        }
     }
+    
+}
+public partial class TestUnit : MonoBehaviour
+{
+    /*
+     * 피해를 받음
+     * 피해 처리
+     * 피해 이벤트
+     * 
+     * 회복을 받음
+     * 회복 처리
+     * 회복 이벤트
+     * 
+     * 스킬을 시전함
+     * 스킬 이벤트
+     * 스킬 처리
+     * 
+     * 회피함
+     * 회피처리
+     * 회피이벤트
+     * 
+     * 공격이 적중함
+     * 적중 처리
+     * 적중 이벤트
+     * 
+     */
 
 }
 public partial class TestUnit : MonoBehaviour
