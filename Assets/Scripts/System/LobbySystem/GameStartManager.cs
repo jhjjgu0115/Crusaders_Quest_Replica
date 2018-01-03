@@ -29,8 +29,8 @@ public partial class GameStartManager : MonoBehaviour
 {
     Sprite[] sprites;
     Dictionary<string, Sprite> portraitDict = new Dictionary<string, Sprite>();
-    Dictionary<E_HeroClass, Sprite> classIconDict = new Dictionary<E_HeroClass, Sprite>();
-    public Dictionary<E_HeroClass, Sprite> ClassIconDict
+    Dictionary<E_Class, Sprite> classIconDict = new Dictionary<E_Class, Sprite>();
+    public Dictionary<E_Class, Sprite> ClassIconDict
     {
         get
         {
@@ -229,12 +229,12 @@ public partial class GameStartManager : MonoBehaviour
 
         tempSpriteList = new List<Sprite>(Resources.LoadAll<Sprite>("LobbySystem/Sprites/WindowUI"));
         tempSpriteList = tempSpriteList.FindAll(s => s.name.Substring(0, 4) == "Icon");
-        classIconDict.Add(E_HeroClass.Wizard, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Wizard.ToString()));
-        classIconDict.Add(E_HeroClass.Hunter, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Hunter.ToString()));
-        classIconDict.Add(E_HeroClass.Archer, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Archer.ToString()));
-        classIconDict.Add(E_HeroClass.Priest, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Priest.ToString()));
-        classIconDict.Add(E_HeroClass.Paladin, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Paladin.ToString()));
-        classIconDict.Add(E_HeroClass.Warrior, tempSpriteList.Find(s => s.name.Substring(4) == E_HeroClass.Warrior.ToString()));
+        classIconDict.Add(E_Class.Wizard, tempSpriteList.Find(s => s.name.Substring(4) == E_Class.Wizard.ToString()));
+        classIconDict.Add(E_Class.Hunter, tempSpriteList.Find(s => s.name.Substring(4) == E_Class.Hunter.ToString()));
+        classIconDict.Add(E_Class.Archer, tempSpriteList.Find(s => s.name.Substring(4) == E_Class.Archer.ToString()));
+        classIconDict.Add(E_Class.Priest, tempSpriteList.Find(s => s.name.Substring(4) == E_Class.Priest.ToString()));
+        classIconDict.Add(E_Class.Paladin, tempSpriteList.Find(s => s.name.Substring(4) == E_Class.Paladin.ToString()));
+        classIconDict.Add(E_Class.Warrior, tempSpriteList.Find(s => s.name.Substring(4) == E_Class.Warrior.ToString()));
 
         LoadHeroesDatabase();
         foreach (HeroInfo heroInfo in heroDatabase.list)
@@ -268,7 +268,7 @@ public partial class GameStartManager : MonoBehaviour
 
         foreach(HeroButton heroButton in buttonList)
         {
-            if(selectedClass.classInfo == E_HeroClass.None)
+            if(selectedClass.classInfo == E_Class.None)
             {
                 heroButton.gameObject.SetActive(true);
             }
@@ -292,7 +292,7 @@ public partial class GameStartManager : MonoBehaviour
 {
     public void StartGame()
     {
-        StageManager.selectedHeroList = selectionInfoList;
+        StageManager.selectedPartyMemberList = selectionInfoList;
         StageManager.StageName = "Winter";
         SceneManager.LoadScene("Stage");
     }

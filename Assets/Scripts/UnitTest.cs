@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class UnitTest : MonoBehaviour
 {
-    public void GetDamage(ref float damage)
-    {
-        Debug.Log(this+"Get Damage! : "+damage);
-    }
+    public DEffect df;
+}
 
+[CreateAssetMenu(fileName ="NewDEffect",menuName ="Effect/Damage",order = 0)]
+public class DEffect : ScriptableObject
+{
+    public int damage;
+    public int b;
 }

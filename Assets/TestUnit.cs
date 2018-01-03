@@ -7,10 +7,9 @@ public partial class TestUnit : MonoBehaviour
 {
     public string id = string.Empty;
     public string heroName = string.Empty;
-    public E_HeroClass heroClass = E_HeroClass.None;
+    public E_Class heroClass = E_Class.None;
     public int level = 0;
     public E_GroupTag groupTag;
-
     StatManager statManager = new StatManager();
     BuffManager buffManager = new BuffManager();
     public StatManager StatManager
@@ -27,44 +26,67 @@ public partial class TestUnit : MonoBehaviour
             return buffManager;
         }
     }
-    //public Weapon weapon;
-    //public Ring ring;
-
-    //스킬 리스트 아니면 스킬사전
 }
 public partial class TestUnit : MonoBehaviour
 {
-    int currentStatus = 0;
-    bool CanMove
+    public bool CanMove
     {
         get
         {
-            return 0 == (currentStatus & 12);
+            return true;
         }
     }
-    bool CanAct
+    Vector3 direction;
+    public void SetDirection()
     {
-        get
+        direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
+    }
+    Transform destinationPosition;
+    public void SetDestination(Transform transform)
+    {
+        destinationPosition = transform;
+    }
+    void MovePosition(Vector3 targetPosition)
+    {
+        if (direction.x >= 0)
         {
-            return 0 == (currentStatus & 4);
+            if (targetPosition.x > transform.position.x)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime);
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime * 0.5f);
+            }
         }
-    }
-    bool CanInteract
-    {
-        get
+        else
         {
-            return 0 == (currentStatus & 2);
+            if (targetPosition.x < transform.position.x)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime);
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime * 0.5f);
+            }
         }
     }
-    
-    void AddStatus(E_AbnormalStatus abnormalStatus)
+    IEnumerator AutoMoving()
     {
-        currentStatus |= (int)abnormalStatus;
+        while(true)
+        {
+            if(CanMove)
+            {
+                if (destinationPosition)
+                {
+                    MovePosition(destinationPosition.position);
+                }
+            }
+            yield return null;
+        }
     }
-    void RemoveStatus(E_AbnormalStatus abnormalStatus)
-    {
-        currentStatus &= ~(int)abnormalStatus;
-    }
+
+
 }
 //이벤트
 public partial class TestUnit : MonoBehaviour
@@ -267,38 +289,8 @@ public partial class TestUnit : MonoBehaviour
         React3BlockEvent(this, block);
     }
 }
-//행동제어
 public partial class TestUnit : MonoBehaviour
 {
-    //지점으로 이동
-    Vector3 direction;
-    public Transform targetPosition;
-    void MovePosition(Vector3 targetPosition)
-    {
-        if (direction.x >= 0)
-        {
-            if (targetPosition.x > transform.position.x)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime);
-            }
-            else
-            {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime * 0.5f);
-            }
-        }
-        else
-        {
-            if (targetPosition.x < transform.position.x)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime);
-            }
-            else
-            {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, statManager.CreateOrGetStat(E_StatType.MoveSpeed).ModifiedValue * Time.deltaTime * 0.5f);
-            }
-        }
-    }
-
     public void GetDamage()
     {
 
@@ -375,84 +367,9 @@ public partial class TestUnit : MonoBehaviour
         StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= resultDamage;
         FloatingNumberManager.FloatingNumber(gameObject, resultDamage, E_FloatingType.CriticalDamage);
     }
-
-
-}
-//스킬 관련
-public partial class TestUnit : MonoBehaviour
-{
-    Dictionary<string, Skill> skillDict = new Dictionary<string, Skill>();
-    IEnumerator BaseAttackCoolDown()
-    {
-        while(true)
-        {
-            yield return null;
-        }
-    }
-}
-//유니티 기본 메서드
-public partial class TestUnit : MonoBehaviour
-{
     private void Start()
     {
-        direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
+        SetDirection();
+        StartCoroutine(AutoMoving());
     }
-
-    private void Update()
-    {
-        //TSET
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Debug.Log(~4);
-        }
-    }
-
-}
-public partial class TestUnit : MonoBehaviour
-{
-    public void DebugLog()
-    {
-        Debug.Log("--------" + name + "--------");
-        foreach (E_StatType stat in Enum.GetValues(typeof(E_StatType)))
-        {
-            Debug.Log(statManager.Get_Stat(stat).StatName + " : " + statManager.Get_Stat(stat).BaseValue);
-        }
-    }
-    
-}
-public partial class TestUnit : MonoBehaviour
-{
-    /*
-     * 피해를 받음
-     * 피해 처리
-     * 피해 이벤트
-     * 
-     * 회복을 받음
-     * 회복 처리
-     * 회복 이벤트
-     * 
-     * 스킬을 시전함
-     * 스킬 이벤트
-     * 스킬 처리
-     * 
-     * 회피함
-     * 회피처리
-     * 회피이벤트
-     * 
-     * 공격이 적중함
-     * 적중 처리
-     * 적중 이벤트
-     * 
-     */
-
-}
-public partial class TestUnit : MonoBehaviour
-{
-}
-public partial class TestUnit : MonoBehaviour
-{
-}
-public partial class TestUnit : MonoBehaviour
-{
-
 }

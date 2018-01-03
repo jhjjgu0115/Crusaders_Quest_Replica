@@ -160,7 +160,7 @@ public enum E_SkillType
     Special
 }
 
-public enum E_HeroClass
+public enum E_Class
 {
 
     None,

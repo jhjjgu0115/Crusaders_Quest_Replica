@@ -6,8 +6,6 @@ using UnityEngine;
 
 public delegate void EventListenerCasterOnly(Unit caster);
 public delegate void EventListenerBoth(Unit caster, Unit target);
-public delegate void EventListenerBothWithAmount(Unit caster, Unit target, ref float amount);
-
 
 public partial class Unit : MonoBehaviour
 {
@@ -49,7 +47,7 @@ public partial class Unit : MonoBehaviour
     public void EnterBattle()
     {
         inBattle = true;
-        foreach(Effect effect in EnterBattleEffect)
+        foreach (Effect effect in EnterBattleEffect)
         {
             effect.ActivateEffect();
         }
@@ -67,7 +65,7 @@ public partial class Unit : MonoBehaviour
     }
     public List<Effect> EnterBattleEffect = new List<Effect>();
     public List<Effect> ExitBattleEffect = new List<Effect>();
-   
+
     /*
      * 사망
      * 사망시 버프,디버프 제거.
@@ -111,7 +109,7 @@ public partial class Unit : MonoBehaviour
     }
     public List<Effect> DeadStartEffect = new List<Effect>();
     public List<Effect> DeadEndEffect = new List<Effect>();
-   
+
     /// <summary>
     /// 부활
     /// </summary>
@@ -133,7 +131,7 @@ public partial class Unit : MonoBehaviour
         set
         {
             isGroggy = value;
-            IsNormal = (!value)&(!isDead);
+            IsNormal = (!value) & (!isDead);
         }
     }
     /// <summary>
@@ -166,7 +164,7 @@ public partial class Unit : MonoBehaviour
     }
     public List<Effect> GroggyStartEffect = new List<Effect>();
     public List<Effect> GroggyEndEffect = new List<Effect>();
-    
+
 
     //정상 여부
     bool isNormal;
@@ -186,7 +184,7 @@ public partial class Unit : MonoBehaviour
     E_Range enemyRange = E_Range.OutOfRange;
     E_Range deltaRange = E_Range.OutOfRange;
     float enemyDistance = 0;
-    
+
     void RangeSearchStart()
     {
         rigid2D = GetComponent<Rigidbody2D>();
@@ -200,8 +198,8 @@ public partial class Unit : MonoBehaviour
 
         //레이어 마스크를 지정함
         //만약에 게임에서 아군으로 만드는 기능이 있다면 이부분을 루프안으로 넣어야한다.
-        LayerMask mask=~(1<<gameObject.layer);
-        
+        LayerMask mask = ~(1 << gameObject.layer);
+
         Vector2 origin;
         RaycastHit2D hit;
 
@@ -209,21 +207,21 @@ public partial class Unit : MonoBehaviour
         direction = transform.worldToLocalMatrix.MultiplyVector(transform.right);
         while (true)
         {
-            
+
             origin = new Vector2(transform.position.x + (0.301f * direction.x), transform.position.y + 0.1f);
             //나중에 위해서 메모를 하는건데
             //여기를 Transfrom으로 아예 저장을 해서 쉽게 처리가 가능할거같다. 한번 생각해봐라.
             //추가적으로 raycast2D를 새로 정의내려도 되고.
-            if( hit = Physics2D.Raycast(origin, direction, float.MaxValue,mask) )
+            if (hit = Physics2D.Raycast(origin, direction, float.MaxValue, mask))
             {
-                if (hit.transform.tag!=tag)
+                if (hit.transform.tag != tag)
                 {
-                    enemyDistance = direction .x * (hit.transform.position.x -transform.position.x);
+                    enemyDistance = direction.x * (hit.transform.position.x - transform.position.x);
 
                     //최소 사거리 내
-                    if(enemyDistance<minRange.ModifiedValue)
+                    if (enemyDistance < minRange.ModifiedValue)
                     {
-                        if(deltaRange!= E_Range.WithInMinRange)
+                        if (deltaRange != E_Range.WithInMinRange)
                         {
 
                             rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
@@ -232,7 +230,7 @@ public partial class Unit : MonoBehaviour
                         enemyRange = E_Range.WithInMinRange;
                         deltaRange = enemyRange;
                     }//최대 사거리 밖
-                    else if(enemyDistance < maxRange.ModifiedValue)
+                    else if (enemyDistance < maxRange.ModifiedValue)
                     {
                         enemyRange = E_Range.WithInMaxRange;
                         deltaRange = enemyRange;
@@ -268,9 +266,9 @@ public partial class Unit : MonoBehaviour
         StatFloat moveSpeed = statManager.CreateOrGetStat(E_StatType.MoveSpeed);
         while (true)
         {
-            if(isNormal)
+            if (isNormal)
             {
-                if(inBattle)
+                if (inBattle)
                 {
                     //스킬 큐가 비어있는지 체크하는 부분
                     if (skillQueue.IsEmpty)
@@ -278,7 +276,7 @@ public partial class Unit : MonoBehaviour
                         //달리기 애니메이션이 미실행중이라면 애니메이션 재생
                         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                         {
-                            if(enemyRange!=E_Range.WithInMinRange)
+                            if (enemyRange != E_Range.WithInMinRange)
                             {
                                 //Debug.Log(name + " "+ enemyDistance);
                                 //rigid2D.velocity = direction * moveSpeed.ModifiedValue;
@@ -299,9 +297,9 @@ public partial class Unit : MonoBehaviour
             yield return null;
         }
     }
-    
+
     //스킬 자동 시전
-   
+
 
 
     //기본 공격
@@ -311,8 +309,8 @@ public partial class Unit : MonoBehaviour
         StartCoroutine(BaseAttackChecking());
     }
     IEnumerator BaseAttackChecking()
-    { 
-        if (skillList.Count==0)
+    {
+        if (skillList.Count == 0)
         {
             yield break;
         }
@@ -325,14 +323,14 @@ public partial class Unit : MonoBehaviour
         while (true)
         {
             //공격이 끝난 후부터 쿨다운 시작.
-            
-            if((!isAttacking) &(attackPeriod > currentCoolTime))
+
+            if ((!isAttacking) & (attackPeriod > currentCoolTime))
             {
                 currentCoolTime += Time.deltaTime * attackSpeed.ModifiedValue;
             }
             else
             {
-                if((enemyRange!=E_Range.OutOfRange)&(skillQueue.IsEmpty)&(!isAttacking))
+                if ((enemyRange != E_Range.OutOfRange) & (skillQueue.IsEmpty) & (!isAttacking))
                 {
                     currentCoolTime = 0;
                     isAttacking = true;
@@ -356,7 +354,7 @@ public partial class Unit : MonoBehaviour
 
 
     //상호작용 목록
-    public void GetHit(ref float damage,E_DamageType damageType,float penetrationPower,bool isCritical)
+    public void GetHit(ref float damage, E_DamageType damageType, float penetrationPower, bool isCritical)
     {
 
         //버프 순회
@@ -389,7 +387,7 @@ public partial class Unit : MonoBehaviour
 
 
 
-        if(OnHitEvent!=null)
+        if (OnHitEvent != null)
         {
             OnHitEvent.Invoke(ref damage);
         }
@@ -434,17 +432,17 @@ public partial class Unit : MonoBehaviour
         E_FloatingType floatingType = E_FloatingType.NonpenetratingDamage;
 
         calculatedDamage *= damageReducePercent;
-        if (damageReducePercent>0.85f)
+        if (damageReducePercent > 0.85f)
         {
             floatingType = E_FloatingType.FullPenetrationDamage;
         }
 
         //크리티컬 계산
-        if(isCritical)
+        if (isCritical)
         {
             floatingType = E_FloatingType.CriticalDamage;
         }
-        
+
 
         float currentHP = StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue;
         StatManager.CreateOrGetStat(E_StatType.CurrentHealth).ModifiedValue -= calculatedDamage;
@@ -465,7 +463,7 @@ public partial class Unit : MonoBehaviour
         skillList[skillNum].ActivateEffect(this);
     }
 
-    public List<Effect> effectList =new List<Effect>();
+    public List<Effect> effectList = new List<Effect>();
     public List<Skill> skillList = new List<Skill>();
 
     //n체인 스킬 사용.
@@ -481,7 +479,7 @@ public partial class Unit : MonoBehaviour
     bool ChainTrigger1;
     bool ChainTrigger2;
     bool ChainTrigger3;
-    
+
 
 
 
@@ -656,7 +654,7 @@ public partial class Unit : MonoBehaviour
 
 
 
- 
+
 }
 //기본 행동
 public partial class Unit : MonoBehaviour
@@ -673,7 +671,7 @@ public partial class Unit : MonoBehaviour
     List<Effect> createEffect = new List<Effect>();
     void OnCreate()
     {
-        foreach(Effect effect in createEffect)
+        foreach (Effect effect in createEffect)
         {
             effect.RefreshCasterBasedAmount(this);
             effect.ActivateEffect(this);
@@ -832,8 +830,8 @@ public partial class Unit : MonoBehaviour
 
 
 }
-    //행동 대기열
-    public partial class Unit : MonoBehaviour
+//행동 대기열
+public partial class Unit : MonoBehaviour
 {
     Queue<string> actionQueue = new Queue<string>();
     bool IsActionQueueEmpty
@@ -868,7 +866,7 @@ public partial class Unit : MonoBehaviour
     }
 
 
-   
+
 
 }
 //상호작용
@@ -877,7 +875,7 @@ public partial class Unit : MonoBehaviour
 
 }
 //스킬과 효과
-public partial class Unit:MonoBehaviour
+public partial class Unit : MonoBehaviour
 {
     Dictionary<string, Effect> effectDict = new Dictionary<string, Effect>();
 
@@ -904,7 +902,7 @@ public partial class Unit:MonoBehaviour
 }
 
 //시작 제어
-public partial class Unit:MonoBehaviour
+public partial class Unit : MonoBehaviour
 {
     private void Awake()
     {
@@ -932,5 +930,5 @@ public partial class Unit : MonoBehaviour
             Debug.Log(statManager.Get_Stat(_statType).StatName + "/" + statManager.Get_Stat(_statType).StatType + "/" + statManager.Get_Stat(_statType).ModifiedValue);
         }
     }
-    
+
 }

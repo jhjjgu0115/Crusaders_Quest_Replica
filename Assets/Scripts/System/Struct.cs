@@ -2,7 +2,7 @@
 [System.Serializable]
 public class HeroInfo
 {
-    public HeroInfo(string name, E_HeroClass heroClass)
+    public HeroInfo(string name, E_Class heroClass)
     {
         this.name = name;
         blockSkill = string.Empty;
@@ -14,10 +14,10 @@ public class HeroInfo
         name = string.Empty;
         blockSkill = string.Empty;
         specialSkill = string.Empty;
-        heroClass = E_HeroClass.Warrior;
+        heroClass = E_Class.Warrior;
     }
     public string name;
-    public E_HeroClass heroClass;
+    public E_Class heroClass;
     public string blockSkill;
     public string specialSkill;
     public bool canUse;

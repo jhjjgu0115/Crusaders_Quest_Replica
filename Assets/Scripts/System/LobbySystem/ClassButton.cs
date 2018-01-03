@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ClassButton : MonoBehaviour
 {
-    public E_HeroClass classInfo = 0;
+    public E_Class classInfo = 0;
     public Sprite selectedImage;
     public Sprite noneSelectedImage;
     public Image tapImage;
