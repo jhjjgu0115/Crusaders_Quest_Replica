@@ -10,13 +10,13 @@ namespace CrusadersQuestReplica
 {
     public static class SpriteMeshUtils
     {
-        public static string GetSpriteMeshPath(Transform root, SpriteMeshInstance spm)
+        public static string GetSpriteMeshPath(Transform root, SpriteMeshInstance smi)
         {
-            return GetPath(root, spm.transform);
+            return GetPath(root, smi.transform);
         }
-        public static string GetSpriteMeshPath(Transform root, SpriteMeshAnimation spm)
+        public static string GetSpriteMeshPath(Transform root, SpriteMeshAnimation sma)
         {
-            return GetPath(root, spm.transform);
+            return GetPath(root, sma.transform);
         }
 
         public static string GetPath(Transform root, Transform transform)

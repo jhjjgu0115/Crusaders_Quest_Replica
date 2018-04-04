@@ -10,20 +10,20 @@ namespace CrusadersQuestReplica
     {
         public static void SavePose(Skin skin, Transform root)
         {
-            List<SpriteMeshInstance> skins = new List<SpriteMeshInstance>(50);
+            List<SpriteMeshInstance> skinSprites = new List<SpriteMeshInstance>(50);
 
-            root.GetComponentsInChildren<SpriteMeshInstance>(true, skins);
+            root.GetComponentsInChildren<SpriteMeshInstance>(true, skinSprites);
 
-            SerializedObject skin0s = new SerializedObject(skin);
-            SerializedProperty entriesProp = skin0s.FindProperty("m_SkinEntries");
+            SerializedObject skinObject = new SerializedObject(skin);
+            SerializedProperty entriesProp = skinObject.FindProperty("m_SkinEntries");
 
 
-            skin0s.Update();
-            entriesProp.arraySize = skins.Count;
+            skinObject.Update();
+            entriesProp.arraySize = skinSprites.Count;
 
-            for (int i = 0; i < skins.Count; i++)
+            for (int i = 0; i < skinSprites.Count; i++)
             {
-                SpriteMeshInstance spriteMeshInstance = skins[i];
+                SpriteMeshInstance spriteMeshInstance = skinSprites[i];
 
                 if (spriteMeshInstance)
                 {
@@ -33,7 +33,7 @@ namespace CrusadersQuestReplica
                 }
             }
 
-            skin0s.ApplyModifiedProperties();
+            skinObject.ApplyModifiedProperties();
             List<SpriteMesh> faces = new List<SpriteMesh>(50);
             faces.AddRange(root.GetComponentInChildren<SpriteMeshAnimation>().frames);
 

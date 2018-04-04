@@ -4,5 +4,9 @@ using UnityEngine;
 
 namespace CrusadersQuestReplica
 {
-    public delegate void DamageEvent(Unit defender, DamageInfo damageInfo);
+    [System.Serializable]
+    public class StageManager
+    {
+    }
+
 }

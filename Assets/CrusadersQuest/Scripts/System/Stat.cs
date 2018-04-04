@@ -5,17 +5,23 @@ namespace CrusadersQuestReplica
 {
     public class Stat
     {
+        protected string statName;
+        protected E_StatType statType;
 
-        // Use this for initialization
-        void Start()
+
+        public E_StatType StatType
         {
-
+            get
+            {
+                return statType;
+            }
         }
-
-        // Update is called once per frame
-        void Update()
+        public string StatName
         {
-
+            get
+            {
+                return statName;
+            }
         }
     }
 }

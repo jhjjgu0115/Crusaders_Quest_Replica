@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace CrusadersQuestReplica
 {
-    public class Effect
+    [System.Serializable]
+    public class Effect : MonoBehaviour
     {
+        public Unit caster;
+        public List<Unit> targetList=new List<Unit>();
 
-        // Use this for initialization
-        void Start()
+        public virtual void Adjust()
         {
 
         }
+        public virtual void Adjust(Unit caster)
+        {
 
-        // Update is called once per frame
-        void Update()
+        }
+        public virtual void Adjust(Unit caster, List<Unit> targetList)
         {
 
         }
