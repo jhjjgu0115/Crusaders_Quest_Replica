@@ -28,7 +28,7 @@ namespace CrusadersQuestReplica
                         {
                             foreach (E_StatType stat in Enum.GetValues(typeof(E_StatType)))
                             {
-                                unit.statManager.AddStat(stat, new StatFloat(stat, stat.ToString(), float.Parse(node[stat.ToString()].InnerText)));
+                                //unit.statManager.AddStat(stat, new StatFloat(stat, stat.ToString(), float.Parse(node[stat.ToString()].InnerText)));
                             }
                             //unit.heroClass = (E_Class)Enum.Parse(typeof(E_Class), node["class"].InnerText);
                             //unit.id = node["id"].InnerText;
@@ -57,7 +57,7 @@ namespace CrusadersQuestReplica
                         {
                             foreach (E_StatType stat in Enum.GetValues(typeof(E_StatType)))
                             {
-                                unit.statManager.AddStat(stat, new StatFloat(stat, stat.ToString(), float.Parse(node[stat.ToString()].InnerText)));
+                                //unit.statManager.AddStat(stat, new StatFloat(stat, stat.ToString(), float.Parse(node[stat.ToString()].InnerText)));
                             }
                             //unit.heroClass = (E_Class)Enum.Parse(typeof(E_Class), node["class"].InnerText);
                             //unit.id = node["id"].InnerText;

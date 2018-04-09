@@ -8,7 +8,7 @@ namespace CrusadersQuestReplica
     {
         public Unit caster;
         public E_DamageType damageType;
-        public float damage;
         public float penetration;
+        public float damage;
     }
 }

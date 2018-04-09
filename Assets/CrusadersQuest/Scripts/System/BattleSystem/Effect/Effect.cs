@@ -6,7 +6,7 @@ namespace CrusadersQuestReplica
     [System.Serializable]
     public class Effect : MonoBehaviour
     {
-        public Unit caster;
+        public Unit caster; 
         public List<Unit> targetList=new List<Unit>();
 
         public virtual void Adjust()

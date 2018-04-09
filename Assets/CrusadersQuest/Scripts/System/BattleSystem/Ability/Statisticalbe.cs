@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace CrusadersQuestReplica
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    public class StatManager
+    public class Statisticalbe : MonoBehaviour
     {
         Dictionary<E_StatType, StatFloat> statDictionary;
-        public StatManager()
+        public Statisticalbe()
         {
             statDictionary = new Dictionary<E_StatType, StatFloat>();
         }
@@ -85,5 +82,5 @@ namespace CrusadersQuestReplica
             }
         }
     }
-
 }
+

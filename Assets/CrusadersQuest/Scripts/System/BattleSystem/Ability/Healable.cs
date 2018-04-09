@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Events;
+using UnityEngine;
+
 namespace CrusadersQuestReplica
 {
-    public class FloatEvent : UnityEvent<float>
+    public class Healable : MonoBehaviour
     {
-
     }
-}
 
+}

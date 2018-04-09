@@ -4,5 +4,10 @@ using UnityEngine;
 
 namespace CrusadersQuestReplica
 {
-    public delegate void DamageEvent(Unit defender, DamageInfo damageInfo);
+    public class HealEffect : MonoBehaviour
+    {
+
+
+    }
+
 }
