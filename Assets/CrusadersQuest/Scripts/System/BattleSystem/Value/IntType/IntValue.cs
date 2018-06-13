@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace CrusadersQuestReplica
 {
-    public class Damageable : MonoBehaviour
+    public class IntValue:Value
     {
-        public void GetDamage()
+        public virtual int GetValue()
         {
-            Debug.Log("hit");
+            return 0;
         }
     }
-
 }

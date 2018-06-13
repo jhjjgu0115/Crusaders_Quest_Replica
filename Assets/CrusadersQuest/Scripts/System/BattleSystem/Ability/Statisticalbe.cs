@@ -25,7 +25,7 @@ namespace CrusadersQuestReplica
         /// </summary>
         /// <param name="_statType"></param>
         /// <returns></returns>
-        public StatFloat Get_Stat(E_StatType _statType)
+        public StatFloat GetStat(E_StatType _statType)
         {
             if (Contains(_statType))
             {
@@ -38,13 +38,13 @@ namespace CrusadersQuestReplica
         /// </summary>
         /// <param name="_statType"></param>
         /// <returns></returns>
-        StatFloat Create_Stat(E_StatType _statType)
+        StatFloat CreateStat(E_StatType _statType)
         {
             StatFloat stat = new StatFloat(_statType, 0);
             statDictionary.Add(_statType, stat);
             return stat;
         }
-        StatFloat Create_Stat(E_StatType _statType, float baseValue)
+        StatFloat CreateStat(E_StatType _statType, float baseValue)
         {
             StatFloat stat = new StatFloat(_statType, baseValue);
             statDictionary.Add(_statType, stat);
@@ -57,10 +57,10 @@ namespace CrusadersQuestReplica
         /// <returns></returns>
         public StatFloat CreateOrGetStat(E_StatType _statType)
         {
-            StatFloat stat = Get_Stat(_statType);
+            StatFloat stat = GetStat(_statType);
             if (stat == null)
             {
-                stat = Create_Stat(_statType);
+                stat = CreateStat(_statType);
             }
             return stat;
         }

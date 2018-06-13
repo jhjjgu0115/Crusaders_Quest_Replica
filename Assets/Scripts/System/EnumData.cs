@@ -1,4 +1,11 @@
-﻿public enum E_AbnormalStatus
+﻿public enum E_UnitType
+{
+    Caster,
+    Target
+}
+
+
+public enum E_AbnormalStatus
 {
     Entangle = 12,
     Groggy = 8,

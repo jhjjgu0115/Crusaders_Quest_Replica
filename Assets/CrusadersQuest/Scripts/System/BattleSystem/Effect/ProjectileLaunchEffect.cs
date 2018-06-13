@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace CrusadersQuestReplica
 {
-    [System.Serializable]
-    public class SkillManager
+    public class ProjectileLaunchEffect:Effect
     {
-        public List<Skill> skillList = new List<Skill>();
+
     }
 }

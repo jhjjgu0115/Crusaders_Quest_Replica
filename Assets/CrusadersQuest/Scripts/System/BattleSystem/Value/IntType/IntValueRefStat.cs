@@ -4,14 +4,12 @@ using UnityEngine;
 
 namespace CrusadersQuestReplica
 {
-    public class FixedFloatValue : FloatValue
+    public class IntValueRefStat : IntValue
     {
-        public float value=0;
-
-        public override float GetValue()
+        public override int GetValue()
         {
-            return value;
+
+            return base.GetValue();
         }
     }
 }
-

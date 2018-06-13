@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class tstunit : MonoBehaviour {
-
+public class TestMain : MonoBehaviour
+{
+    public FloatV floatV;
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+    {
+        Debug.Log(floatV.ReturnValue());
 	}
 	
 	// Update is called once per frame

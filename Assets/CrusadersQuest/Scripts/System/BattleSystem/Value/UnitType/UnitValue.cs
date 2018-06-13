@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace CrusadersQuestReplica
 {
-    public class Damageable : MonoBehaviour
+    public class UnitValue : Value
     {
-        public void GetDamage()
+        public virtual Unit GetValue()
         {
-            Debug.Log("hit");
+            return null;
         }
     }
-
 }
