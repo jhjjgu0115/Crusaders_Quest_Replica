@@ -1,37 +1,90 @@
 fileFormatVersion: 2
 guid: dd105a39e474c4706aba36b8be4febd9
-timeCreated: 1458997913
-licenseType: Store
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: arm
-    21300002: hair_2
-    21300004: face
-    21300006: eye_1
-    21300008: eye_2
-    21300010: hair_3
-    21300012: hair_1
-    21300014: hair_4
-    21300016: arm_1
-    21300018: arm_2
-    21300020: neck
-    21300022: leg_1
-    21300024: leg_2
-    21300026: hips
-    21300028: dress
-    21300030: sleeve_1
-    21300032: sleeve_2
-    21300034: sleeve_1_back
-    21300036: sleeve_back_2
-    21300038: eye_lash_1
-    21300040: eye_lash_2
-    21300042: eye_ball_1
-    21300044: eye_ball_2
-    21300046: ribbon
-    21300048: ribbon_2
-    21300050: body_1
-    21300052: left_arm_1
-  serializedVersion: 4
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: arm
+  - first:
+      213: 21300002
+    second: hair_2
+  - first:
+      213: 21300004
+    second: face
+  - first:
+      213: 21300006
+    second: eye_1
+  - first:
+      213: 21300008
+    second: eye_2
+  - first:
+      213: 21300010
+    second: hair_3
+  - first:
+      213: 21300012
+    second: hair_1
+  - first:
+      213: 21300014
+    second: hair_4
+  - first:
+      213: 21300016
+    second: arm_1
+  - first:
+      213: 21300018
+    second: arm_2
+  - first:
+      213: 21300020
+    second: neck
+  - first:
+      213: 21300022
+    second: leg_1
+  - first:
+      213: 21300024
+    second: leg_2
+  - first:
+      213: 21300026
+    second: hips
+  - first:
+      213: 21300028
+    second: dress
+  - first:
+      213: 21300030
+    second: sleeve_1
+  - first:
+      213: 21300032
+    second: sleeve_2
+  - first:
+      213: 21300034
+    second: sleeve_1_back
+  - first:
+      213: 21300036
+    second: sleeve_back_2
+  - first:
+      213: 21300038
+    second: eye_lash_1
+  - first:
+      213: 21300040
+    second: eye_lash_2
+  - first:
+      213: 21300042
+    second: eye_ball_1
+  - first:
+      213: 21300044
+    second: eye_ball_2
+  - first:
+      213: 21300046
+    second: ribbon
+  - first:
+      213: 21300048
+    second: ribbon_2
+  - first:
+      213: 21300050
+    second: body_1
+  - first:
+      213: 21300052
+    second: left_arm_1
+  externalObjects: {}
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -39,6 +92,8 @@ TextureImporter:
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -47,6 +102,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -54,10 +111,13 @@ TextureImporter:
   textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: -1
     aniso: 16
-    mipBias: -1
-    wrapMode: -1
+    mipBias: -100
+    wrapU: -1
+    wrapV: -1
+    wrapW: -1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -66,25 +126,31 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -100,7 +166,15 @@ TextureImporter:
       pivot: {x: 0.86994934, y: 0.9514336}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: hair_2
       rect:
@@ -113,7 +187,15 @@ TextureImporter:
       pivot: {x: 0.3954551, y: 1.1154063}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: face
       rect:
@@ -126,7 +208,15 @@ TextureImporter:
       pivot: {x: 0.50210464, y: 0.50136834}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: eye_1
       rect:
@@ -139,7 +229,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: eye_2
       rect:
@@ -152,7 +250,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: hair_3
       rect:
@@ -165,7 +271,15 @@ TextureImporter:
       pivot: {x: 0.47379804, y: 0.5024057}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: hair_1
       rect:
@@ -178,7 +292,15 @@ TextureImporter:
       pivot: {x: 0.7323777, y: 0.726429}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: hair_4
       rect:
@@ -191,7 +313,15 @@ TextureImporter:
       pivot: {x: 0.50045764, y: 0.50085396}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: arm_2
       rect:
@@ -204,7 +334,15 @@ TextureImporter:
       pivot: {x: 0.25094837, y: 0.8473999}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 23305410000000000800000000000000
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: neck
       rect:
@@ -217,7 +355,15 @@ TextureImporter:
       pivot: {x: 0.6258487, y: 0.45779508}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 43305410000000000800000000000000
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: leg_1
       rect:
@@ -230,7 +376,15 @@ TextureImporter:
       pivot: {x: 0.5736471, y: 0.9281795}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: leg_2
       rect:
@@ -243,7 +397,15 @@ TextureImporter:
       pivot: {x: 0.47258425, y: 0.8871404}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: hips
       rect:
@@ -256,7 +418,15 @@ TextureImporter:
       pivot: {x: 0.5130841, y: 0.47811505}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a3305410000000000800000000000000
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dress
       rect:
@@ -269,7 +439,15 @@ TextureImporter:
       pivot: {x: 0.51203126, y: 0.5293357}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c3305410000000000800000000000000
+      internalID: 21300028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: sleeve_1
       rect:
@@ -282,7 +460,15 @@ TextureImporter:
       pivot: {x: 0.82618695, y: 0.7894338}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e3305410000000000800000000000000
+      internalID: 21300030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: sleeve_2
       rect:
@@ -295,7 +481,15 @@ TextureImporter:
       pivot: {x: 0.54399437, y: 0.54118353}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: sleeve_1_back
       rect:
@@ -308,7 +502,15 @@ TextureImporter:
       pivot: {x: 0.5645554, y: 0.5217166}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 24305410000000000800000000000000
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: sleeve_back_2
       rect:
@@ -321,7 +523,15 @@ TextureImporter:
       pivot: {x: 0.6576561, y: 0.5624962}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: eye_lash_1
       rect:
@@ -334,7 +544,15 @@ TextureImporter:
       pivot: {x: 0.5304878, y: 0.45999998}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 64305410000000000800000000000000
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: eye_lash_2
       rect:
@@ -347,7 +565,15 @@ TextureImporter:
       pivot: {x: 0.49074075, y: 0.54901963}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 84305410000000000800000000000000
+      internalID: 21300040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: eye_ball_1
       rect:
@@ -360,7 +586,15 @@ TextureImporter:
       pivot: {x: 0.48101267, y: 0.49315068}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a4305410000000000800000000000000
+      internalID: 21300042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: eye_ball_2
       rect:
@@ -373,7 +607,15 @@ TextureImporter:
       pivot: {x: 0.6050368, y: 0.4921875}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c4305410000000000800000000000000
+      internalID: 21300044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: ribbon
       rect:
@@ -386,7 +628,15 @@ TextureImporter:
       pivot: {x: 0.4843534, y: 0.6942502}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e4305410000000000800000000000000
+      internalID: 21300046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: ribbon_2
       rect:
@@ -399,7 +649,15 @@ TextureImporter:
       pivot: {x: 0.90614605, y: 0.1656049}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 05305410000000000800000000000000
+      internalID: 21300048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: body_1
       rect:
@@ -412,7 +670,15 @@ TextureImporter:
       pivot: {x: 0.74096555, y: 0.39908183}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 25305410000000000800000000000000
+      internalID: 21300050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: left_arm_1
       rect:
@@ -425,9 +691,28 @@ TextureImporter:
       pivot: {x: 0.7386935, y: 0.6157895}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 45305410000000000800000000000000
+      internalID: 21300052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: uchan
-  userData: 98510513680124
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 637113279036487237
   assetBundleName: 
   assetBundleVariant: 
